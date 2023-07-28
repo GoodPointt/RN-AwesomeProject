@@ -28,7 +28,8 @@
 
 #
 
-<!-- ## <div align=center>Завдання 2: Верстка екранів. Робота зі стилями. Дебаг</div>
+## <div align=center>Завдання 2: Верстка екранів. Робота зі стилями. Дебаг</div>
+
 1. Створити папку `Screens`
 2. Створити компонент `RegistrationScreen`
 3. Створити компонент `LoginScreen`
@@ -37,17 +38,25 @@
 6. Додати розмітку форми в компонент `LoginScreen`
 7. Додати стилі до компонента `RegistrationScreen`
 8. Додати стилі до компонента `LoginScreen`
+
 ###
-- [Макет компонента RegistrationScreen](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?type=design&node-id=3-26)
-- [Макет компонента LoginScreen](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=12-0&t=tkIKc4K19uOKNunb-0)
+
+- [Макет компонента RegistrationScreen](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?type=design&node-id=3-26>)
+- [Макет компонента LoginScreen](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=12-0&t=tkIKc4K19uOKNunb-0>)
+
 #
+
 ## <div align=center>Завдання 3: Обробка подій. Робота із текстовими інпутами та клавіатурою</div>
+
 - Додати логіку роботи з формою в компонент `RegistrationScreen`
 - Додати логіку роботи з формою в компонент `LoginScreen`
 - Під час сабміту форм збирати дані з них і виводити в консоль
 - Додати автозакриття клавіатури по кліку за межами форм (Використовуємо `Keyboard.dismiss`)
+
 #
+
 ## <div align=center>Завдання 4: Навігація</div>
+
 1. Створити екран `CreatePostsScreen`
 2. Створити екран `CommentsScreen`
 3. Створити екран `ProfileScreen`
@@ -65,14 +74,19 @@
 15. Клік по іконці №3 веде на екран `ProfileScreen`
 16. В хедері на екрані `PostsScreen` додати іконку для `logout`
 17. Стилізувати нижню навігацію
+
 ###
-- [Макет компонента PostsScreen без контенту](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=12-47)
-- [Макет компонента PostsScreen з постами](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-86&t=zLy5KtBgsPgUDWY3-0)
-- [Макет компонента CreatePostsScreen при переході на компонент](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-13&t=4MUcNtbjSdtiKXV7-0)
-- [Макет компонента ProfileScreen](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-13&t=kFkFeqKaLVknGboO-0)
-- [Інтерактивний приклад навігації в застосунку](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-86&t=YKQMU635gnlpvN39-0)
+
+- [Макет компонента PostsScreen без контенту](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=12-47>)
+- [Макет компонента PostsScreen з постами](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-86&t=zLy5KtBgsPgUDWY3-0>)
+- [Макет компонента CreatePostsScreen при переході на компонент](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-13&t=4MUcNtbjSdtiKXV7-0>)
+- [Макет компонента ProfileScreen](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-13&t=kFkFeqKaLVknGboO-0>)
+- [Інтерактивний приклад навігації в застосунку](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-86&t=YKQMU635gnlpvN39-0>)
+
 #
+
 ## <div align=center>Завдання 5: Нативні компоненти</div>
+
 1. Підключити камеру в компонент `CreatePostsScreen`;
 2. Під час відкриття екрану `CreatePostsScreen` активується камера і зображення з неї виводиться в блок з іконкою камери
 3. По кліку на іконку камери робиться знімок
@@ -82,13 +96,18 @@
 7. Після створення посту повинно перенаправляти на екран `PostsScreen`
 8. В компоненті окремого посту при кліку на іконку коментарів перекидає на екран `CommentsScreen`
 9. У компоненті окремого посту під час кліку на іконку геолокації перекидає на екран `MapScreen`, де можна побачити мапу з маркером, де була зроблена фотографія.
+
 ###
-- [Макет компонента CommentsScreen з коментарями](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=41-0&t=vDyJjIvhOk6v4uZ7-0)
-- [Макет компонента CreatePostsScreen під час відкриття екрану](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-86&t=hdpZPYSLTyS7klkX-0)
-- [Макет компонента CreatePostsScreen після зробленого фото](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-13&t=5kWIH0XRsJwnJfHy-0)
-- [Макет компонента MapScreen](https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=43-54&t=58UisgPOnMIySl1m-0)
+
+- [Макет компонента CommentsScreen з коментарями](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=41-0&t=vDyJjIvhOk6v4uZ7-0>)
+- [Макет компонента CreatePostsScreen під час відкриття екрану](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-86&t=hdpZPYSLTyS7klkX-0>)
+- [Макет компонента CreatePostsScreen після зробленого фото](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-13&t=5kWIH0XRsJwnJfHy-0>)
+- [Макет компонента MapScreen](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=43-54&t=58UisgPOnMIySl1m-0>)
+
 #
+
 ## <div align=center>Завдання 6: Redux і Firebase</div>
+
 1. Підключити `Redux` до проекту
 2. Підключити `Firebase` до проекту
 3. Додати логіку реєстрації на екрані `RegistrationScreen` через методи `Firebase`
@@ -101,5 +120,7 @@
 10. Додати логіку додавання коментаря під постом, використовуючи `Firebase` та `Redux`
 
 #
+
 ## <div align=center>Завдання 7: Деплой на сервери expo</div>
+
 - Викласти проект на сервери `expo` -->
