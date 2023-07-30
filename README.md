@@ -46,16 +46,16 @@
 
 #
 
-## <div align=center>Завдання 3: Обробка подій. Робота із текстовими інпутами та клавіатурою</div>
+<!-- ## <div align=center>Завдання 3: Обробка подій. Робота із текстовими інпутами та клавіатурою</div>
 
 - Додати логіку роботи з формою в компонент `RegistrationScreen`
 - Додати логіку роботи з формою в компонент `LoginScreen`
 - Під час сабміту форм збирати дані з них і виводити в консоль
 - Додати автозакриття клавіатури по кліку за межами форм (Використовуємо `Keyboard.dismiss`)
 
-#
+# -->
 
-## <div align=center>Завдання 4: Навігація</div>
+<!-- ## <div align=center>Завдання 4: Навігація</div>
 
 1. Створити екран `CreatePostsScreen`
 2. Створити екран `CommentsScreen`
@@ -83,9 +83,9 @@
 - [Макет компонента ProfileScreen](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-13&t=kFkFeqKaLVknGboO-0>)
 - [Інтерактивний приклад навігації в застосунку](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-86&t=YKQMU635gnlpvN39-0>)
 
-#
+# -->
 
-## <div align=center>Завдання 5: Нативні компоненти</div>
+<!-- ## <div align=center>Завдання 5: Нативні компоненти</div>
 
 1. Підключити камеру в компонент `CreatePostsScreen`;
 2. Під час відкриття екрану `CreatePostsScreen` активується камера і зображення з неї виводиться в блок з іконкою камери
@@ -104,9 +104,9 @@
 - [Макет компонента CreatePostsScreen після зробленого фото](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=36-13&t=5kWIH0XRsJwnJfHy-0>)
 - [Макет компонента MapScreen](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)?node-id=43-54&t=58UisgPOnMIySl1m-0>)
 
-#
+# -->
 
-## <div align=center>Завдання 6: Redux і Firebase</div>
+<!-- ## <div align=center>Завдання 6: Redux і Firebase</div>
 
 1. Підключити `Redux` до проекту
 2. Підключити `Firebase` до проекту
@@ -119,8 +119,8 @@
 9. Додати логіку завантаження постів у базу даних, використовуючи `Firebase` та `Redux`
 10. Додати логіку додавання коментаря під постом, використовуючи `Firebase` та `Redux`
 
-#
+# -->
 
-## <div align=center>Завдання 7: Деплой на сервери expo</div>
+<!-- ## <div align=center>Завдання 7: Деплой на сервери expo</div>
 
-- Викласти проект на сервери `expo` -->
+- Викласти проект на сервери `expo` --> -->
