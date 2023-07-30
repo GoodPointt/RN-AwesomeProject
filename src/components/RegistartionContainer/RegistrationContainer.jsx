@@ -5,6 +5,10 @@ import { LargeButton } from "../LargeButton/LargeButton";
 import { styles } from "../../styles";
 
 export const RegistrationContainer = () => {
+  const [isLoginFocused, setIsLoginFocused] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
   const [regLoginValue, setRegLoginValue] = useState("");
   const [regEmailValue, setRegEmailValue] = useState("");
   const [regPasswordValue, setRegPasswordValue] = useState("");
@@ -13,6 +17,38 @@ export const RegistrationContainer = () => {
     regLoginValue,
     regEmailValue,
     regPasswordValue,
+  };
+
+  const handleFocus = (name) => {
+    switch (name) {
+      case "login":
+        setIsLoginFocused(true);
+        break;
+      case "email":
+        setIsEmailFocused(true);
+        break;
+      case "password":
+        setIsPasswordFocused(true);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleBlur = (name) => {
+    switch (name) {
+      case "login":
+        setIsLoginFocused(false);
+        break;
+      case "email":
+        setIsEmailFocused(false);
+        break;
+      case "password":
+        setIsPasswordFocused(false);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleChange = (name, value) => {
@@ -37,28 +73,38 @@ export const RegistrationContainer = () => {
       <RegistrationAvatar />
       <Text style={styles.title}>Registration</Text>
       <TextInput
-        style={styles.loginInput}
+        style={[styles.loginInput, isLoginFocused ? styles.focusedInput : null]}
         key="reg1"
         placeholder="Login"
         name="login"
         value={regLoginValue}
         onChangeText={(value) => handleChange("login", value)}
+        onFocus={() => handleFocus("login")}
+        onBlur={() => handleBlur("login")}
       />
       <TextInput
-        style={styles.loginInput}
+        style={[styles.loginInput, isEmailFocused ? styles.focusedInput : null]}
         key="reg2"
         placeholder="E-mail"
         name="email"
         value={regEmailValue}
         onChangeText={(value) => handleChange("email", value)}
+        onFocus={() => handleFocus("email")}
+        onBlur={() => handleBlur("email")}
       />
       <TextInput
-        style={[styles.loginInput, styles.relative]}
+        style={[
+          styles.loginInput,
+          styles.relative,
+          isPasswordFocused ? styles.focusedInput : null,
+        ]}
         key="reg3"
         placeholder="Password"
         name="password"
         value={regPasswordValue}
         onChangeText={(value) => handleChange("password", value)}
+        onFocus={() => handleFocus("password")}
+        onBlur={() => handleBlur("password")}
       />
       <TouchableOpacity
         style={styles.showBtn}

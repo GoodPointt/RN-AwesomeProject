@@ -72,6 +72,10 @@ export const styles = StyleSheet.create({
     borderStyle: "solid",
     marginBottom: 16,
   },
+  focusedInput: {
+    borderWidth: 2,
+    borderColor: "#FF6C00",
+  },
   relative: { position: "relative" },
   // shadowedLoginInput: {
   //   elevation: 4,
