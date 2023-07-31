@@ -1,25 +1,24 @@
 import React from "react";
-import {
-  ImageBackground,
-  KeyboardAvoidingView,
-  ScrollView,
-} from "react-native";
-import { RegistrationContainer } from "../components/RegistartionContainer/RegistrationContainer";
-import { styles } from "../styles";
+import { ImageBackground, StyleSheet } from "react-native";
+import { RegistrationContainer } from "../components/RegistrationContainer";
 
 export const RegistrationScreen = () => {
-  // const behavior = Platform.OS === "ios" ? "padding" : "height";
-
   return (
     <ImageBackground
       style={styles.backgroundImage}
       source={require("../assets/img/login-bg.jpg")}
     >
-      {/* <KeyboardAvoidingView behavior={behavior} style={styles.container}> */}
-      <ScrollView>
-        <RegistrationContainer />
-      </ScrollView>
-      {/* </KeyboardAvoidingView> */}
+      <RegistrationContainer />
     </ImageBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    flexDirection: "row",
+    resizeMode: "cover",
+  },
+});

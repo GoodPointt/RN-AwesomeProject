@@ -1,8 +1,8 @@
 import { TouchableOpacity, View, ImageBackground, Image } from "react-native";
-import { AddAvatarSvg } from "../Svg/AddAvatarSvg";
-import { RemoveAvatarSvg } from "../Svg/RemoveAvatarSvg";
+import { AddAvatarSvg } from "./Svg/AddAvatarSvg";
+import { RemoveAvatarSvg } from "./Svg/RemoveAvatarSvg";
 import { useState } from "react";
-import { styles } from "../../styles";
+import { styles } from "../styles";
 
 export const RegistrationAvatar = () => {
   const [avatar, setAvatar] = useState(null);

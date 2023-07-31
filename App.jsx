@@ -1,8 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import { KeyboardAvoidingView, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
 import { RegistrationScreen } from "./src/screens/RegistrationScreen";
 import { useFonts } from "expo-font";
-import { styles } from "./src/styles";
 import { LoginScreen } from "./src/screens/LoginScreen";
 
 export default function App() {
@@ -18,11 +17,23 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView behavior={behavior} style={styles.container}>
-        <RegistrationScreen />
-        {/* <LoginScreen /> */}
+      <KeyboardAvoidingView
+        behavior={behavior}
+        style={styles.container}
+        keyboardVerticalOffset={-160}
+      >
+        {/* <RegistrationScreen /> */}
+        <LoginScreen />
       </KeyboardAvoidingView>
+
       <StatusBar style="auto" />
     </View>
   );
 }
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
+});

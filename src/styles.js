@@ -23,16 +23,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
   },
-  regFormContainer: {
-    marginTop: 220,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingTop: 90,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingBottom: 220,
-  },
+
   loginFormContainer: {
     marginTop: 320,
     backgroundColor: "#fff",
@@ -62,25 +53,12 @@ export const styles = StyleSheet.create({
     left: "50%",
     transform: [{ translateX: -50 }, { translateY: -50 }],
   },
-  loginInput: {
-    width: "100%",
-    padding: 16,
-    backgroundColor: "#f6f6f6",
-    borderRadius: 8,
-    borderWidth: 0.5,
-    borderColor: "#e8e8e8",
-    borderStyle: "solid",
-    marginBottom: 16,
-  },
-  focusedInput: {
-    borderWidth: 2,
-    borderColor: "#FF6C00",
-  },
+
   relative: { position: "relative" },
   // shadowedLoginInput: {
   //   elevation: 4,
   // },
-  showBtn: { position: "absolute", left: "88%", top: "77%" },
+
   noMarginBottom: {
     marginBottom: 0,
   },
@@ -96,14 +74,11 @@ export const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     borderRadius: 100,
   },
-  loginRegisterBtnMargin: {
-    marginBottom: 16,
-    marginTop: 43,
-  },
-  buttonTxt: {
-    textAlign: "center",
-    color: "white",
-    fontSize: 16,
-    fontFamily: "Roboto-Regular",
-  },
+
+  // buttonTxt: {
+  //   textAlign: "center",
+  //   color: "white",
+  //   fontSize: 16,
+  //   fontFamily: "Roboto-Regular",
+  // },
 });
