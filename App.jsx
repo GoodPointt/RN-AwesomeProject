@@ -22,8 +22,8 @@ export default function App() {
         style={styles.container}
         keyboardVerticalOffset={-160}
       >
-        {/* <RegistrationScreen /> */}
-        <LoginScreen />
+        <RegistrationScreen />
+        {/* <LoginScreen /> */}
       </KeyboardAvoidingView>
 
       <StatusBar style="auto" />

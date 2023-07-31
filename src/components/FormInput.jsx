@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   },
   focusedInput: {
     borderColor: "#FF6C00",
+    backgroundColor: "#fff",
   },
   showBtn: { position: "absolute", top: 17, right: 16 },
 });
