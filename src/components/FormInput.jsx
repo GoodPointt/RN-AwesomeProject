@@ -7,6 +7,7 @@ export const FormInput = ({
   placeholder,
   name,
   value,
+  inputMode,
   isFocused,
   handleChange,
   handleFocus,
@@ -17,6 +18,7 @@ export const FormInput = ({
   return (
     <View>
       <TextInput
+        inputMode={inputMode}
         style={[styles.formInput, isFocused ? styles.focusedInput : null]}
         key={key}
         placeholder={placeholder}

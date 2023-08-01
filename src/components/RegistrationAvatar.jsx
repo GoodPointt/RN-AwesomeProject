@@ -1,23 +1,8 @@
 import { TouchableOpacity, View, Image, StyleSheet } from "react-native";
-import { AddAvatarSvg } from "./Svg/AddAvatarSvg";
-import { RemoveAvatarSvg } from "./Svg/RemoveAvatarSvg";
 import { useState } from "react";
-// import { styles } from "../styles";
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 
-export const RegistrationAvatar = () => {
-  const [avatar, setAvatar] = useState(null);
-
-  const handlePress = () => {
-    if (avatar) {
-      setAvatar(null);
-    } else {
-      setAvatar(
-        "https://thumbs.dreamstime.com/b/d-cg-rendering-super-woman-warrior-super-woman-warrior-98757814.jpg"
-      );
-    }
-  };
-
+export const RegistrationAvatar = ({ avatar, handlePress }) => {
   return (
     <TouchableOpacity onPress={handlePress} style={styles.addAvatar}>
       <View style={styles.avatarBox}>

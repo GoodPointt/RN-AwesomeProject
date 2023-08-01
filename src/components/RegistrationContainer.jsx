@@ -1,4 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useState } from "react";
 import { RegistrationAvatar } from "./RegistrationAvatar";
 import { LargeButton } from "./LargeButton";
@@ -11,6 +18,25 @@ export const RegistrationContainer = () => {
   const [regLoginValue, setRegLoginValue] = useState("");
   const [regEmailValue, setRegEmailValue] = useState("");
   const [regPasswordValue, setRegPasswordValue] = useState("");
+
+  const [avatar, setAvatar] = useState(null);
+
+  const handleAvatarPress = () => {
+    if (avatar) {
+      setAvatar(null);
+    } else {
+      setAvatar(
+        "https://thumbs.dreamstime.com/b/d-cg-rendering-super-woman-warrior-super-woman-warrior-98757814.jpg"
+      );
+    }
+  };
+
+  const regForm = {
+    avatar: avatar,
+    login: regLoginValue,
+    email: regEmailValue,
+    password: regPasswordValue,
+  };
 
   const handleFocus = (name) => {
     switch (name) {
@@ -62,49 +88,61 @@ export const RegistrationContainer = () => {
   };
 
   return (
-    <View style={styles.regFormContainer}>
-      <RegistrationAvatar />
-      <Text style={styles.title}>Registration</Text>
-      <FormInput
-        key={"reg1"}
-        placeholder={"Login"}
-        name={"login"}
-        value={regLoginValue}
-        isFocused={isFocused === "login"}
-        handleChange={(value) => handleChange("login", value)}
-        handleFocus={() => handleFocus("login")}
-        handleBlur={() => handleBlur("login")}
-      />
-      <FormInput
-        key={"reg2"}
-        placeholder={"E-mail"}
-        name={"email"}
-        value={regEmailValue}
-        isFocused={isFocused === "email"}
-        handleChange={(value) => handleChange("email", value)}
-        handleFocus={() => handleFocus("email")}
-        handleBlur={() => handleBlur("email")}
-      />
-      <FormInput
-        key={"reg3"}
-        placeholder={"Password"}
-        name={"password"}
-        value={regPasswordValue}
-        isFocused={isFocused === "password"}
-        handleChange={(value) => handleChange("password", value)}
-        handleFocus={() => handleFocus("password")}
-        handleBlur={() => handleBlur("password")}
-      />
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={{ flex: 1, width: "100%" }}
+      keyboardVerticalOffset={-70}
+    >
+      <View style={styles.regFormContainer}>
+        <RegistrationAvatar avatar={avatar} handlePress={handleAvatarPress} />
+        <Text style={styles.title}>Registration</Text>
 
-      <LargeButton
-        onPress={() => console.log("Register...")}
-        text={"Register"}
-        extraStyles={styles.loginRegisterBtnMargin}
-      />
-      <TouchableOpacity onPress={() => console.log("Login...")}>
-        <BlueText>Already have an account? Login</BlueText>
-      </TouchableOpacity>
-    </View>
+        <FormInput
+          key={"reg1"}
+          placeholder={"Login"}
+          name={"login"}
+          value={regLoginValue}
+          inputMode={"text"}
+          isFocused={isFocused === "login"}
+          handleChange={(value) => handleChange("login", value)}
+          handleFocus={() => handleFocus("login")}
+          handleBlur={() => handleBlur("login")}
+        />
+        <FormInput
+          key={"reg2"}
+          placeholder={"E-mail"}
+          name={"email"}
+          value={regEmailValue}
+          inputMode={"email"}
+          isFocused={isFocused === "email"}
+          handleChange={(value) => handleChange("email", value)}
+          handleFocus={() => handleFocus("email")}
+          handleBlur={() => handleBlur("email")}
+        />
+        <FormInput
+          key={"reg3"}
+          placeholder={"Password"}
+          name={"password"}
+          value={regPasswordValue}
+          inputMode={"text"}
+          isFocused={isFocused === "password"}
+          handleChange={(value) => handleChange("password", value)}
+          handleFocus={() => handleFocus("password")}
+          handleBlur={() => handleBlur("password")}
+        />
+        <LargeButton
+          onPress={() => console.log(regForm)}
+          text={"Register"}
+          extraStyles={styles.loginRegisterBtnMargin}
+          isDisabled={
+            avatar && regLoginValue && regEmailValue && regPasswordValue
+          }
+        />
+        <TouchableOpacity onPress={() => console.log("Login...")}>
+          <BlueText>Already have an account? Login</BlueText>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 

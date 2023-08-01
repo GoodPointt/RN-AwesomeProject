@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { RegistrationScreen } from "./src/screens/RegistrationScreen";
 import { useFonts } from "expo-font";
 import { LoginScreen } from "./src/screens/LoginScreen";
@@ -13,21 +20,16 @@ export default function App() {
   if (!fontsLoaded && !error) {
     return null;
   }
-  const behavior = Platform.OS === "ios" ? "padding" : "height";
 
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={behavior}
-        style={styles.container}
-        keyboardVerticalOffset={-160}
-      >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
         <RegistrationScreen />
         {/* <LoginScreen /> */}
-      </KeyboardAvoidingView>
 
-      <StatusBar style="auto" />
-    </View>
+        <StatusBar style="auto" />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

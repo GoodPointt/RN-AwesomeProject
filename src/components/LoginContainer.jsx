@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { LargeButton } from "./LargeButton";
 import { useState } from "react";
 import { FormInput } from "./FormInput";
@@ -7,8 +13,13 @@ import { BlueText } from "./BlueText";
 export const LoginContainer = () => {
   const [isFocused, setIsFocused] = useState(null);
 
-  const [regEmailValue, setRegEmailValue] = useState("");
-  const [regPasswordValue, setRegPasswordValue] = useState("");
+  const [loginEmailValue, setLoginEmailValue] = useState("");
+  const [loginPasswordValue, setLoginPasswordValue] = useState("");
+
+  const loginForm = {
+    email: loginEmailValue,
+    password: loginPasswordValue,
+  };
 
   const handleFocus = (name) => {
     switch (name) {
@@ -39,10 +50,10 @@ export const LoginContainer = () => {
   const handleChange = (name, value) => {
     switch (name) {
       case "email":
-        setRegEmailValue(value);
+        setLoginEmailValue(value);
         break;
       case "password":
-        setRegPasswordValue(value);
+        setLoginPasswordValue(value);
         break;
 
       default:
@@ -51,38 +62,47 @@ export const LoginContainer = () => {
   };
 
   return (
-    <View style={styles.loginFormContainer}>
-      <Text style={styles.title}>Log in</Text>
-      <FormInput
-        key={"reg2"}
-        placeholder={"E-mail"}
-        name={"email"}
-        value={regEmailValue}
-        isFocused={isFocused === "email"}
-        handleChange={(value) => handleChange("email", value)}
-        handleFocus={() => handleFocus("email")}
-        handleBlur={() => handleBlur("email")}
-      />
-      <FormInput
-        key={"reg3"}
-        placeholder={"Password"}
-        name={"password"}
-        value={regPasswordValue}
-        isFocused={isFocused === "password"}
-        handleChange={(value) => handleChange("password", value)}
-        handleFocus={() => handleFocus("password")}
-        handleBlur={() => handleBlur("password")}
-      />
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={{ flex: 1, width: "100%" }}
+      keyboardVerticalOffset={-85}
+    >
+      <View style={styles.loginFormContainer}>
+        <Text style={styles.title}>Log in</Text>
+        <FormInput
+          key={"log1"}
+          placeholder={"E-mail"}
+          name={"email"}
+          value={loginEmailValue}
+          inputMode={"email"}
+          isFocused={isFocused === "email"}
+          handleChange={(value) => handleChange("email", value)}
+          handleFocus={() => handleFocus("email")}
+          handleBlur={() => handleBlur("email")}
+        />
+        <FormInput
+          key={"log2"}
+          placeholder={"Password"}
+          name={"password"}
+          value={loginPasswordValue}
+          inputMode={"text"}
+          isFocused={isFocused === "password"}
+          handleChange={(value) => handleChange("password", value)}
+          handleFocus={() => handleFocus("password")}
+          handleBlur={() => handleBlur("password")}
+        />
 
-      <LargeButton
-        onPress={() => console.log("Log in...")}
-        text={"Log in"}
-        extraStyles={styles.loginRegisterBtnMargin}
-      />
-      <TouchableOpacity onPress={() => console.log("Register...")}>
-        <BlueText>Do not have account? Register...</BlueText>
-      </TouchableOpacity>
-    </View>
+        <LargeButton
+          onPress={() => console.log(loginForm)}
+          text={"Log in"}
+          extraStyles={styles.loginRegisterBtnMargin}
+          isDisabled={loginEmailValue && loginPasswordValue}
+        />
+        <TouchableOpacity onPress={() => console.log("Register...")}>
+          <BlueText>Do not have account? Register...</BlueText>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
