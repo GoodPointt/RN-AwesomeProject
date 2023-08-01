@@ -14,10 +14,9 @@ export const LargeButton = ({ onPress, text, extraStyles, isDisabled }) => {
 
 export const styles = StyleSheet.create({
   button: {
-    paddingLeft: 32,
-    paddingRight: 32,
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+
     backgroundColor: "#FF6C00",
     borderRadius: 100,
   },
