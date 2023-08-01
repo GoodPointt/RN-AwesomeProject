@@ -34,33 +34,6 @@ export const LoginContainer = () => {
     }
   };
 
-  const handleBlur = (name) => {
-    switch (name) {
-      case "email":
-        setIsFocused(null);
-        break;
-      case "password":
-        setIsFocused(null);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleChange = (name, value) => {
-    switch (name) {
-      case "email":
-        setLoginEmailValue(value);
-        break;
-      case "password":
-        setLoginPasswordValue(value);
-        break;
-
-      default:
-        break;
-    }
-  };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -70,26 +43,24 @@ export const LoginContainer = () => {
       <View style={styles.loginFormContainer}>
         <Text style={styles.title}>Log in</Text>
         <FormInput
-          key={"log1"}
           placeholder={"E-mail"}
           name={"email"}
           value={loginEmailValue}
           inputMode={"email"}
           isFocused={isFocused === "email"}
-          handleChange={(value) => handleChange("email", value)}
+          handleChange={(value) => setLoginEmailValue(value)}
           handleFocus={() => handleFocus("email")}
-          handleBlur={() => handleBlur("email")}
+          handleBlur={() => setIsFocused(null)}
         />
         <FormInput
-          key={"log2"}
           placeholder={"Password"}
           name={"password"}
           value={loginPasswordValue}
           inputMode={"text"}
           isFocused={isFocused === "password"}
-          handleChange={(value) => handleChange("password", value)}
+          handleChange={(value) => setLoginPasswordValue(value)}
           handleFocus={() => handleFocus("password")}
-          handleBlur={() => handleBlur("password")}
+          handleBlur={() => setIsFocused(null)}
         />
 
         <LargeButton

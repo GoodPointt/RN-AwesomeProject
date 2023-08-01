@@ -1,8 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import {
   Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
   View,

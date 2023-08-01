@@ -3,7 +3,6 @@ import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { BlueText } from "./BlueText";
 
 export const FormInput = ({
-  key,
   placeholder,
   name,
   value,
@@ -13,26 +12,25 @@ export const FormInput = ({
   handleFocus,
   handleBlur,
 }) => {
-  const [isShown, setisShown] = useState(true);
+  const [isToucheble, setIsToucheble] = useState(true);
 
   return (
     <View>
       <TextInput
         inputMode={inputMode}
         style={[styles.formInput, isFocused ? styles.focusedInput : null]}
-        key={key}
         placeholder={placeholder}
         name={name}
         value={value}
         onChangeText={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        secureTextEntry={name === "password" && isShown}
+        secureTextEntry={name === "password" && isToucheble}
       />
       {name === "password" && (
         <TouchableOpacity
           style={styles.showBtn}
-          onPress={() => setisShown(!isShown)}
+          onPress={() => setIsToucheble(!isToucheble)}
         >
           <BlueText>Show</BlueText>
         </TouchableOpacity>

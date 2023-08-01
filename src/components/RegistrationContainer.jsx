@@ -1,6 +1,5 @@
 import {
   KeyboardAvoidingView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -54,39 +53,6 @@ export const RegistrationContainer = () => {
     }
   };
 
-  const handleBlur = (name) => {
-    switch (name) {
-      case "login":
-        setIsFocused(null);
-        break;
-      case "email":
-        setIsFocused(null);
-        break;
-      case "password":
-        setIsFocused(null);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleChange = (name, value) => {
-    switch (name) {
-      case "login":
-        setRegLoginValue(value);
-        break;
-      case "email":
-        setRegEmailValue(value);
-        break;
-      case "password":
-        setRegPasswordValue(value);
-        break;
-
-      default:
-        break;
-    }
-  };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -98,37 +64,34 @@ export const RegistrationContainer = () => {
         <Text style={styles.title}>Registration</Text>
 
         <FormInput
-          key={"reg1"}
           placeholder={"Login"}
           name={"login"}
           value={regLoginValue}
           inputMode={"text"}
           isFocused={isFocused === "login"}
-          handleChange={(value) => handleChange("login", value)}
+          handleChange={setRegLoginValue}
           handleFocus={() => handleFocus("login")}
-          handleBlur={() => handleBlur("login")}
+          handleBlur={() => setIsFocused(null)}
         />
         <FormInput
-          key={"reg2"}
           placeholder={"E-mail"}
           name={"email"}
           value={regEmailValue}
           inputMode={"email"}
           isFocused={isFocused === "email"}
-          handleChange={(value) => handleChange("email", value)}
+          handleChange={setRegEmailValue}
           handleFocus={() => handleFocus("email")}
-          handleBlur={() => handleBlur("email")}
+          handleBlur={() => setIsFocused(null)}
         />
         <FormInput
-          key={"reg3"}
           placeholder={"Password"}
           name={"password"}
           value={regPasswordValue}
           inputMode={"text"}
           isFocused={isFocused === "password"}
-          handleChange={(value) => handleChange("password", value)}
+          handleChange={setRegPasswordValue}
           handleFocus={() => handleFocus("password")}
-          handleBlur={() => handleBlur("password")}
+          handleBlur={() => setIsFocused(null)}
         />
         <LargeButton
           onPress={() => console.log(regForm)}

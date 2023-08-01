@@ -1,5 +1,4 @@
 import { TouchableOpacity, View, Image, StyleSheet } from "react-native";
-import { useState } from "react";
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 
 export const RegistrationAvatar = ({ avatar, handlePress }) => {
