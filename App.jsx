@@ -31,10 +31,15 @@ export default function App() {
       <View style={styles.container}>
         <NavigationContainer>
           <MainStack.Navigator initialRouteName="Login">
-            <MainStack.Screen name="Login" component={LoginScreen} />
+            <MainStack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerMode: "none" }}
+            />
             <MainStack.Screen
               name="Registaration"
               component={RegistrationScreen}
+              options={{ headerMode: "none" }}
             />
           </MainStack.Navigator>
         </NavigationContainer>
