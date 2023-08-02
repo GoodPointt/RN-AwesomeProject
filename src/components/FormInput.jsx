@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { BlueText } from "./BlueText";
+import { StyleSheet, TextInput, View } from "react-native";
+import { TouchebleBlueText } from "./TouchebleBlueText";
 
 export const FormInput = ({
   placeholder,
@@ -28,12 +28,11 @@ export const FormInput = ({
         secureTextEntry={name === "password" && isToucheble}
       />
       {name === "password" && (
-        <TouchableOpacity
+        <TouchebleBlueText
           style={styles.showBtn}
           onPress={() => setIsToucheble(!isToucheble)}
-        >
-          <BlueText>Show</BlueText>
-        </TouchableOpacity>
+          text={"Show"}
+        />
       )}
     </View>
   );

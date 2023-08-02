@@ -1,5 +1,11 @@
-import { ImageBackground, StyleSheet } from "react-native";
-import { LoginContainer } from "../components/LoginContainer";
+import {
+  ImageBackground,
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+} from "react-native";
+import { LoginForm } from "../components/LoginForm";
+import { TouchebleBlueText } from "../components/TouchebleBlueText";
 
 export const LoginScreen = () => {
   return (
@@ -7,7 +13,20 @@ export const LoginScreen = () => {
       style={styles.backgroundImage}
       source={require("../assets/img/login-bg.jpg")}
     >
-      <LoginContainer />
+      <KeyboardAvoidingView
+        style={styles.loginScreenAV}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={-85}
+      >
+        <View style={styles.loginFormContainer}>
+          <LoginForm />
+
+          <TouchebleBlueText
+            text={"Do not have account? Register..."}
+            onPress={() => console.log("Register...")}
+          />
+        </View>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 };
@@ -20,4 +39,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     resizeMode: "cover",
   },
+  loginFormContainer: {
+    backgroundColor: "#fff",
+    width: "100%",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingTop: 30,
+    paddingBottom: 45,
+    paddingHorizontal: 16,
+  },
+  loginScreenAV: { flex: 1, width: "100%" },
 });
