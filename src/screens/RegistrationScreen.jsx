@@ -25,7 +25,8 @@ export const RegistrationScreen = ({ route }) => {
         keyboardVerticalOffset={-70}
       >
         <View style={styles.regContainer}>
-          <RegForm registerNewUser={registerNewUser} />
+          <RegForm navigation={navigation} registerNewUser={registerNewUser} />
+
           <TouchebleBlueText
             text={"Already have an account? Login"}
             onPress={() => navigation.navigate("Login")}

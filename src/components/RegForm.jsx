@@ -4,7 +4,7 @@ import { RegAvatar } from "./RegAvatar";
 import { LargeButton } from "./LargeButton";
 import { FormInput } from "./FormInput";
 
-export const RegForm = ({ registerNewUser }) => {
+export const RegForm = ({ navigation, registerNewUser }) => {
   const [isFocused, setIsFocused] = useState(null);
 
   const [regLoginValue, setRegLoginValue] = useState("");
@@ -66,7 +66,10 @@ export const RegForm = ({ registerNewUser }) => {
         handleBlur={() => setIsFocused(null)}
       />
       <LargeButton
-        onPress={() => registerNewUser(regFormData)}
+        onPress={() => {
+          registerNewUser(regFormData);
+          navigation.navigate("Home", regFormData);
+        }}
         text={"Register"}
         extraStyles={styles.loginRegisterBtnMargin}
         isDisabled={

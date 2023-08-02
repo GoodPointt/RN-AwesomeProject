@@ -6,22 +6,23 @@ export const PostsScreen = (params) => {
     params: { email, login, avatar },
   } = useRoute();
   return (
-    <View style={styles.background1}>
-      <Text style={{ textAlign: "center", paddingTop: 30, fontSize: 30 }}>
-        {email}
-      </Text>
-      <Text style={{ textAlign: "center", paddingTop: 30, fontSize: 30 }}>
-        {login}
-      </Text>
-      <Image style={styles.avatarImg} source={{ uri: avatar }} />
+    <View style={styles.container}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Image style={styles.avatarImg} source={{ uri: avatar }} />
+        <View>
+          <Text style={styles.name}>{login}</Text>
+          <Text style={styles.email}>{email}</Text>
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  background1: {
+  container: {
     backgroundColor: "#fff",
     flex: 1,
+    padding: 16,
   },
 
   avatarImg: { width: 120, height: 120, borderRadius: 16 },
@@ -30,5 +31,17 @@ const styles = StyleSheet.create({
     height: 25,
     position: "absolute",
     transform: [{ translateX: 100 }, { translateY: 75 }],
+  },
+  name: {
+    color: "#212121",
+    textAlign: "left",
+    fontSize: 15,
+    fontFamily: "Roboto-Medium",
+  },
+  email: {
+    color: "rgba(33, 33, 33, 0.80)",
+    textAlign: "left",
+    fontSize: 13,
+    fontFamily: "Roboto-Regular",
   },
 });
