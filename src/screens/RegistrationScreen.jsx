@@ -7,8 +7,10 @@ import {
 } from "react-native";
 import { RegForm } from "../components/RegForm";
 import { TouchebleBlueText } from "../components/TouchebleBlueText";
+import { useNavigation } from "@react-navigation/native";
 
 export const RegistrationScreen = () => {
+  const navigation = useNavigation();
   return (
     <ImageBackground
       style={styles.backgroundImage}
@@ -23,7 +25,7 @@ export const RegistrationScreen = () => {
           <RegForm />
           <TouchebleBlueText
             text={"Already have an account? Login"}
-            onPress={() => console.log("Login...")}
+            onPress={() => navigation.navigate("Login")}
           />
         </View>
       </KeyboardAvoidingView>

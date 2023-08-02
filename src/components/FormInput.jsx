@@ -27,11 +27,11 @@ export const FormInput = ({
         onBlur={handleBlur}
         secureTextEntry={name === "password" && isToucheble}
       />
-      {name === "password" && (
+      {name === "password" && value && (
         <TouchebleBlueText
           style={styles.showBtn}
           onPress={() => setIsToucheble(!isToucheble)}
-          text={"Show"}
+          text={isToucheble ? "Show" : "Hide"}
         />
       )}
     </View>

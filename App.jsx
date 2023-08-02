@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import {
   Keyboard,
@@ -5,8 +6,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { RegistrationScreen } from "./src/screens/RegistrationScreen";
 import { useFonts } from "expo-font";
+
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+
+import { RegistrationScreen } from "./src/screens/RegistrationScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
 
 export default function App() {
@@ -19,12 +24,20 @@ export default function App() {
     return null;
   }
 
+  const MainStack = createStackNavigator();
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <RegistrationScreen />
-        {/* <LoginScreen /> */}
-
+        <NavigationContainer>
+          <MainStack.Navigator initialRouteName="Login">
+            <MainStack.Screen name="Login" component={LoginScreen} />
+            <MainStack.Screen
+              name="Registaration"
+              component={RegistrationScreen}
+            />
+          </MainStack.Navigator>
+        </NavigationContainer>
         <StatusBar style="auto" />
       </View>
     </TouchableWithoutFeedback>

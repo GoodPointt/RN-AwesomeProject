@@ -6,8 +6,10 @@ import {
 } from "react-native";
 import { LoginForm } from "../components/LoginForm";
 import { TouchebleBlueText } from "../components/TouchebleBlueText";
+import { useNavigation } from "@react-navigation/native";
 
 export const LoginScreen = () => {
+  const navigation = useNavigation();
   return (
     <ImageBackground
       style={styles.backgroundImage}
@@ -23,7 +25,7 @@ export const LoginScreen = () => {
 
           <TouchebleBlueText
             text={"Do not have account? Register..."}
-            onPress={() => console.log("Register...")}
+            onPress={() => navigation.navigate("Registaration")}
           />
         </View>
       </KeyboardAvoidingView>
