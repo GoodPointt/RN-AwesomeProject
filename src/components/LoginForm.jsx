@@ -2,8 +2,9 @@ import { StyleSheet, Text } from "react-native";
 import { LargeButton } from "./LargeButton";
 import { useState } from "react";
 import { FormInput } from "./FormInput";
+import { useNavigation } from "@react-navigation/native";
 
-export const LoginForm = () => {
+export const LoginForm = ({ navigation }) => {
   const [isFocused, setIsFocused] = useState(null);
 
   const [loginEmailValue, setLoginEmailValue] = useState("");
@@ -39,7 +40,10 @@ export const LoginForm = () => {
       />
 
       <LargeButton
-        onPress={() => console.log(loginForm)}
+        onPress={() => {
+          console.log(loginForm);
+          navigation.navigate("Home");
+        }}
         text={"Log in"}
         extraStyles={styles.loginRegisterBtnMargin}
         isDisabled={loginEmailValue && loginPasswordValue}

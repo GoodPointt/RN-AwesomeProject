@@ -21,7 +21,7 @@ export const LoginScreen = () => {
         keyboardVerticalOffset={-85}
       >
         <View style={styles.loginFormContainer}>
-          <LoginForm />
+          <LoginForm navigation={navigation} />
 
           <TouchebleBlueText
             text={"Do not have account? Register..."}

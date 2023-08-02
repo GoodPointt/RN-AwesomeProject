@@ -1,3 +1,5 @@
+import { PostsScreen } from "./PostsScreen";
+
 export const Home = () => {
-  return <Text>Home screen</Text>;
+  return <PostsScreen />;
 };

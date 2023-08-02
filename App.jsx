@@ -9,10 +9,12 @@ import {
 import { useFonts } from "expo-font";
 
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 import { RegistrationScreen } from "./src/screens/RegistrationScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
+import { Home } from "./src/screens/Home";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function App() {
   const [fontsLoaded, error] = useFonts({
@@ -23,7 +25,6 @@ export default function App() {
   if (!fontsLoaded && !error) {
     return null;
   }
-
   const MainStack = createStackNavigator();
 
   return (
@@ -40,6 +41,30 @@ export default function App() {
               name="Registaration"
               component={RegistrationScreen}
               options={{ headerMode: "none" }}
+            />
+            <MainStack.Screen
+              name="Home"
+              component={Home}
+              options={({ navigation }) => ({
+                headerRight: () => (
+                  <MaterialIcons
+                    name="logout"
+                    size={24}
+                    color="grey"
+                    onPress={() => navigation.navigate("Login")}
+                  />
+                ),
+                headerRightContainerStyle: { paddingRight: 16 },
+                headerLeft: () => null,
+                title: "Posts",
+                headerTitleAlign: "center",
+                headerStyle: {
+                  backgroundColor: "#fff",
+                  borderBottomWidth: 1,
+                  borderColor: "#00000028",
+                  elevation: 5,
+                },
+              })}
             />
           </MainStack.Navigator>
         </NavigationContainer>
