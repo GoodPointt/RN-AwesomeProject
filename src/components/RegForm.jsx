@@ -4,7 +4,7 @@ import { RegAvatar } from "./RegAvatar";
 import { LargeButton } from "./LargeButton";
 import { FormInput } from "./FormInput";
 
-export const RegForm = () => {
+export const RegForm = ({ registerNewUser }) => {
   const [isFocused, setIsFocused] = useState(null);
 
   const [regLoginValue, setRegLoginValue] = useState("");
@@ -23,7 +23,7 @@ export const RegForm = () => {
     }
   };
 
-  const regForm = {
+  const regFormData = {
     avatar: avatar,
     login: regLoginValue,
     email: regEmailValue,
@@ -66,7 +66,7 @@ export const RegForm = () => {
         handleBlur={() => setIsFocused(null)}
       />
       <LargeButton
-        onPress={() => console.log(regForm)}
+        onPress={() => registerNewUser(regFormData)}
         text={"Register"}
         extraStyles={styles.loginRegisterBtnMargin}
         isDisabled={

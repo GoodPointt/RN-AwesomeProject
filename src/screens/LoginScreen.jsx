@@ -8,8 +8,11 @@ import { LoginForm } from "../components/LoginForm";
 import { TouchebleBlueText } from "../components/TouchebleBlueText";
 import { useNavigation } from "@react-navigation/native";
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ route }) => {
+  const { loginUser } = route.params || {};
+
   const navigation = useNavigation();
+
   return (
     <ImageBackground
       style={styles.backgroundImage}
@@ -21,7 +24,7 @@ export const LoginScreen = () => {
         keyboardVerticalOffset={-85}
       >
         <View style={styles.loginFormContainer}>
-          <LoginForm navigation={navigation} />
+          <LoginForm navigation={navigation} loginUser={loginUser} />
 
           <TouchebleBlueText
             text={"Do not have account? Register..."}

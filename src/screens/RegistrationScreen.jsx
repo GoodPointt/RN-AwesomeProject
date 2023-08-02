@@ -9,8 +9,11 @@ import { RegForm } from "../components/RegForm";
 import { TouchebleBlueText } from "../components/TouchebleBlueText";
 import { useNavigation } from "@react-navigation/native";
 
-export const RegistrationScreen = () => {
+export const RegistrationScreen = ({ route }) => {
+  const { registerNewUser } = route.params || {};
+
   const navigation = useNavigation();
+
   return (
     <ImageBackground
       style={styles.backgroundImage}
@@ -22,7 +25,7 @@ export const RegistrationScreen = () => {
         keyboardVerticalOffset={-70}
       >
         <View style={styles.regContainer}>
-          <RegForm />
+          <RegForm registerNewUser={registerNewUser} />
           <TouchebleBlueText
             text={"Already have an account? Login"}
             onPress={() => navigation.navigate("Login")}
