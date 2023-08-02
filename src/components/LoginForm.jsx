@@ -9,7 +9,7 @@ export const LoginForm = ({ navigation, loginUser }) => {
   const [loginEmailValue, setLoginEmailValue] = useState("");
   const [loginPasswordValue, setLoginPasswordValue] = useState("");
 
-  const loginForm = {
+  const loginFormData = {
     email: loginEmailValue,
     password: loginPasswordValue,
   };
@@ -40,11 +40,13 @@ export const LoginForm = ({ navigation, loginUser }) => {
 
       <LargeButton
         onPress={() => {
-          console.log(loginForm);
-          const foundUser = loginUser(loginForm);
+          console.log(loginFormData);
+          const foundUser = loginUser(loginFormData);
           foundUser
             ? navigation.navigate("Home", foundUser)
             : alert("User not found or password wrong");
+          setLoginEmailValue("");
+          setLoginPasswordValue("");
         }}
         text={"Log in"}
         extraStyles={styles.loginRegisterBtnMargin}

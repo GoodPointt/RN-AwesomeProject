@@ -67,8 +67,11 @@ export const RegForm = ({ navigation, registerNewUser }) => {
       />
       <LargeButton
         onPress={() => {
-          registerNewUser(regFormData);
-          navigation.navigate("Home", regFormData);
+          console.log(regFormData);
+
+          registerNewUser(regFormData)
+            ? navigation.navigate("Home", regFormData)
+            : alert("Username or e-mail is already exist");
         }}
         text={"Register"}
         extraStyles={styles.loginRegisterBtnMargin}

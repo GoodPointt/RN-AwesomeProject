@@ -9,7 +9,7 @@ import {
 import { useFonts } from "expo-font";
 
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 
 import { RegistrationScreen } from "./src/screens/RegistrationScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
@@ -33,8 +33,9 @@ export default function App() {
   const MainStack = createStackNavigator();
 
   const registerNewUser = (regFormData) => {
-    console.log(regFormData);
-    setUsers((state) => [...state, regFormData]);
+    if (isUserExist(regFormData)) return false;
+    else setUsers((state) => [...state, regFormData]);
+    return true;
   };
 
   const loginUser = (loginFormData) => {
@@ -42,6 +43,13 @@ export default function App() {
       (user) =>
         user.email === loginFormData.email &&
         user.password === loginFormData.password
+    );
+  };
+
+  const isUserExist = (regFormData) => {
+    return users.find(
+      (user) =>
+        user.email === regFormData.email || user.login === regFormData.login
     );
   };
 

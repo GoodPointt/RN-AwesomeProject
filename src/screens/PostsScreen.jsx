@@ -1,7 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-export const PostsScreen = (params) => {
+export const PostsScreen = () => {
   const {
     params: { email, login, avatar },
   } = useRoute();
