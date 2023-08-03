@@ -1,9 +1,9 @@
 import { TouchableOpacity, View, Image, StyleSheet } from "react-native";
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 
-export const RegAvatar = ({ avatar, handlePress }) => {
+export const RegAvatar = ({ avatar, handleAvatarPress }) => {
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.addAvatar}>
+    <TouchableOpacity onPress={handleAvatarPress} style={styles.addAvatar}>
       <View style={styles.avatarBox}>
         {avatar && <Image style={styles.avatarImg} source={{ uri: avatar }} />}
         <View style={styles.avatarIconBox}>

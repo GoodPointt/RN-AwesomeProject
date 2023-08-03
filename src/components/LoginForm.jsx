@@ -1,17 +1,35 @@
 import { StyleSheet, Text } from "react-native";
 import { LargeButton } from "./LargeButton";
-import { useState } from "react";
 import { FormInput } from "./FormInput";
+import { useContext, useState } from "react";
+import { loginUser } from "../utils/authHelpers";
+import { UserContext } from "../hooks/useUsersAuth";
 
-export const LoginForm = ({ navigation, loginUser }) => {
+export const LoginForm = ({ navigation }) => {
+  const { users } = useContext(UserContext);
   const [isFocused, setIsFocused] = useState(null);
 
   const [loginEmailValue, setLoginEmailValue] = useState("");
   const [loginPasswordValue, setLoginPasswordValue] = useState("");
 
-  const loginFormData = {
-    email: loginEmailValue,
-    password: loginPasswordValue,
+  const resetForm = () => {
+    setLoginEmailValue("");
+    setLoginPasswordValue("");
+  };
+
+  const handleLogin = () => {
+    const loginFormData = {
+      email: loginEmailValue,
+      password: loginPasswordValue,
+    };
+
+    console.log(loginFormData);
+
+    const foundUser = loginUser(users, loginFormData);
+    if (foundUser) {
+      navigation.navigate("Home", foundUser);
+      resetForm();
+    } else alert("User not found or password wrong");
   };
 
   return (
@@ -39,15 +57,7 @@ export const LoginForm = ({ navigation, loginUser }) => {
       />
 
       <LargeButton
-        onPress={() => {
-          console.log(loginFormData);
-          const foundUser = loginUser(loginFormData);
-          foundUser
-            ? navigation.navigate("Home", foundUser)
-            : alert("User not found or password wrong");
-          setLoginEmailValue("");
-          setLoginPasswordValue("");
-        }}
+        onPress={() => handleLogin()}
         text={"Log in"}
         extraStyles={styles.loginRegisterBtnMargin}
         isDisabled={loginEmailValue && loginPasswordValue}
