@@ -31,7 +31,8 @@ export const styles = StyleSheet.create({
     width: 25,
     height: 25,
     position: "absolute",
-    transform: [{ translateX: 100 }, { translateY: 75 }],
+    right: -12,
+    bottom: 20,
   },
   addAvatar: {
     position: "absolute",

@@ -1,10 +1,11 @@
-import { Modal, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { useContext, useState } from "react";
 import { RegAvatar } from "./RegAvatar";
 import { LargeButton } from "./LargeButton";
 import { FormInput } from "./FormInput";
 import { registerNewUser } from "../utils/authHelpers";
 import { UserContext } from "../hooks/useUsersAuth";
+import { ModalBox } from "./ModalBox";
 
 export const RegForm = ({ navigation }) => {
   const { users, setUsers } = useContext(UserContext);
@@ -40,31 +41,18 @@ export const RegForm = ({ navigation }) => {
     <>
       <RegAvatar avatar={avatar} handleAvatarPress={handleAvatarPress} />
       <Text style={styles.title}>Registration</Text>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={() => setModalVisible(false)}
+      <ModalBox
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
       >
-        <View style={styles.modalContainer}>
-          <Text style={styles.text}>Enter URL for your avatar</Text>
-          <FormInput
-            style={styles.modalInput}
-            placeholder="Avatar URL"
-            value={avatar}
-            handleChange={setAvatar}
-          />
-          <LargeButton
-            onPress={() => {
-              setModalVisible(false);
-              setAvatar(avatar);
-            }}
-            text={"Confirm"}
-            isDisabled={true}
-          />
-        </View>
-      </Modal>
+        <Text style={styles.text}>Enter URL for your avatar</Text>
+        <FormInput
+          style={styles.modalInput}
+          placeholder="Avatar URL"
+          value={avatar}
+          handleChange={setAvatar}
+        />
+      </ModalBox>
 
       <FormInput
         placeholder={"Login"}
@@ -100,7 +88,7 @@ export const RegForm = ({ navigation }) => {
         onPress={() => handleSubmit()}
         text={"Register"}
         extraStyles={styles.loginRegisterBtnMargin}
-        isDisabled={regLoginValue && regEmailValue && regPasswordValue}
+        isDisabled={!regLoginValue && !regEmailValue && !regPasswordValue}
       />
     </>
   );
@@ -118,13 +106,6 @@ export const styles = StyleSheet.create({
   loginRegisterBtnMargin: {
     marginBottom: 16,
     marginTop: 43,
-  },
-  modalContainer: {
-    flex: 1,
-
-    borderRadius: 14,
-    backgroundColor: "#cacacadf",
-    padding: 20,
   },
   text: {
     color: "#090400a6",

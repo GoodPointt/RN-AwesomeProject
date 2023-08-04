@@ -7,7 +7,7 @@ export const PostsScreen = () => {
   } = useRoute();
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
         <Image style={styles.avatarImg} source={{ uri: avatar }} />
         <View>
           <Text style={styles.name}>{login}</Text>

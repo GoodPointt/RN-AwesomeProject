@@ -4,6 +4,7 @@ import { FormInput } from "./FormInput";
 import { useContext, useState } from "react";
 import { loginUser } from "../utils/authHelpers";
 import { UserContext } from "../hooks/useUsersAuth";
+import { TouchebleBlueText } from "./TouchebleBlueText";
 
 export const LoginForm = ({ navigation }) => {
   const { users } = useContext(UserContext);
@@ -60,7 +61,15 @@ export const LoginForm = ({ navigation }) => {
         onPress={() => handleLogin()}
         text={"Log in"}
         extraStyles={styles.loginRegisterBtnMargin}
-        isDisabled={loginEmailValue && loginPasswordValue}
+        isDisabled={!loginEmailValue && !loginPasswordValue}
+      />
+
+      <TouchebleBlueText
+        text={"Do not have account? Register..."}
+        onPress={() => {
+          navigation.navigate("Registaration");
+          resetForm();
+        }}
       />
     </>
   );

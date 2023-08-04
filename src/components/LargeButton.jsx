@@ -5,7 +5,7 @@ export const LargeButton = ({ onPress, text, extraStyles, isDisabled }) => {
     <TouchableOpacity
       style={[styles.button, extraStyles]}
       onPress={onPress}
-      disabled={!isDisabled}
+      disabled={isDisabled}
     >
       <Text style={styles.buttonTxt}>{text}</Text>
     </TouchableOpacity>
