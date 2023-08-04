@@ -7,7 +7,7 @@ import { UserContext } from "../hooks/useUsersAuth";
 import { TouchebleBlueText } from "./TouchebleBlueText";
 
 export const LoginForm = ({ navigation }) => {
-  const { users } = useContext(UserContext);
+  const { users, setUserId } = useContext(UserContext);
   const [isFocused, setIsFocused] = useState(null);
 
   const [loginEmailValue, setLoginEmailValue] = useState("");
@@ -24,11 +24,13 @@ export const LoginForm = ({ navigation }) => {
       password: loginPasswordValue,
     };
 
-    console.log(loginFormData);
-
     const foundUser = loginUser(users, loginFormData);
     if (foundUser) {
-      navigation.navigate("Home", foundUser);
+      navigation.navigate("Home", {
+        screen: "PostsScreen",
+        params: foundUser,
+      });
+      setUserId(foundUser.id);
       resetForm();
     } else alert("User not found or password wrong");
   };

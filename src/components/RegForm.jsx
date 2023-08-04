@@ -8,7 +8,7 @@ import { UserContext } from "../hooks/useUsersAuth";
 import { ModalBox } from "./ModalBox";
 
 export const RegForm = ({ navigation }) => {
-  const { users, setUsers } = useContext(UserContext);
+  const { users, setUsers, setUserId } = useContext(UserContext);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(null);
 
@@ -25,15 +25,21 @@ export const RegForm = ({ navigation }) => {
 
   const handleSubmit = () => {
     const regFormData = {
+      id: Date.now(),
       avatar: avatar,
       login: regLoginValue,
       email: regEmailValue,
       password: regPasswordValue,
+      posts: [],
     };
 
-    console.log(regFormData);
+    setUserId(regFormData.id);
+
     registerNewUser(users, setUsers, regFormData)
-      ? navigation.navigate("Home", regFormData)
+      ? navigation.navigate("Home", {
+          screen: "PostsScreen",
+          params: regFormData,
+        })
       : alert("Username or e-mail is already exist");
   };
 
@@ -44,15 +50,11 @@ export const RegForm = ({ navigation }) => {
       <ModalBox
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-      >
-        <Text style={styles.text}>Enter URL for your avatar</Text>
-        <FormInput
-          style={styles.modalInput}
-          placeholder="Avatar URL"
-          value={avatar}
-          handleChange={setAvatar}
-        />
-      </ModalBox>
+        placeholder={"Avatar URL"}
+        value={avatar}
+        handleChange={setAvatar}
+        text={"Enter URL for your avatar"}
+      />
 
       <FormInput
         placeholder={"Login"}

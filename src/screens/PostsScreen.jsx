@@ -1,10 +1,35 @@
 import { useRoute } from "@react-navigation/native";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { useContext } from "react";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { UserContext } from "../hooks/useUsersAuth";
+import { PostItem } from "../components/PostItem";
 
 export const PostsScreen = () => {
   const {
-    params: { email, login, avatar },
+    params: { email, login, avatar, id },
   } = useRoute();
+
+  const { userId, users, setUsers } = useContext(UserContext);
+
+  const incrementLike = (postId) => {
+    setUsers((state) =>
+      state.map((user) => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            posts: user.posts.map((post) =>
+              post.id === postId ? { ...post, likes: post.likes + 1 } : post
+            ),
+          };
+        } else {
+          return user;
+        }
+      })
+    );
+  };
+
+  const currentUser = users.find((user) => user.id === userId);
+
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
@@ -14,6 +39,20 @@ export const PostsScreen = () => {
           <Text style={styles.email}>{email}</Text>
         </View>
       </View>
+      {currentUser.posts.length > 0 && (
+        <View style={styles.postsList}>
+          <FlatList
+            data={currentUser.posts}
+            renderItem={({ item }) => (
+              <PostItem
+                item={item}
+                incrementLike={() => incrementLike(item.id)}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -24,14 +63,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+  postsList: {
+    gap: 40,
+  },
 
   avatarImg: { width: 120, height: 120, borderRadius: 16 },
-  avatarIconBox: {
-    width: 25,
-    height: 25,
-    position: "absolute",
-    transform: [{ translateX: 100 }, { translateY: 75 }],
-  },
+
   name: {
     color: "#212121",
     textAlign: "left",

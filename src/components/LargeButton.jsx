@@ -7,7 +7,14 @@ export const LargeButton = ({ onPress, text, extraStyles, isDisabled }) => {
       onPress={onPress}
       disabled={isDisabled}
     >
-      <Text style={styles.buttonTxt}>{text}</Text>
+      <Text
+        style={[
+          styles.buttonTxt,
+          text === "Publish post" && { color: "#BDBDBD" },
+        ]}
+      >
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };

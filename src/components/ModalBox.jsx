@@ -1,7 +1,15 @@
-import { Modal, StyleSheet, View } from "react-native";
+import { Modal, StyleSheet, Text, View } from "react-native";
 import { LargeButton } from "./LargeButton";
+import { FormInput } from "./FormInput";
 
-export const ModalBox = ({ children, isModalVisible, setModalVisible }) => {
+export const ModalBox = ({
+  isModalVisible,
+  setModalVisible,
+  value,
+  placeholder,
+  handleChange,
+  text,
+}) => {
   return (
     <Modal
       animationType="slide"
@@ -10,7 +18,12 @@ export const ModalBox = ({ children, isModalVisible, setModalVisible }) => {
       onRequestClose={() => setModalVisible(false)}
     >
       <View style={styles.modalContainer}>
-        {children}
+        <Text style={styles.text}>{text}</Text>
+        <FormInput
+          placeholder={placeholder}
+          value={value}
+          handleChange={handleChange}
+        />
         <LargeButton
           onPress={() => {
             setModalVisible(false);
