@@ -1,15 +1,25 @@
-import { StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
 import { CreatePostForm } from "../components/CreatePostForm";
 
 export const CreatePostsScreen = () => {
   return (
-    <View style={styles.container}>
-      <CreatePostForm />
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={-165}
+      style={styles.containerAvoid}
+    >
+      <View style={styles.container}>
+        <CreatePostForm />
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  containerAvoid: {
+    flex: 1,
+    backgroundColor: "red",
+  },
   container: {
     flex: 1,
     padding: 16,

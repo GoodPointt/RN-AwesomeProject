@@ -1,6 +1,13 @@
 import { useRoute } from "@react-navigation/native";
 import { useContext } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { UserContext } from "../hooks/useUsersAuth";
 import { PostItem } from "../components/PostItem";
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import { TouchebleBlueText } from "./TouchebleBlueText";
+import { TouchableBlueText } from "./TouchableBlueText";
+import { Ionicons } from "@expo/vector-icons";
 
 export const FormInput = ({
   placeholder,
@@ -12,7 +13,7 @@ export const FormInput = ({
   handleFocus,
   handleBlur,
 }) => {
-  const [isToucheble, setIsToucheble] = useState(true);
+  const [isTouchable, setIsTouchable] = useState(true);
 
   return (
     <View>
@@ -25,13 +26,19 @@ export const FormInput = ({
         onChangeText={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        secureTextEntry={name === "password" && isToucheble}
+        secureTextEntry={name === "password" && isTouchable}
       />
       {name === "password" && value && (
-        <TouchebleBlueText
+        <TouchableBlueText
           style={styles.showBtn}
-          onPress={() => setIsToucheble(!isToucheble)}
-          text={isToucheble ? "Show" : "Hide"}
+          onPress={() => setIsTouchable(!isTouchable)}
+          text={
+            isTouchable ? (
+              <Ionicons name="ios-eye-outline" size={24} color="black" />
+            ) : (
+              <Ionicons name="ios-eye-off-outline" size={24} color="black" />
+            )
+          }
         />
       )}
     </View>

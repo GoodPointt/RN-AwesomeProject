@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export const TouchebleBlueText = ({ text, onPress, style }) => {
+export const TouchableBlueText = ({ text, onPress, style }) => {
   return (
     <TouchableOpacity onPress={onPress} style={style}>
       <Text style={styles.subText}>{text}</Text>

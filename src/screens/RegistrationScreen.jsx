@@ -1,30 +1,45 @@
 import React from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import {
+  ImageBackground,
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { RegForm } from "../components/RegForm";
-import { TouchebleBlueText } from "../components/TouchebleBlueText";
+import { TouchableBlueText } from "../components/TouchableBlueText";
 import { useNavigation } from "@react-navigation/native";
 
 export const RegistrationScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <ImageBackground
-      style={styles.backgroundImage}
-      source={require("../assets/img/login-bg.jpg")}
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={-165}
+      style={styles.container}
     >
-      <View style={styles.regContainer}>
-        <RegForm navigation={navigation} />
+      <ImageBackground
+        style={styles.backgroundImage}
+        source={require("../assets/img/login-bg.jpg")}
+      >
+        <View style={styles.regContainer}>
+          <RegForm navigation={navigation} />
 
-        <TouchebleBlueText
-          text={"Already have an account? Login"}
-          onPress={() => navigation.navigate("Login")}
-        />
-      </View>
-    </ImageBackground>
+          <TouchableBlueText
+            text={"Already have an account? Login"}
+            onPress={() => navigation.navigate("Login")}
+          />
+        </View>
+      </ImageBackground>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
   backgroundImage: {
     flex: 1,
     justifyContent: "center",
