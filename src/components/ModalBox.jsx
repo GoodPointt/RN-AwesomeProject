@@ -9,6 +9,7 @@ export const ModalBox = ({
   placeholder,
   handleChange,
   text,
+  onPress,
 }) => {
   return (
     <Modal
@@ -27,6 +28,10 @@ export const ModalBox = ({
         <LargeButton
           onPress={() => {
             setModalVisible(false);
+            handleChange = { handleChange };
+            {
+              onPress && onPress();
+            }
           }}
           text={"Confirm"}
           isDisabled={false}

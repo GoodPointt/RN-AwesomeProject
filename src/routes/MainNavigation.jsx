@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { RegistrationScreen } from "../screens/RegistrationScreen";
 import { LoginScreen } from "../screens/LoginScreen";
 import { Home } from "../screens/Home";
-import { MaterialIcons } from "@expo/vector-icons";
 
 export const MainNavigation = () => {
   const MainStack = createStackNavigator();
