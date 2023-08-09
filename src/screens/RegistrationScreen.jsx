@@ -27,7 +27,7 @@ export const RegistrationScreen = () => {
 
           <TouchableBlueText
             text={"Already have an account? Login"}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate("Auth", { screen: "Login" })}
           />
         </View>
       </ImageBackground>

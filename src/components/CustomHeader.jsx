@@ -16,7 +16,9 @@ export const CustomHeader = ({ title, navigation, isShown }) => {
       </View>
       <View style={styles.headerRight}>
         {isShown === "right" && (
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Auth", { screen: "Login" })}
+          >
             <MaterialIcons name="logout" size={24} color="#212121ba" />
           </TouchableOpacity>
         )}

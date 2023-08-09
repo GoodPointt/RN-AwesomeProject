@@ -3,12 +3,9 @@ import { useContext } from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { UserContext } from "../hooks/useUsersAuth";
 import { PostItem } from "../components/PostItem";
+import { TabNavigation } from "../routes/TabNavigation";
 
 export const PostsScreen = () => {
-  const {
-    params: { email, login, avatar, id },
-  } = useRoute();
-
   const { userId, users, setUsers } = useContext(UserContext);
 
   const incrementLike = (postId) => {
@@ -33,10 +30,10 @@ export const PostsScreen = () => {
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
-        <Image style={styles.avatarImg} source={{ uri: avatar }} />
+        <Image style={styles.avatarImg} source={{ uri: currentUser.avatar }} />
         <View>
-          <Text style={styles.name}>{login}</Text>
-          <Text style={styles.email}>{email}</Text>
+          <Text style={styles.name}>{currentUser.login}</Text>
+          <Text style={styles.email}>{currentUser.email}</Text>
         </View>
       </View>
       {currentUser.posts.length > 0 && (

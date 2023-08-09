@@ -36,10 +36,7 @@ export const RegForm = ({ navigation }) => {
     setUserId(regFormData.id);
 
     registerNewUser(users, setUsers, regFormData)
-      ? navigation.navigate("Home", {
-          screen: "PostsScreen",
-          params: regFormData,
-        })
+      ? navigation.navigate("Home")
       : alert("Username or e-mail is already exist");
   };
 

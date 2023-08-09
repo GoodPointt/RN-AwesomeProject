@@ -11,6 +11,7 @@ import { useFonts } from "expo-font";
 
 import { UserContext, useUserAuth } from "./src/hooks/useUsersAuth";
 import { MainNavigation } from "./src/routes/MainNavigation";
+import { Suspense } from "react";
 
 export default function App() {
   const { users, setUsers, userId, setUserId } = useUserAuth();
@@ -26,18 +27,14 @@ export default function App() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={-165}
-        style={styles.container}
-      > */}
       <View style={styles.container}>
         <UserContext.Provider value={{ users, setUsers, userId, setUserId }}>
-          <MainNavigation />
+          <Suspense>
+            <MainNavigation />
+          </Suspense>
         </UserContext.Provider>
         <StatusBar style="auto" />
       </View>
-      {/* </KeyboardAvoidingView> */}
     </TouchableWithoutFeedback>
   );
 }

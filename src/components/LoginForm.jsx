@@ -26,10 +26,7 @@ export const LoginForm = ({ navigation }) => {
 
     const foundUser = loginUser(users, loginFormData);
     if (foundUser) {
-      navigation.navigate("Home", {
-        screen: "PostsScreen",
-        params: foundUser,
-      });
+      navigation.navigate("Home");
       setUserId(foundUser.id);
       resetForm();
     } else alert("User not found or password wrong");
@@ -69,7 +66,7 @@ export const LoginForm = ({ navigation }) => {
       <TouchableBlueText
         text={"Do not have account? Register..."}
         onPress={() => {
-          navigation.navigate("Registaration");
+          navigation.navigate("Auth", { screen: "Registration" });
           resetForm();
         }}
       />
