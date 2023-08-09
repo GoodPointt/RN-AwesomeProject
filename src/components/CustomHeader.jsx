@@ -19,7 +19,7 @@ export const CustomHeader = ({ title, navigation, isShown }) => {
           <TouchableOpacity
             onPress={() => navigation.navigate("Auth", { screen: "Login" })}
           >
-            <MaterialIcons name="logout" size={24} color="#212121ba" />
+            <MaterialIcons name="logout" size={24} color="#BDBDBD" />
           </TouchableOpacity>
         )}
       </View>

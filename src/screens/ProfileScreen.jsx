@@ -70,18 +70,19 @@ export const ProfileScreen = () => {
             userId={userId}
           />
           {currentUser.posts.length > 0 && (
-            <View style={styles.postsList}>
-              <FlatList
-                data={currentUser.posts}
-                renderItem={({ item }) => (
-                  <PostItem
-                    item={item}
-                    incrementLike={() => incrementLike(item.id)}
-                  />
-                )}
-                keyExtractor={(item) => item.id}
-              />
-            </View>
+            <FlatList
+              data={currentUser.posts}
+              renderItem={({ item }) => (
+                <PostItem
+                  item={item}
+                  incrementLike={() => incrementLike(item.id)}
+                  commentDetails={() => {
+                    navigation.navigate("Comments", item);
+                  }}
+                />
+              )}
+              keyExtractor={(item) => item.id}
+            />
           )}
         </View>
       </ImageBackground>
@@ -111,9 +112,7 @@ const styles = StyleSheet.create({
     paddingBottom: 45,
     paddingHorizontal: 16,
   },
-  postsList: {
-    gap: 40,
-  },
+
   logoutIco: {
     position: "absolute",
     top: 20,

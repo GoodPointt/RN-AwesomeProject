@@ -1,10 +1,19 @@
-import { useContext } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { useContext, useState } from "react";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { UserContext } from "../hooks/useUsersAuth";
 import { PostItem } from "../components/PostItem";
+import { useNavigation } from "@react-navigation/native";
 
 export const PostsScreen = () => {
   const { userId, users, setUsers } = useContext(UserContext);
+  const navigation = useNavigation();
 
   const incrementLike = (postId) => {
     setUsers((state) =>
@@ -35,18 +44,17 @@ export const PostsScreen = () => {
         </View>
       </View>
       {currentUser.posts.length > 0 && (
-        <View style={styles.postsList}>
-          <FlatList
-            data={currentUser.posts}
-            renderItem={({ item }) => (
-              <PostItem
-                item={item}
-                incrementLike={() => incrementLike(item.id)}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
+        <FlatList
+          data={currentUser.posts}
+          renderItem={({ item }) => (
+            <PostItem
+              item={item}
+              incrementLike={() => incrementLike(item.id)}
+              commentDetails={() => navigation.navigate("Comments", item)}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+        />
       )}
     </View>
   );
@@ -57,9 +65,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     flex: 1,
     padding: 16,
-  },
-  postsList: {
-    gap: 40,
   },
 
   avatarImg: { width: 60, height: 60, borderRadius: 16 },

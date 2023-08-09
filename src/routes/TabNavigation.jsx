@@ -5,6 +5,7 @@ import { ProfileScreen } from "../screens/ProfileScreen";
 import { AntDesign, Feather, SimpleLineIcons } from "@expo/vector-icons";
 import { StyleSheet, View } from "react-native";
 import { CustomHeader } from "../components/CustomHeader";
+import { CommentsScreen } from "../screens/CommentsScreen";
 
 export const TabNavigation = () => {
   const Tabs = createBottomTabNavigator();

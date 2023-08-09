@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 export const PostItem = ({
   item: { photo, name, location, likes, comments },
   incrementLike,
+  commentDetails,
 }) => {
   return (
     <View style={styles.itemContainer}>
@@ -11,7 +12,7 @@ export const PostItem = ({
       <Text style={styles.nameText}>{name}</Text>
       <View style={styles.underCardInfo}>
         <View style={styles.stats}>
-          <TouchableOpacity onPress={() => console.log("PRESS_POST_COMMENT")}>
+          <TouchableOpacity onPress={commentDetails}>
             <View style={styles.stat}>
               <Feather name="message-circle" size={24} color="#FF6C00" />
               <Text style={styles.statText}>{comments.length}</Text>

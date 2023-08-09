@@ -21,12 +21,24 @@ export const useUserAuth = () => {
           likes: 101,
           comments: [
             {
+              id: "1",
+              date: "09 june, 2020 | 08:40",
               author: "Anna",
-              comment: "Cool!",
+              comment:
+                "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
+              id: "2",
+              date: "09 june, 2020 | 09:14",
               author: "Jhon",
-              comment: "Awesome!",
+              comment:
+                "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
+            },
+            {
+              id: "3",
+              date: "09 june, 2020 | 11:40",
+              author: "Tony",
+              comment: "Thank you! That was very helpful!",
             },
           ],
         },
@@ -39,12 +51,24 @@ export const useUserAuth = () => {
           likes: 123,
           comments: [
             {
+              id: "33",
+              date: "09 june, 2020 | 08:40",
               author: "Anna",
-              comment: "Cool!",
+              comment:
+                "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
+              id: "34",
+              date: "09 june, 2020 | 09:14",
               author: "Jhon",
-              comment: "Awesome!",
+              comment:
+                "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
+            },
+            {
+              id: "35",
+              date: "09 june, 2020 | 11:40",
+              author: "Tony",
+              comment: "Thank you! That was very helpful!",
             },
           ],
         },
@@ -57,12 +81,24 @@ export const useUserAuth = () => {
           likes: 23,
           comments: [
             {
+              id: "36",
+              date: "09 june, 2020 | 08:40",
               author: "Anna",
-              comment: "Cool!",
+              comment:
+                "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
+              id: "38",
+              date: "09 june, 2020 | 09:14",
               author: "Jhon",
-              comment: "Awesome!",
+              comment:
+                "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
+            },
+            {
+              id: "39",
+              date: "09 june, 2020 | 11:40",
+              author: "Tony",
+              comment: "Thank you! That was very helpful!",
             },
           ],
         },
@@ -75,12 +111,24 @@ export const useUserAuth = () => {
           likes: 450,
           comments: [
             {
+              id: "3`",
+              date: "09 june, 2020 | 08:40",
               author: "Anna",
-              comment: "Cool!",
+              comment:
+                "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
+              id: "3asd",
+              date: "09 june, 2020 | 09:14",
               author: "Jhon",
-              comment: "Awesome!",
+              comment:
+                "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
+            },
+            {
+              id: "3as",
+              date: "09 june, 2020 | 11:40",
+              author: "Tony",
+              comment: "Thank you! That was very helpful!",
             },
           ],
         },
@@ -93,16 +141,27 @@ export const useUserAuth = () => {
           likes: 120,
           comments: [
             {
+              id: "3z",
+              date: "09 june, 2020 | 08:40",
               author: "Anna",
-              comment: "Cool!",
+              comment:
+                "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
+              id: "3x",
+              date: "09 june, 2020 | 09:14",
               author: "Jhon",
-              comment: "Awesome!",
+              comment:
+                "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
+            },
+            {
+              id: "3n",
+              date: "09 june, 2020 | 11:40",
+              author: "Tony",
+              comment: "Thank you! That was very helpful!",
             },
           ],
         },
-
         {
           id: "13213126",
           photo:
@@ -112,12 +171,24 @@ export const useUserAuth = () => {
           likes: 333,
           comments: [
             {
+              id: "3f",
+              date: "09 june, 2020 | 08:40",
               author: "Anna",
-              comment: "Cool!",
+              comment:
+                "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
+              id: "3.",
+              date: "09 june, 2020 | 09:14",
               author: "Jhon",
-              comment: "Awesome!",
+              comment:
+                "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
+            },
+            {
+              id: "3nqe",
+              date: "09 june, 2020 | 11:40",
+              author: "Tony",
+              comment: "Thank you! That was very helpful!",
             },
           ],
         },
