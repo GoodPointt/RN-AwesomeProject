@@ -1,13 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import { useContext } from "react";
-import {
-  FlatList,
-  Image,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { UserContext } from "../hooks/useUsersAuth";
 import { PostItem } from "../components/PostItem";
 
@@ -74,7 +67,7 @@ const styles = StyleSheet.create({
     gap: 40,
   },
 
-  avatarImg: { width: 120, height: 120, borderRadius: 16 },
+  avatarImg: { width: 60, height: 60, borderRadius: 16 },
 
   name: {
     color: "#212121",
