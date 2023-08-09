@@ -11,6 +11,7 @@ export const TabNavigation = () => {
 
   return (
     <Tabs.Navigator
+      initialRouteName="PostsScreeen"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           let isActive;
@@ -105,13 +106,7 @@ export const TabNavigation = () => {
         component={ProfileScreen}
         options={({ navigation }) => ({
           title: "ProfileScreen",
-          header: () => (
-            <CustomHeader
-              title={"Profile"}
-              navigation={navigation}
-              isShown={"left"}
-            />
-          ),
+          header: () => null,
         })}
       />
     </Tabs.Navigator>

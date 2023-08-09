@@ -1,9 +1,7 @@
-import { useRoute } from "@react-navigation/native";
 import { useContext } from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { UserContext } from "../hooks/useUsersAuth";
 import { PostItem } from "../components/PostItem";
-import { TabNavigation } from "../routes/TabNavigation";
 
 export const PostsScreen = () => {
   const { userId, users, setUsers } = useContext(UserContext);

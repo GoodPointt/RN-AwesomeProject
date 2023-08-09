@@ -3,17 +3,21 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 export const LargeButton = ({ onPress, text, extraStyles, isDisabled }) => {
   return (
     <TouchableOpacity
-      style={[styles.button, extraStyles]}
+      style={[
+        styles.button,
+        extraStyles,
+        { backgroundColor: isDisabled ? "#F6F6F6" : "#FF6C00" },
+      ]}
       onPress={onPress}
       disabled={isDisabled}
     >
       <Text
         style={[
           styles.buttonTxt,
-          text === "Publish post" && { color: "#BDBDBD" },
+          { color: isDisabled ? "#BDBDBD" : "#ffffff" },
         ]}
       >
-        {text}
+        {isDisabled ? "Fill in all fields to continue" : text}
       </Text>
     </TouchableOpacity>
   );

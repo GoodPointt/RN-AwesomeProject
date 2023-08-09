@@ -1,18 +1,26 @@
 import {
+  FlatList,
   ImageBackground,
   KeyboardAvoidingView,
   StyleSheet,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { ProfileAvatar } from "../components/ProfileAvatar";
 
 import { useContext } from "react";
 import { UserContext } from "../hooks/useUsersAuth";
+import { PostItem } from "../components/PostItem";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export const ProfileScreen = () => {
   const { userId, users, setUsers } = useContext(UserContext);
 
-  const { avatar } = users.find((user) => user.id === userId);
+  const currentUser = users.find((user) => user.id === userId);
+  const { avatar } = currentUser;
+
+  const navigation = useNavigation();
 
   const handleAvatarChange = (userId, newAva) =>
     setUsers((state) =>
@@ -21,6 +29,23 @@ export const ProfileScreen = () => {
         return user;
       })
     );
+
+  const incrementLike = (postId) => {
+    setUsers((state) =>
+      state.map((user) => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            posts: user.posts.map((post) =>
+              post.id === postId ? { ...post, likes: post.likes + 1 } : post
+            ),
+          };
+        } else {
+          return user;
+        }
+      })
+    );
+  };
 
   return (
     <KeyboardAvoidingView
@@ -33,11 +58,31 @@ export const ProfileScreen = () => {
         source={require("../assets/img/login-bg.jpg")}
       >
         <View style={styles.profileContainer}>
+          <TouchableOpacity
+            style={styles.logoutIco}
+            onPress={() => navigation.navigate("Auth", { screen: "Login" })}
+          >
+            <MaterialIcons name="logout" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
           <ProfileAvatar
             currentAva={avatar}
             handleAvatarChange={handleAvatarChange}
             userId={userId}
           />
+          {currentUser.posts.length > 0 && (
+            <View style={styles.postsList}>
+              <FlatList
+                data={currentUser.posts}
+                renderItem={({ item }) => (
+                  <PostItem
+                    item={item}
+                    incrementLike={() => incrementLike(item.id)}
+                  />
+                )}
+                keyExtractor={(item) => item.id}
+              />
+            </View>
+          )}
         </View>
       </ImageBackground>
     </KeyboardAvoidingView>
@@ -50,6 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   backgroundImage: {
+    paddingTop: 100,
     flex: 1,
     justifyContent: "center",
     alignItems: "flex-end",
@@ -64,5 +110,13 @@ const styles = StyleSheet.create({
     paddingTop: 90,
     paddingBottom: 45,
     paddingHorizontal: 16,
+  },
+  postsList: {
+    gap: 40,
+  },
+  logoutIco: {
+    position: "absolute",
+    top: 20,
+    right: 20,
   },
 });

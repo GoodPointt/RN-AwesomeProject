@@ -2,7 +2,6 @@ import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import {
   Keyboard,
-  KeyboardAvoidingView,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
@@ -11,7 +10,6 @@ import { useFonts } from "expo-font";
 
 import { UserContext, useUserAuth } from "./src/hooks/useUsersAuth";
 import { MainNavigation } from "./src/routes/MainNavigation";
-import { Suspense } from "react";
 
 export default function App() {
   const { users, setUsers, userId, setUserId } = useUserAuth();
@@ -29,9 +27,7 @@ export default function App() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <UserContext.Provider value={{ users, setUsers, userId, setUserId }}>
-          <Suspense>
-            <MainNavigation />
-          </Suspense>
+          <MainNavigation />
         </UserContext.Provider>
         <StatusBar style="auto" />
       </View>
