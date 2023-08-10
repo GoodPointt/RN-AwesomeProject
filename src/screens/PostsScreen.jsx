@@ -1,18 +1,12 @@
 import { useContext, useState } from "react";
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { UserContext } from "../hooks/useUsersAuth";
 import { PostItem } from "../components/PostItem";
 import { useNavigation } from "@react-navigation/native";
 
 export const PostsScreen = () => {
   const { userId, users, setUsers } = useContext(UserContext);
+
   const navigation = useNavigation();
 
   const incrementLike = (postId) => {
@@ -50,10 +44,16 @@ export const PostsScreen = () => {
             <PostItem
               item={item}
               incrementLike={() => incrementLike(item.id)}
-              commentDetails={() => navigation.navigate("Comments", item)}
+              commentDetails={() =>
+                navigation.navigate("Comments", {
+                  post: item,
+                  currentUser: currentUser,
+                })
+              }
             />
           )}
           keyExtractor={(item) => item.id}
+          extraData={currentUser.comments}
         />
       )}
     </View>

@@ -7,17 +7,19 @@ import {
   TouchableOpacity,
   View,
   Keyboard,
-  Text,
 } from "react-native";
 import { Comment } from "../components/Comment";
 import { useContext, useState } from "react";
 import { UserContext } from "../hooks/useUsersAuth";
 import { formatDateTime } from "../utils/formatDate";
+import { AntDesign } from "@expo/vector-icons";
 
 export const CommentsScreen = ({ route: { params } }) => {
-  const { photo, comments, id } = params;
+  const { post, currentUser } = params;
+  const { photo, comments, id } = post;
 
   const [commentValue, setCommentValue] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const { users, setUsers } = useContext(UserContext);
 
   const handleSendComment = () => {
@@ -28,7 +30,10 @@ export const CommentsScreen = ({ route: { params } }) => {
     const newComment = {
       id: Date.now(),
       date: formatDateTime(new Date()),
-      author: "CurrentUser",
+      author: {
+        name: currentUser.login,
+        avatar: currentUser.avatar,
+      },
       comment: commentValue,
     };
 
@@ -46,9 +51,6 @@ export const CommentsScreen = ({ route: { params } }) => {
 
     setCommentValue("");
     Keyboard.dismiss();
-
-    //CHECK NEW COMMENT
-    console.log(users[0].posts[0].comments.at(-1));
   };
 
   return (
@@ -65,35 +67,28 @@ export const CommentsScreen = ({ route: { params } }) => {
           />
         </View>
 
-        <FlatList
-          style={styles.commentsList}
-          data={comments}
-          renderItem={({ item }) => <Comment item={item} />}
-          extraData={comments}
-          keyExtractor={(item) => item.date}
-        />
+        {comments.length > 0 && (
+          <FlatList
+            style={styles.commentsList}
+            data={comments}
+            renderItem={({ item, index }) => (
+              <Comment item={item} isEven={index % 2 === 0} />
+            )}
+            keyExtractor={(item) => item.id}
+            extraData={post}
+          />
+        )}
       </View>
       <View>
         <TextInput
-          style={[
-            styles.commentInput,
-            commentValue ? styles.focusedInput : null,
-          ]}
+          style={[styles.commentInput, isFocused ? styles.focusedInput : null]}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           onChangeText={setCommentValue}
           value={commentValue}
         />
-        <TouchableOpacity
-          onPress={handleSendComment}
-          style={{
-            width: 24,
-            height: 24,
-            backgroundColor: "orange",
-            position: "absolute",
-            right: 17,
-            top: 17,
-          }}
-        >
-          <Text> Send</Text>
+        <TouchableOpacity onPress={handleSendComment} style={styles.sendButton}>
+          <AntDesign name="arrowup" size={20} color="#fff" />
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -129,7 +124,8 @@ const styles = StyleSheet.create({
   },
   commentInput: {
     width: "100%",
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 5,
     backgroundColor: "#f6f6f6",
     borderRadius: 100,
     borderWidth: 0.5,
@@ -140,5 +136,16 @@ const styles = StyleSheet.create({
   focusedInput: {
     borderColor: "#FF6C00",
     backgroundColor: "#fff",
+  },
+  sendButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 24,
+    height: 24,
+    backgroundColor: "#FF6C00",
+    position: "absolute",
+    right: 10,
+    top: 7,
+    borderRadius: 50,
   },
 });

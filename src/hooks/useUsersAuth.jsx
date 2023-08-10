@@ -23,21 +23,33 @@ export const useUserAuth = () => {
             {
               id: "1",
               date: "09 june, 2020 | 08:40",
-              author: "Anna",
+              author: {
+                name: "Anna",
+                avatar:
+                  "https://assets.bizjournals.com/static/img/potm/marketing/team-success-img.jpg",
+              },
               comment:
                 "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
               id: "2",
               date: "09 june, 2020 | 09:14",
-              author: "Jhon",
+              author: {
+                name: "Jhon",
+                avatar:
+                  "https://www.shoppingcentreawards.com/wp-content/uploads/2015/06/people-img7.jpg",
+              },
               comment:
                 "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
             },
             {
               id: "3",
               date: "09 june, 2020 | 11:40",
-              author: "Tony",
+              author: {
+                name: "Tony",
+                avatar:
+                  "https://st4.depositphotos.com/1729220/26823/i/450/depositphotos_268235000-stock-photo-tobey-maguire-inside-for-kids.jpg",
+              },
               comment: "Thank you! That was very helpful!",
             },
           ],
@@ -51,23 +63,35 @@ export const useUserAuth = () => {
           likes: 123,
           comments: [
             {
-              id: "33",
+              id: "1",
               date: "09 june, 2020 | 08:40",
-              author: "Anna",
+              author: {
+                name: "Anna",
+                avatar:
+                  "https://assets.bizjournals.com/static/img/potm/marketing/team-success-img.jpg",
+              },
               comment:
                 "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
-              id: "34",
+              id: "2",
               date: "09 june, 2020 | 09:14",
-              author: "Jhon",
+              author: {
+                name: "Jhon",
+                avatar:
+                  "https://www.shoppingcentreawards.com/wp-content/uploads/2015/06/people-img7.jpg",
+              },
               comment:
                 "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
             },
             {
-              id: "35",
+              id: "3",
               date: "09 june, 2020 | 11:40",
-              author: "Tony",
+              author: {
+                name: "Tony",
+                avatar:
+                  "https://st4.depositphotos.com/1729220/26823/i/450/depositphotos_268235000-stock-photo-tobey-maguire-inside-for-kids.jpg",
+              },
               comment: "Thank you! That was very helpful!",
             },
           ],
@@ -81,23 +105,35 @@ export const useUserAuth = () => {
           likes: 23,
           comments: [
             {
-              id: "36",
+              id: "1",
               date: "09 june, 2020 | 08:40",
-              author: "Anna",
+              author: {
+                name: "Anna",
+                avatar:
+                  "https://assets.bizjournals.com/static/img/potm/marketing/team-success-img.jpg",
+              },
               comment:
                 "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
-              id: "38",
+              id: "2",
               date: "09 june, 2020 | 09:14",
-              author: "Jhon",
+              author: {
+                name: "Jhon",
+                avatar:
+                  "https://www.shoppingcentreawards.com/wp-content/uploads/2015/06/people-img7.jpg",
+              },
               comment:
                 "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
             },
             {
-              id: "39",
+              id: "3",
               date: "09 june, 2020 | 11:40",
-              author: "Tony",
+              author: {
+                name: "Tony",
+                avatar:
+                  "https://st4.depositphotos.com/1729220/26823/i/450/depositphotos_268235000-stock-photo-tobey-maguire-inside-for-kids.jpg",
+              },
               comment: "Thank you! That was very helpful!",
             },
           ],
@@ -111,23 +147,35 @@ export const useUserAuth = () => {
           likes: 450,
           comments: [
             {
-              id: "3`",
+              id: "1",
               date: "09 june, 2020 | 08:40",
-              author: "Anna",
+              author: {
+                name: "Anna",
+                avatar:
+                  "https://assets.bizjournals.com/static/img/potm/marketing/team-success-img.jpg",
+              },
               comment:
                 "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
-              id: "3asd",
+              id: "2",
               date: "09 june, 2020 | 09:14",
-              author: "Jhon",
+              author: {
+                name: "Jhon",
+                avatar:
+                  "https://www.shoppingcentreawards.com/wp-content/uploads/2015/06/people-img7.jpg",
+              },
               comment:
                 "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
             },
             {
-              id: "3as",
+              id: "3",
               date: "09 june, 2020 | 11:40",
-              author: "Tony",
+              author: {
+                name: "Tony",
+                avatar:
+                  "https://st4.depositphotos.com/1729220/26823/i/450/depositphotos_268235000-stock-photo-tobey-maguire-inside-for-kids.jpg",
+              },
               comment: "Thank you! That was very helpful!",
             },
           ],
@@ -141,23 +189,35 @@ export const useUserAuth = () => {
           likes: 120,
           comments: [
             {
-              id: "3z",
+              id: "1",
               date: "09 june, 2020 | 08:40",
-              author: "Anna",
+              author: {
+                name: "Anna",
+                avatar:
+                  "https://assets.bizjournals.com/static/img/potm/marketing/team-success-img.jpg",
+              },
               comment:
                 "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
-              id: "3x",
+              id: "2",
               date: "09 june, 2020 | 09:14",
-              author: "Jhon",
+              author: {
+                name: "Jhon",
+                avatar:
+                  "https://www.shoppingcentreawards.com/wp-content/uploads/2015/06/people-img7.jpg",
+              },
               comment:
                 "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
             },
             {
-              id: "3n",
+              id: "3",
               date: "09 june, 2020 | 11:40",
-              author: "Tony",
+              author: {
+                name: "Tony",
+                avatar:
+                  "https://st4.depositphotos.com/1729220/26823/i/450/depositphotos_268235000-stock-photo-tobey-maguire-inside-for-kids.jpg",
+              },
               comment: "Thank you! That was very helpful!",
             },
           ],
@@ -171,23 +231,35 @@ export const useUserAuth = () => {
           likes: 333,
           comments: [
             {
-              id: "3f",
+              id: "1",
               date: "09 june, 2020 | 08:40",
-              author: "Anna",
+              author: {
+                name: "Anna",
+                avatar:
+                  "https://assets.bizjournals.com/static/img/potm/marketing/team-success-img.jpg",
+              },
               comment:
                 "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
             },
             {
-              id: "3.",
+              id: "2",
               date: "09 june, 2020 | 09:14",
-              author: "Jhon",
+              author: {
+                name: "Jhon",
+                avatar:
+                  "https://www.shoppingcentreawards.com/wp-content/uploads/2015/06/people-img7.jpg",
+              },
               comment:
                 "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.!",
             },
             {
-              id: "3nqe",
+              id: "3",
               date: "09 june, 2020 | 11:40",
-              author: "Tony",
+              author: {
+                name: "Tony",
+                avatar:
+                  "https://st4.depositphotos.com/1729220/26823/i/450/depositphotos_268235000-stock-photo-tobey-maguire-inside-for-kids.jpg",
+              },
               comment: "Thank you! That was very helpful!",
             },
           ],

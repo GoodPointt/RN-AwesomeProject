@@ -1,8 +1,10 @@
 import React from "react";
 import {
   ImageBackground,
+  Keyboard,
   KeyboardAvoidingView,
   StyleSheet,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { RegForm } from "../components/RegForm";
@@ -13,25 +15,27 @@ export const RegistrationScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={-165}
-      style={styles.container}
-    >
-      <ImageBackground
-        style={styles.backgroundImage}
-        source={require("../assets/img/login-bg.jpg")}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={-165}
+        style={styles.container}
       >
-        <View style={styles.regContainer}>
-          <RegForm navigation={navigation} />
+        <ImageBackground
+          style={styles.backgroundImage}
+          source={require("../assets/img/login-bg.jpg")}
+        >
+          <View style={styles.regContainer}>
+            <RegForm navigation={navigation} />
 
-          <TouchableBlueText
-            text={"Already have an account? Login"}
-            onPress={() => navigation.navigate("Auth", { screen: "Login" })}
-          />
-        </View>
-      </ImageBackground>
-    </KeyboardAvoidingView>
+            <TouchableBlueText
+              text={"Already have an account? Login"}
+              onPress={() => navigation.navigate("Auth", { screen: "Login" })}
+            />
+          </View>
+        </ImageBackground>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 

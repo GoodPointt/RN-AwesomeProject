@@ -1,5 +1,12 @@
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { PostInput } from "./PostInput";
 import { LargeButton } from "./LargeButton";
 import { useContext, useState } from "react";
@@ -8,7 +15,7 @@ import { UserContext } from "../hooks/useUsersAuth";
 import { useNavigation } from "@react-navigation/native";
 
 export const CreatePostForm = () => {
-  const { users, setUsers, userId, setUserId } = useContext(UserContext);
+  const { users, setUsers, userId } = useContext(UserContext);
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [photo, setPhoto] = useState("");
@@ -30,16 +37,7 @@ export const CreatePostForm = () => {
       name,
       location,
       likes: 0,
-      comments: [
-        {
-          author: "Anna",
-          comment: "Cool!",
-        },
-        {
-          author: "Jhon",
-          comment: "Awesome!",
-        },
-      ],
+      comments: [],
     };
 
     const userToUpdate = users.find((user) => user.id === userId);
@@ -60,7 +58,7 @@ export const CreatePostForm = () => {
   };
 
   return (
-    <>
+    <View style={{ flex: 1, gap: 10 }}>
       <View>
         <View style={styles.addImgContainer}>
           {photo ? (
@@ -113,7 +111,7 @@ export const CreatePostForm = () => {
         handleChange={setPhoto}
         text={"Enter URL for your photo"}
       />
-    </>
+    </View>
   );
 };
 

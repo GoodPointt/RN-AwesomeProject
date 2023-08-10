@@ -77,7 +77,10 @@ export const ProfileScreen = () => {
                   item={item}
                   incrementLike={() => incrementLike(item.id)}
                   commentDetails={() => {
-                    navigation.navigate("Comments", item);
+                    navigation.navigate("Comments", {
+                      post: item,
+                      currentUser: currentUser,
+                    });
                   }}
                 />
               )}

@@ -24,14 +24,14 @@ export default function App() {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <UserContext.Provider value={{ users, setUsers, userId, setUserId }}>
-          <MainNavigation />
-        </UserContext.Provider>
-        <StatusBar style="auto" />
-      </View>
-    </TouchableWithoutFeedback>
+    // <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View style={styles.container}>
+      <UserContext.Provider value={{ users, setUsers, userId, setUserId }}>
+        <MainNavigation />
+      </UserContext.Provider>
+      <StatusBar style="auto" />
+    </View>
+    // </TouchableWithoutFeedback>
   );
 }
 
