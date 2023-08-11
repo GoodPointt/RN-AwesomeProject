@@ -5,6 +5,7 @@ import { TabNavigation } from "./TabNavigation";
 import { AuthStackNavigator } from "./AuthNavigation";
 import { CommentsScreen } from "../screens/CommentsScreen";
 import { CustomHeader } from "../components/CustomHeader";
+import { MapScreen } from "../screens/MapScreen";
 
 export const MainNavigation = () => {
   const MainStack = createStackNavigator();
@@ -29,6 +30,19 @@ export const MainNavigation = () => {
             header: () => (
               <CustomHeader
                 title={"Comments"}
+                navigation={navigation}
+                isShown={"left"}
+              />
+            ),
+          })}
+        />
+        <MainStack.Screen
+          name="Map"
+          component={MapScreen}
+          options={({ navigation }) => ({
+            header: () => (
+              <CustomHeader
+                title={"Location"}
                 navigation={navigation}
                 isShown={"left"}
               />

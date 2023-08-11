@@ -3,15 +3,15 @@ import { CreatePostForm } from "../components/CreatePostForm";
 
 export const CreatePostsScreen = () => {
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={-60}
-      style={styles.containerAvoid}
-    >
-      <View style={styles.container}>
-        <CreatePostForm />
-      </View>
-    </KeyboardAvoidingView>
+    // <KeyboardAvoidingView
+    //   behavior={Platform.OS == "ios" ? "padding" : "height"}
+    //   keyboardVerticalOffset={-50}
+    //   style={styles.containerAvoid}
+    // >
+    //   <View style={styles.container}>
+    <CreatePostForm />
+    //   </View>
+    // </KeyboardAvoidingView>
   );
 };
 
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#fff",
     justifyContent: "center",
-    alignItems: "flex-end",
+    alignItems: "flex-start",
     flexDirection: "row",
   },
 });

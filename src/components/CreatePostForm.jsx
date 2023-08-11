@@ -10,14 +10,14 @@ import {
 import { PostInput } from "./PostInput";
 import { LargeButton } from "./LargeButton";
 import { useContext, useState } from "react";
-import { ModalBox } from "./ModalBox";
 import { UserContext } from "../hooks/useUsersAuth";
 import { useNavigation } from "@react-navigation/native";
+import { CameraView } from "./CameraView";
 
 export const CreatePostForm = () => {
   const { users, setUsers, userId } = useContext(UserContext);
 
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isCameraOn, setIsCameraOn] = useState(false);
   const [photo, setPhoto] = useState("");
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
@@ -28,9 +28,10 @@ export const CreatePostForm = () => {
     setLocation("");
     setPhoto("");
     setName("");
+    setIsCameraOn(false);
   };
 
-  const handePublishPost = () => {
+  const handlePublishPost = () => {
     const newPost = {
       id: Date.now(),
       photo,
@@ -58,66 +59,87 @@ export const CreatePostForm = () => {
   };
 
   return (
-    <View style={{ flex: 1, gap: 10 }}>
-      <View>
-        <View style={styles.addImgContainer}>
-          {photo ? (
-            <Image
-              source={{ uri: photo }}
-              style={{ width: "100%", height: "100%" }}
-            />
-          ) : (
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
-              <View style={styles.iconWrapper}>
-                <Ionicons name="camera-sharp" size={24} color="#BDBDBD" />
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={-50}
+      style={styles.containerAvoid}
+    >
+      <View style={styles.container}>
+        <View style={styles.formContainer}>
+          <View style={{ flex: 1 }}>
+            <View style={styles.photoContainer}>
+              <View style={styles.addImgContainer}>
+                {photo && !isCameraOn ? (
+                  <Image
+                    source={{ uri: photo }}
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                ) : (
+                  !isCameraOn && (
+                    <TouchableOpacity onPress={() => setIsCameraOn(true)}>
+                      <View style={styles.iconWrapper}>
+                        <Ionicons
+                          name="camera-sharp"
+                          size={24}
+                          color="#BDBDBD"
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  )
+                )}
+                {isCameraOn && !photo && <CameraView setPhoto={setPhoto} />}
               </View>
+
+              <Text style={styles.text}>Upload photo</Text>
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <View style={styles.inputsWrapper}>
+                <PostInput
+                  placeholder={"Name..."}
+                  name={"name"}
+                  value={name}
+                  inputMode={"text"}
+                  handleChange={setName}
+                />
+                <PostInput
+                  placeholder={"Location..."}
+                  name={"location"}
+                  value={location}
+                  inputMode={"text"}
+                  handleChange={setLocation}
+                />
+              </View>
+
+              <LargeButton
+                isDisabled={!photo || !location || !name}
+                text={"Publish post"}
+                extraStyles={{ backgroundColor: "#F6F6F6" }}
+                onPress={() => handlePublishPost()}
+              />
+            </View>
+          </View>
+
+          <View style={styles.deleteImgWrapper}>
+            <TouchableOpacity onPress={() => clearPostForm()}>
+              <FontAwesome5 name="trash-alt" size={24} color="#BDBDBD" />
             </TouchableOpacity>
-          )}
+          </View>
         </View>
-        <Text style={styles.text}>Upload photo</Text>
-        <View style={styles.inputsWrapper}>
-          <PostInput
-            placeholder={"Name..."}
-            name={"name"}
-            value={name}
-            inputMode={"text"}
-            handleChange={setName}
-          />
-          <PostInput
-            placeholder={"Location..."}
-            name={"location"}
-            value={location}
-            inputMode={"text"}
-            handleChange={setLocation}
-          />
-        </View>
-        <LargeButton
-          isDisabled={!photo || !location || !name}
-          text={"Publish post"}
-          extraStyles={{ backgroundColor: "#F6F6F6" }}
-          onPress={() => handePublishPost()}
-        />
       </View>
-      <View style={styles.deleteImgWrapper}>
-        <TouchableOpacity onPress={() => clearPostForm()}>
-          <FontAwesome5 name="trash-alt" size={24} color="#BDBDBD" />
-        </TouchableOpacity>
-      </View>
-      <ModalBox
-        isModalVisible={isModalVisible}
-        setModalVisible={setModalVisible}
-        placeholder={"Photo URL"}
-        value={photo}
-        handleChange={setPhoto}
-        text={"Enter URL for your photo"}
-      />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  formContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+
+  photoContainer: { flex: 1 },
   addImgContainer: {
-    height: 240,
+    paddingVertical: 90,
     backgroundColor: "#F6F6F6",
     borderRadius: 8,
     borderWidth: 0.5,
@@ -127,11 +149,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   iconWrapper: {
-    height: 60,
-    width: 60,
+    padding: 30,
     backgroundColor: "#ffffff",
     borderRadius: 50,
-
     alignItems: "center",
     justifyContent: "center",
   },
@@ -146,5 +166,16 @@ const styles = StyleSheet.create({
   },
   deleteImgWrapper: {
     alignSelf: "center",
+  },
+  containerAvoid: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    flexDirection: "row",
   },
 });

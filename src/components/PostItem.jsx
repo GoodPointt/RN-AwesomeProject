@@ -5,6 +5,7 @@ export const PostItem = ({
   item: { photo, name, location, likes, comments },
   incrementLike,
   commentDetails,
+  locationDetails,
 }) => {
   return (
     <View style={styles.itemContainer}>
@@ -25,7 +26,7 @@ export const PostItem = ({
             </View>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => console.log("PRESS_POST_LOCATION")}>
+        <TouchableOpacity onPress={locationDetails}>
           <View style={styles.stat}>
             <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />
             <Text style={styles.locationText}>{location}</Text>

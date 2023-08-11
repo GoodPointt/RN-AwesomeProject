@@ -50,6 +50,12 @@ export const PostsScreen = () => {
                   currentUser: currentUser,
                 })
               }
+              locationDetails={() =>
+                navigation.navigate("Map", {
+                  post: item,
+                  currentUser: currentUser,
+                })
+              }
             />
           )}
           keyExtractor={(item) => item.id}
