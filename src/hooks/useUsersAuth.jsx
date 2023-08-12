@@ -17,7 +17,15 @@ export const useUserAuth = () => {
           photo:
             "https://images.adsttc.com/media/images/5d44/14fa/284d/d1fd/3a00/003d/large_jpg/eiffel-tower-in-paris-151-medium.jpg?1564742900",
           name: "Eiffel Tower",
-          location: "Frarnce",
+          location: {
+            name: "Frarnce",
+            coord: {
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            },
+          },
           likes: 101,
           comments: [
             {
@@ -59,7 +67,15 @@ export const useUserAuth = () => {
           photo:
             "https://voiceamplified.org/wp-content/uploads/2022/03/AdobeStock_476820399-scaled.jpeg",
           name: "Stand with Ukraine",
-          location: "Ukraine",
+          location: {
+            name: "Ukraine",
+            coord: {
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            },
+          },
           likes: 123,
           comments: [
             {
@@ -101,7 +117,15 @@ export const useUserAuth = () => {
           photo:
             "https://assets.editorial.aetnd.com/uploads/2019/03/topic-london-gettyimages-760251843-feature.jpg",
           name: "Big Ban",
-          location: "England",
+          location: {
+            name: "England",
+            coord: {
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            },
+          },
           likes: 23,
           comments: [
             {
@@ -143,7 +167,15 @@ export const useUserAuth = () => {
           photo:
             "https://im.indiatimes.in/content/2022/Feb/Tunnel-Of-Love_62176d7881461.jpg?w=820&h=540&cc=1",
           name: "Tunel of love",
-          location: "Ukraine",
+          location: {
+            name: "Ukraine",
+            coord: {
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            },
+          },
           likes: 450,
           comments: [
             {
@@ -185,7 +217,15 @@ export const useUserAuth = () => {
           photo:
             "https://image.arrivalguides.com/500x500/09/1dd23cc06c31c31ba7df72f2c74db5bc.jpg",
           name: "Red bus",
-          location: "England",
+          location: {
+            name: "England",
+            coord: {
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            },
+          },
           likes: 120,
           comments: [
             {
@@ -227,7 +267,15 @@ export const useUserAuth = () => {
           photo:
             "https://theculturetrip.com/wp-content/uploads/2017/10/_-_-2.jpg",
           name: "Natural wonder",
-          location: "Ukraine",
+          location: {
+            name: "Ukraine",
+            coord: {
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            },
+          },
           likes: 333,
           comments: [
             {

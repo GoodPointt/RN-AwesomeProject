@@ -20,6 +20,8 @@ export const CommentsScreen = ({ route: { params } }) => {
 
   const [commentValue, setCommentValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const [localComments, setLocalComments] = useState(comments);
+
   const { users, setUsers } = useContext(UserContext);
 
   const handleSendComment = () => {
@@ -36,6 +38,9 @@ export const CommentsScreen = ({ route: { params } }) => {
       },
       comment: commentValue,
     };
+
+    const updatedLocalComments = [...localComments, newComment];
+    setLocalComments(updatedLocalComments);
 
     const updatedComments = [...comments, newComment];
     const updatedUsers = users.map((user) => ({
@@ -69,13 +74,13 @@ export const CommentsScreen = ({ route: { params } }) => {
 
         {comments.length > 0 && (
           <FlatList
+            showsVerticalScrollIndicator={false}
             style={styles.commentsList}
-            data={comments}
+            data={localComments}
             renderItem={({ item, index }) => (
               <Comment item={item} isEven={index % 2 === 0} />
             )}
             keyExtractor={(item) => item.id}
-            extraData={post}
           />
         )}
       </View>

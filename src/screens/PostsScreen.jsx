@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { UserContext } from "../hooks/useUsersAuth";
 import { PostItem } from "../components/PostItem";
 import { useNavigation } from "@react-navigation/native";
+import { SmallUserBox } from "../components/SmallUserBox";
 
 export const PostsScreen = () => {
   const { userId, users, setUsers } = useContext(UserContext);
@@ -30,15 +31,9 @@ export const PostsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
-        <Image style={styles.avatarImg} source={{ uri: currentUser.avatar }} />
-        <View>
-          <Text style={styles.name}>{currentUser.login}</Text>
-          <Text style={styles.email}>{currentUser.email}</Text>
-        </View>
-      </View>
       {currentUser.posts.length > 0 && (
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={currentUser.posts}
           renderItem={({ item }) => (
             <PostItem
@@ -50,16 +45,12 @@ export const PostsScreen = () => {
                   currentUser: currentUser,
                 })
               }
-              locationDetails={() =>
-                navigation.navigate("Map", {
-                  post: item,
-                  currentUser: currentUser,
-                })
-              }
+              locationDetails={() => navigation.navigate("Map", item)}
             />
           )}
           keyExtractor={(item) => item.id}
           extraData={currentUser.comments}
+          ListHeaderComponent={<SmallUserBox currentUser={currentUser} />}
         />
       )}
     </View>
@@ -71,20 +62,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     flex: 1,
     padding: 16,
-  },
-
-  avatarImg: { width: 60, height: 60, borderRadius: 16 },
-
-  name: {
-    color: "#212121",
-    textAlign: "left",
-    fontSize: 15,
-    fontFamily: "Roboto-Medium",
-  },
-  email: {
-    color: "rgba(33, 33, 33, 0.80)",
-    textAlign: "left",
-    fontSize: 13,
-    fontFamily: "Roboto-Regular",
   },
 });

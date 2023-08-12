@@ -29,7 +29,7 @@ export const PostItem = ({
         <TouchableOpacity onPress={locationDetails}>
           <View style={styles.stat}>
             <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />
-            <Text style={styles.locationText}>{location}</Text>
+            <Text style={styles.locationText}>{location.name}</Text>
           </View>
         </TouchableOpacity>
       </View>

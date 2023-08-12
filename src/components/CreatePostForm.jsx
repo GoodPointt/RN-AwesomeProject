@@ -1,18 +1,12 @@
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
-import {
-  Image,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { PostInput } from "./PostInput";
 import { LargeButton } from "./LargeButton";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../hooks/useUsersAuth";
 import { useNavigation } from "@react-navigation/native";
 import { CameraView } from "./CameraView";
+import * as Location from "expo-location";
 
 export const CreatePostForm = () => {
   const { users, setUsers, userId } = useContext(UserContext);
@@ -21,22 +15,46 @@ export const CreatePostForm = () => {
   const [photo, setPhoto] = useState("");
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
+  const [coord, setCoord] = useState(null);
 
   const navigation = useNavigation();
 
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        alert("Permission to access location was denied");
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      };
+      setCoord(coords);
+    })();
+  }, [isCameraOn]);
+
   const clearPostForm = () => {
-    setLocation("");
+    setLocation(null);
     setPhoto("");
     setName("");
     setIsCameraOn(false);
+    setCoord(null);
   };
 
-  const handlePublishPost = () => {
+  const handePublishPost = () => {
     const newPost = {
       id: Date.now(),
       photo,
       name,
-      location,
+      location: {
+        name: location,
+        coord,
+      },
       likes: 0,
       comments: [],
     };
@@ -59,87 +77,64 @@ export const CreatePostForm = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={-50}
-      style={styles.containerAvoid}
-    >
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <View style={{ flex: 1 }}>
-            <View style={styles.photoContainer}>
-              <View style={styles.addImgContainer}>
-                {photo && !isCameraOn ? (
-                  <Image
-                    source={{ uri: photo }}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                ) : (
-                  !isCameraOn && (
-                    <TouchableOpacity onPress={() => setIsCameraOn(true)}>
-                      <View style={styles.iconWrapper}>
-                        <Ionicons
-                          name="camera-sharp"
-                          size={24}
-                          color="#BDBDBD"
-                        />
-                      </View>
-                    </TouchableOpacity>
-                  )
-                )}
-                {isCameraOn && !photo && <CameraView setPhoto={setPhoto} />}
-              </View>
-
-              <Text style={styles.text}>Upload photo</Text>
-            </View>
-
-            <View style={{ flex: 1 }}>
-              <View style={styles.inputsWrapper}>
-                <PostInput
-                  placeholder={"Name..."}
-                  name={"name"}
-                  value={name}
-                  inputMode={"text"}
-                  handleChange={setName}
-                />
-                <PostInput
-                  placeholder={"Location..."}
-                  name={"location"}
-                  value={location}
-                  inputMode={"text"}
-                  handleChange={setLocation}
-                />
-              </View>
-
-              <LargeButton
-                isDisabled={!photo || !location || !name}
-                text={"Publish post"}
-                extraStyles={{ backgroundColor: "#F6F6F6" }}
-                onPress={() => handlePublishPost()}
-              />
-            </View>
-          </View>
-
-          <View style={styles.deleteImgWrapper}>
-            <TouchableOpacity onPress={() => clearPostForm()}>
-              <FontAwesome5 name="trash-alt" size={24} color="#BDBDBD" />
-            </TouchableOpacity>
-          </View>
+    <View style={{ flex: 1, gap: 10 }}>
+      <View>
+        <View
+          style={[styles.addImgContainer, isCameraOn && styles.extraStyles]}
+        >
+          {photo && !isCameraOn ? (
+            <Image
+              source={{ uri: photo }}
+              style={{ width: "100%", height: "100%" }}
+            />
+          ) : (
+            !isCameraOn && (
+              <TouchableOpacity onPress={() => setIsCameraOn(true)}>
+                <View style={styles.iconWrapper}>
+                  <Ionicons name="camera-sharp" size={24} color="#BDBDBD" />
+                </View>
+              </TouchableOpacity>
+            )
+          )}
+          {isCameraOn && !photo && <CameraView setPhoto={setPhoto} />}
         </View>
+        <Text style={styles.text}>Upload photo</Text>
+        <View style={styles.inputsWrapper}>
+          <PostInput
+            placeholder={"Name..."}
+            name={"name"}
+            value={name}
+            inputMode={"text"}
+            handleChange={setName}
+          />
+          <PostInput
+            placeholder={"Location..."}
+            name={"location"}
+            value={location}
+            inputMode={"text"}
+            handleChange={setLocation}
+          />
+        </View>
+        <LargeButton
+          isDisabled={!photo || !location || !name}
+          text={"Publish post"}
+          extraStyles={{ backgroundColor: "#F6F6F6" }}
+          onPress={() => handePublishPost()}
+        />
       </View>
-    </KeyboardAvoidingView>
+      <View style={styles.deleteImgWrapper}>
+        <TouchableOpacity onPress={() => clearPostForm()}>
+          <FontAwesome5 name="trash-alt" size={24} color="#BDBDBD" />
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  formContainer: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-
-  photoContainer: { flex: 1 },
+  extraStyles: { backgroundColor: "#000" },
   addImgContainer: {
-    paddingVertical: 90,
+    height: 240,
     backgroundColor: "#F6F6F6",
     borderRadius: 8,
     borderWidth: 0.5,
@@ -149,9 +144,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   iconWrapper: {
-    padding: 30,
+    height: 60,
+    width: 60,
     backgroundColor: "#ffffff",
     borderRadius: 50,
+
     alignItems: "center",
     justifyContent: "center",
   },
@@ -166,16 +163,5 @@ const styles = StyleSheet.create({
   },
   deleteImgWrapper: {
     alignSelf: "center",
-  },
-  containerAvoid: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    flexDirection: "row",
   },
 });

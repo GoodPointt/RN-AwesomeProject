@@ -13,6 +13,7 @@ import { UserContext } from "../hooks/useUsersAuth";
 import { PostItem } from "../components/PostItem";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { SmallUserBox } from "../components/SmallUserBox";
 
 export const ProfileScreen = () => {
   const { userId, users, setUsers } = useContext(UserContext);
@@ -71,6 +72,7 @@ export const ProfileScreen = () => {
           />
           {currentUser.posts.length > 0 && (
             <FlatList
+              showsVerticalScrollIndicator={false}
               data={currentUser.posts}
               renderItem={({ item }) => (
                 <PostItem
@@ -82,12 +84,7 @@ export const ProfileScreen = () => {
                       currentUser: currentUser,
                     });
                   }}
-                  locationDetails={() =>
-                    navigation.navigate("Map", {
-                      post: item,
-                      currentUser: currentUser,
-                    })
-                  }
+                  locationDetails={() => navigation.navigate("Map", item)}
                 />
               )}
               keyExtractor={(item) => item.id}

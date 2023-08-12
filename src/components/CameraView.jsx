@@ -14,6 +14,8 @@ export const CameraView = ({ setPhoto }) => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       await MediaLibrary.requestPermissionsAsync();
 
+      if (status !== "granted") alert("Permission to access camera was denied");
+
       setHasPermission(status === "granted");
     })();
   }, []);
@@ -62,8 +64,8 @@ export const CameraView = ({ setPhoto }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { width: "100%", height: "100%" },
-  camera: { flex: 1, padding: 16 },
+  container: { width: "50%", height: "100%" },
+  camera: { flex: 1 },
   photoView: {
     flex: 1,
     backgroundColor: "transparent",
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
 
-  button: { flex: 3, alignSelf: "flex-end" },
+  button: { flex: 0.6, alignSelf: "center" },
 
   takePhotoOut: {
     borderWidth: 2,
@@ -90,10 +92,10 @@ const styles = StyleSheet.create({
 
   takePhotoInner: {
     borderWidth: 2,
-    borderColor: "white",
+    borderColor: "#fff",
     height: 40,
     width: 40,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
     borderRadius: 50,
   },
 });
