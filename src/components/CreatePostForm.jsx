@@ -11,7 +11,7 @@ import * as Location from "expo-location";
 export const CreatePostForm = () => {
   const { users, setUsers, userId } = useContext(UserContext);
 
-  const [isCameraOn, setIsCameraOn] = useState(false);
+  const [isCameraOn, setIsCameraOn] = useState(true);
   const [photo, setPhoto] = useState("");
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
