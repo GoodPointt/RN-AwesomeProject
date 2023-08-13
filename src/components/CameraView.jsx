@@ -29,20 +29,8 @@ export const CameraView = ({ setPhoto }) => {
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} ref={setCameraRef}>
+      <Camera style={styles.camera} type={type} ref={setCameraRef} ratio="3:4">
         <View style={styles.photoView}>
-          <TouchableOpacity
-            style={styles.flipContainer}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}
-          >
-            <MaterialCommunityIcons name="camera-flip" size={24} color="#fff" />
-          </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={async () => {
@@ -59,13 +47,30 @@ export const CameraView = ({ setPhoto }) => {
           </TouchableOpacity>
         </View>
       </Camera>
+      <TouchableOpacity
+        style={styles.flipContainer}
+        onPress={() => {
+          setType(
+            type === Camera.Constants.Type.back
+              ? Camera.Constants.Type.front
+              : Camera.Constants.Type.back
+          );
+        }}
+      >
+        <MaterialCommunityIcons name="camera-flip" size={24} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { width: "50%", height: "100%" },
-  camera: { flex: 1 },
+  container: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  camera: { flex: 1, aspectRatio: 3 / 4 },
   photoView: {
     flex: 1,
     backgroundColor: "transparent",
@@ -73,11 +78,13 @@ const styles = StyleSheet.create({
   },
 
   flipContainer: {
-    flex: 2,
+    position: "absolute",
+    top: 5,
+    right: 5,
     alignSelf: "flex-end",
   },
 
-  button: { flex: 0.6, alignSelf: "center" },
+  button: { flex: 0.23, alignSelf: "center" },
 
   takePhotoOut: {
     borderWidth: 2,

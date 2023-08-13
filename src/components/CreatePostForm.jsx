@@ -82,7 +82,7 @@ export const CreatePostForm = () => {
         <View
           style={[styles.addImgContainer, isCameraOn && styles.extraStyles]}
         >
-          {photo && !isCameraOn ? (
+          {photo ? (
             <Image
               source={{ uri: photo }}
               style={{ width: "100%", height: "100%" }}
