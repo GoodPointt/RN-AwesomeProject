@@ -13,7 +13,6 @@ import { UserContext } from "../hooks/useUsersAuth";
 import { PostItem } from "../components/PostItem";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { SmallUserBox } from "../components/SmallUserBox";
 
 export const ProfileScreen = () => {
   const { userId, users, setUsers } = useContext(UserContext);
@@ -112,6 +111,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     backgroundColor: "#fff",
     width: "100%",
+    minHeight: "80%",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 90,

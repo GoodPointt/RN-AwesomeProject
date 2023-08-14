@@ -8,7 +8,7 @@ export const Comment = ({ item, isEven }) => {
           style={styles.authorAvaImg}
           source={{ uri: item.author.avatar }}
         />
-        <Text style={{ fontSize: 10 }}>{item.author.name}</Text>
+        <Text style={styles.authorName}>{item.author.name}</Text>
       </View>
 
       <View style={styles.commentContainer}>
@@ -57,5 +57,8 @@ const styles = StyleSheet.create({
   },
   evenDateText: {
     textAlign: "left",
+  },
+  authorName: {
+    fontSize: 10,
   },
 });

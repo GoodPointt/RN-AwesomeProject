@@ -21,20 +21,24 @@ export const CreatePostForm = () => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        alert("Permission to access location was denied");
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          alert("Permission to access location was denied");
+        }
+        let location = await Location.getCurrentPositionAsync({});
+
+        const coords = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        };
+
+        setCoord(coords);
+      } catch (error) {
+        alert(error.message);
       }
-
-      let location = await Location.getCurrentPositionAsync({});
-
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      };
-      setCoord(coords);
     })();
   }, [isCameraOn]);
 
@@ -77,16 +81,13 @@ export const CreatePostForm = () => {
   };
 
   return (
-    <View style={{ flex: 1, gap: 10 }}>
+    <View style={styles.container}>
       <View>
         <View
           style={[styles.addImgContainer, isCameraOn && styles.extraStyles]}
         >
           {photo ? (
-            <Image
-              source={{ uri: photo }}
-              style={{ width: "100%", height: "100%" }}
-            />
+            <Image source={{ uri: photo }} style={styles.previewImg} />
           ) : (
             !isCameraOn && (
               <TouchableOpacity onPress={() => setIsCameraOn(true)}>
@@ -132,6 +133,7 @@ export const CreatePostForm = () => {
 };
 
 const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: "space-between" },
   extraStyles: { backgroundColor: "#000" },
   addImgContainer: {
     height: 240,
@@ -164,4 +166,5 @@ const styles = StyleSheet.create({
   deleteImgWrapper: {
     alignSelf: "center",
   },
+  previewImg: { width: "100%", height: "100%" },
 });

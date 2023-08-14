@@ -66,10 +66,7 @@ export const CommentsScreen = ({ route: { params } }) => {
     >
       <View style={styles.container}>
         <View style={styles.ImgContainer}>
-          <Image
-            source={{ uri: photo }}
-            style={{ width: "100%", height: "100%", borderRadius: 8 }}
-          />
+          <Image source={{ uri: photo }} style={styles.postImg} />
         </View>
 
         {comments.length > 0 && (
@@ -91,6 +88,7 @@ export const CommentsScreen = ({ route: { params } }) => {
           onBlur={() => setIsFocused(false)}
           onChangeText={setCommentValue}
           value={commentValue}
+          placeholder="Add comment"
         />
         <TouchableOpacity onPress={handleSendComment} style={styles.sendButton}>
           <AntDesign name="arrowup" size={20} color="#fff" />
@@ -153,4 +151,5 @@ const styles = StyleSheet.create({
     top: 7,
     borderRadius: 50,
   },
+  postImg: { width: "100%", height: "100%", borderRadius: 8 },
 });

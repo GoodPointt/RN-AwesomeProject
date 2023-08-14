@@ -13,8 +13,17 @@ export const SmallUserBox = ({ currentUser }) => {
 };
 
 const styles = StyleSheet.create({
-  userBox: { flexDirection: "row", alignItems: "center", gap: 16 },
-  avatarImg: { width: 60, height: 60, borderRadius: 16 },
+  userBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  avatarImg: {
+    width: 60,
+    height: 60,
+    borderRadius: 16,
+    backgroundColor: "#f6f6f6",
+  },
   name: {
     color: "#212121",
     textAlign: "left",

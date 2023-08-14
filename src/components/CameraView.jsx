@@ -11,12 +11,17 @@ export const CameraView = ({ setPhoto }) => {
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      await MediaLibrary.requestPermissionsAsync();
+      try {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        await MediaLibrary.requestPermissionsAsync();
 
-      if (status !== "granted") alert("Permission to access camera was denied");
+        if (status !== "granted")
+          alert("Permission to access camera was denied");
 
-      setHasPermission(status === "granted");
+        setHasPermission(status === "granted");
+      } catch (error) {
+        alert(error.message);
+      }
     })();
   }, []);
 

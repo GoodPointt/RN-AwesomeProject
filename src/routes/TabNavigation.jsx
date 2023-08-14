@@ -100,6 +100,7 @@ export const TabNavigation = () => {
             />
           ),
           tabBarStyle: { display: "none" },
+          unmountOnBlur: true,
         })}
       />
       <Tabs.Screen

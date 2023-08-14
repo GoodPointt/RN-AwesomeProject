@@ -31,7 +31,7 @@ export const PostsScreen = () => {
 
   return (
     <View style={styles.container}>
-      {currentUser.posts.length > 0 && (
+      {currentUser.posts.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}
           data={currentUser.posts}
@@ -52,6 +52,8 @@ export const PostsScreen = () => {
           extraData={currentUser.comments}
           ListHeaderComponent={<SmallUserBox currentUser={currentUser} />}
         />
+      ) : (
+        <SmallUserBox currentUser={currentUser} />
       )}
     </View>
   );
