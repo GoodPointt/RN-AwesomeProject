@@ -82,7 +82,7 @@ export const CreatePostForm = () => {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.wrap}>
         <View
           style={[styles.addImgContainer, isCameraOn && styles.extraStyles]}
         >
@@ -145,6 +145,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 8,
   },
+  wrap: { flexGrow: 1 },
+
   iconWrapper: {
     height: 60,
     width: 60,
