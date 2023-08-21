@@ -1,67 +1,96 @@
-import { useContext } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import { UserContext } from "../hooks/useUsersAuth";
-import { PostItem } from "../components/PostItem";
-import { useNavigation } from "@react-navigation/native";
-import { SmallUserBox } from "../components/SmallUserBox";
+import { useEffect } from 'react';
+import {
+  FlatList,
+  Image,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { PostItem } from '../components/PostItem';
+import { useNavigation } from '@react-navigation/native';
+import { SmallUserBox } from '../components/SmallUserBox';
+
+import { useAuth } from '../hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { usePosts } from '../hooks/usePosts';
+import { fetchPosts } from '../redux/posts/operations';
+import { addLike } from '../redux/posts/postsSlice';
+import { updateUserDocDataInFirestore } from '../firebase/auth';
 
 export const PostsScreen = () => {
-  const { userId, users, setUsers } = useContext(UserContext);
+  const { user, token, isLoggedIn, isRefreshing } = useAuth();
+  const { posts, status, error } = usePosts();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
 
   const navigation = useNavigation();
 
-  const incrementLike = (postId) => {
-    setUsers((state) =>
-      state.map((user) => {
-        if (user.id === userId) {
-          return {
-            ...user,
-            posts: user.posts.map((post) =>
-              post.id === postId ? { ...post, likes: post.likes + 1 } : post
-            ),
-          };
-        } else {
-          return user;
-        }
-      })
+  const incrementLike = (postId, likesCount) => {
+    dispatch(addLike({ postId: postId }));
+    updateUserDocDataInFirestore(
+      postId,
+      {
+        isLiked: true,
+        likes: likesCount + 1,
+      },
+      `users/${user.id}/posts`
     );
   };
 
-  const currentUser = users.find((user) => user.id === userId);
-
   return (
-    <View style={styles.container}>
-      {currentUser.posts.length > 0 ? (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={currentUser.posts}
-          renderItem={({ item }) => (
-            <PostItem
-              item={item}
-              incrementLike={() => incrementLike(item.id)}
-              commentDetails={() =>
-                navigation.navigate("Comments", {
-                  post: item,
-                  currentUser: currentUser,
-                })
-              }
-              locationDetails={() => navigation.navigate("Map", item)}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-          extraData={currentUser.comments}
-          ListHeaderComponent={<SmallUserBox currentUser={currentUser} />}
-        />
-      ) : (
-        <SmallUserBox currentUser={currentUser} />
-      )}
-    </View>
+    isLoggedIn && (
+      <View style={styles.container}>
+        {status === 'resolved' && posts?.length > 0 ? (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={posts}
+            renderItem={({ item }) => (
+              <PostItem
+                item={item}
+                incrementLike={incrementLike}
+                commentDetails={() =>
+                  navigation.navigate('Comments', {
+                    post: item,
+                  })
+                }
+                locationDetails={() => navigation.navigate('Map', item)}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            ListHeaderComponent={
+              <SmallUserBox
+                avatar={user?.avatar}
+                name={user?.name}
+                email={user?.email}
+              />
+            }
+            refreshControl={
+              <RefreshControl onRefresh={() => dispatch(fetchPosts())} />
+            }
+          />
+        ) : (
+          <SmallUserBox
+            avatar={user?.avatar}
+            name={user?.name}
+            email={user?.email}
+          />
+        )}
+        {status === 'loading' && <Text>Loading...</Text>}
+        {status === 'rejected' && (
+          <Text>Opps an error occured: '{error}' 😒</Text>
+        )}
+      </View>
+    )
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     flex: 1,
     padding: 16,
   },

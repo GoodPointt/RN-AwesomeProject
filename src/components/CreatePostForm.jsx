@@ -1,20 +1,21 @@
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { PostInput } from "./PostInput";
-import { LargeButton } from "./LargeButton";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../hooks/useUsersAuth";
-import { useNavigation } from "@react-navigation/native";
-import { CameraView } from "./CameraView";
-import * as Location from "expo-location";
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { PostInput } from './PostInput';
+import { LargeButton } from './LargeButton';
+import { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { CameraView } from './CameraView';
+import * as Location from 'expo-location';
+import { useDispatch } from 'react-redux';
+import { addPost } from '../redux/posts/operations';
 
 export const CreatePostForm = () => {
-  const { users, setUsers, userId } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   const [isCameraOn, setIsCameraOn] = useState(true);
-  const [photo, setPhoto] = useState("");
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
+  const [photo, setPhoto] = useState('');
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
   const [coord, setCoord] = useState(null);
 
   const navigation = useNavigation();
@@ -23,8 +24,8 @@ export const CreatePostForm = () => {
     (async () => {
       try {
         let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          alert("Permission to access location was denied");
+        if (status !== 'granted') {
+          alert('Permission to access location was denied');
         }
         let location = await Location.getCurrentPositionAsync({});
 
@@ -44,15 +45,15 @@ export const CreatePostForm = () => {
 
   const clearPostForm = () => {
     setLocation(null);
-    setPhoto("");
-    setName("");
+    setPhoto('');
+    setName('');
     setIsCameraOn(false);
     setCoord(null);
   };
 
-  const handePublishPost = () => {
+  const handePublishPost = async () => {
     const newPost = {
-      id: Date.now(),
+      createdAt: Date.now(),
       photo,
       name,
       location: {
@@ -60,23 +61,15 @@ export const CreatePostForm = () => {
         coord,
       },
       likes: 0,
-      comments: [],
+      isLiked: false,
+      totalComments: 0,
+      isCommented: false,
     };
 
-    const userToUpdate = users.find((user) => user.id === userId);
-
-    if (userToUpdate) {
-      const updatedUser = {
-        ...userToUpdate,
-        posts: [newPost, ...userToUpdate.posts],
-      };
-
-      setUsers((prevUsers) =>
-        prevUsers.map((user) => (user.id === userId ? updatedUser : user))
-      );
-    }
+    dispatch(addPost(newPost));
 
     clearPostForm();
+
     navigation.goBack();
   };
 
@@ -102,24 +95,24 @@ export const CreatePostForm = () => {
         <Text style={styles.text}>Upload photo</Text>
         <View style={styles.inputsWrapper}>
           <PostInput
-            placeholder={"Name..."}
-            name={"name"}
+            placeholder={'Name...'}
+            name={'name'}
             value={name}
-            inputMode={"text"}
+            inputMode={'text'}
             handleChange={setName}
           />
           <PostInput
-            placeholder={"Location..."}
-            name={"location"}
+            placeholder={'Location...'}
+            name={'location'}
             value={location}
-            inputMode={"text"}
+            inputMode={'text'}
             handleChange={setLocation}
           />
         </View>
         <LargeButton
           isDisabled={!photo || !location || !name}
-          text={"Publish post"}
-          extraStyles={{ backgroundColor: "#F6F6F6" }}
+          text={'Publish post'}
+          extraStyles={{ backgroundColor: '#F6F6F6' }}
           onPress={() => handePublishPost()}
         />
       </View>
@@ -133,16 +126,16 @@ export const CreatePostForm = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "space-between" },
-  extraStyles: { backgroundColor: "#000" },
+  container: { flex: 1, justifyContent: 'space-between' },
+  extraStyles: { backgroundColor: '#000' },
   addImgContainer: {
     height: 240,
-    backgroundColor: "#F6F6F6",
+    backgroundColor: '#F6F6F6',
     borderRadius: 8,
     borderWidth: 0.5,
-    borderColor: "#E8E8E8",
-    alignItems: "center",
-    justifyContent: "center",
+    borderColor: '#E8E8E8',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 8,
   },
   wrap: { flexGrow: 1 },
@@ -150,23 +143,23 @@ const styles = StyleSheet.create({
   iconWrapper: {
     height: 60,
     width: 60,
-    backgroundColor: "#ffffff",
+    backgroundColor: '#ffffff',
     borderRadius: 50,
 
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
-    color: "#BDBDBD",
+    color: '#BDBDBD',
     fontSize: 16,
-    fontFamily: "Roboto-Regular",
+    fontFamily: 'Roboto-Regular',
   },
   inputsWrapper: {
     marginVertical: 32,
     gap: 16,
   },
   deleteImgWrapper: {
-    alignSelf: "center",
+    alignSelf: 'center',
   },
-  previewImg: { width: "100%", height: "100%" },
+  previewImg: { width: '100%', height: '100%' },
 });

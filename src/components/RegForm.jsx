@@ -1,43 +1,63 @@
-import { StyleSheet, Text } from "react-native";
-import { useContext, useState } from "react";
-import { RegAvatar } from "./RegAvatar";
-import { LargeButton } from "./LargeButton";
-import { FormInput } from "./FormInput";
-import { registerNewUser } from "../utils/authHelpers";
-import { UserContext } from "../hooks/useUsersAuth";
-import { ModalBox } from "./ModalBox";
+import { StyleSheet, Text } from 'react-native';
+import { useState } from 'react';
+import { RegAvatar } from './RegAvatar';
+import { LargeButton } from './LargeButton';
+import { FormInput } from './FormInput';
+
+import { ModalBox } from './ModalBox';
+
+import { useDispatch } from 'react-redux';
+import { setUpUser, udateUserAva } from '../redux/user/userSlice';
+import { useAuth } from '../hooks/useAuth';
+import { registerUser, writeDataToFirestore } from '../firebase/auth';
 
 export const RegForm = ({ navigation }) => {
-  const { users, setUsers, setUserId } = useContext(UserContext);
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useAuth();
+
   const [isModalVisible, setModalVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(null);
-
-  const [regLoginValue, setRegLoginValue] = useState("");
-  const [regEmailValue, setRegEmailValue] = useState("");
-  const [regPasswordValue, setRegPasswordValue] = useState("");
-
+  const [regLoginValue, setRegLoginValue] = useState('');
+  const [regEmailValue, setRegEmailValue] = useState('');
+  const [regPasswordValue, setRegPasswordValue] = useState('');
   const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    isLoggedIn && navigation.navigate('Home');
+  }, [isLoggedIn]);
 
   const handleAvatarPress = () => {
     if (!avatar) setModalVisible(true);
-    if (avatar) setAvatar(null);
+    if (avatar) {
+      setAvatar(null);
+    }
   };
 
-  const handleSubmit = () => {
-    const regFormData = {
-      id: Date.now(),
-      avatar: avatar,
-      login: regLoginValue,
-      email: regEmailValue,
-      password: regPasswordValue,
-      posts: [],
-    };
+  const handleSubmit = async () => {
+    try {
+      const { user } = await registerUser(regEmailValue, regPasswordValue);
 
-    setUserId(regFormData.id);
+      const userData = {
+        name: regLoginValue,
+        email: regEmailValue,
+        uid: user.uid,
+        avatar,
+      };
 
-    registerNewUser(users, setUsers, regFormData)
-      ? navigation.navigate("Home")
-      : alert("Username or e-mail is already exist");
+      const patchId = await writeDataToFirestore(userData, user);
+
+      dispatch(
+        setUpUser({
+          user: {
+            ...userData,
+            ...patchId,
+          },
+          token: user.stsTokenManager.accessToken,
+        })
+      );
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
@@ -47,45 +67,45 @@ export const RegForm = ({ navigation }) => {
       <ModalBox
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-        placeholder={"Avatar URL"}
+        placeholder={'Avatar URL'}
         value={avatar}
         handleChange={setAvatar}
-        text={"Enter URL for your avatar"}
+        text={'Enter URL for your avatar'}
       />
 
       <FormInput
-        placeholder={"Login"}
-        name={"login"}
+        placeholder={'Login'}
+        name={'login'}
         value={regLoginValue}
-        inputMode={"text"}
-        isFocused={isFocused === "login"}
+        inputMode={'text'}
+        isFocused={isFocused === 'login'}
         handleChange={setRegLoginValue}
-        handleFocus={() => setIsFocused("login")}
+        handleFocus={() => setIsFocused('login')}
         handleBlur={() => setIsFocused(null)}
       />
       <FormInput
-        placeholder={"E-mail"}
-        name={"email"}
+        placeholder={'E-mail'}
+        name={'email'}
         value={regEmailValue}
-        inputMode={"email"}
-        isFocused={isFocused === "email"}
+        inputMode={'email'}
+        isFocused={isFocused === 'email'}
         handleChange={setRegEmailValue}
-        handleFocus={() => setIsFocused("email")}
+        handleFocus={() => setIsFocused('email')}
         handleBlur={() => setIsFocused(null)}
       />
       <FormInput
-        placeholder={"Password"}
-        name={"password"}
+        placeholder={'Password'}
+        name={'password'}
         value={regPasswordValue}
-        inputMode={"text"}
-        isFocused={isFocused === "password"}
+        inputMode={'text'}
+        isFocused={isFocused === 'password'}
         handleChange={setRegPasswordValue}
-        handleFocus={() => setIsFocused("password")}
+        handleFocus={() => setIsFocused('password')}
         handleBlur={() => setIsFocused(null)}
       />
       <LargeButton
         onPress={() => handleSubmit()}
-        text={"Register"}
+        text={'Register'}
         extraStyles={styles.loginRegisterBtnMargin}
         isDisabled={!regLoginValue && !regEmailValue && !regPasswordValue}
       />
@@ -95,10 +115,10 @@ export const RegForm = ({ navigation }) => {
 
 export const styles = StyleSheet.create({
   title: {
-    textAlign: "center",
-    color: "#212121",
+    textAlign: 'center',
+    color: '#212121',
     fontSize: 30,
-    fontFamily: "Roboto-Medium",
+    fontFamily: 'Roboto-Medium',
     letterSpacing: 0.3,
     marginBottom: 33,
   },
@@ -107,10 +127,10 @@ export const styles = StyleSheet.create({
     marginTop: 43,
   },
   text: {
-    color: "#090400a6",
+    color: '#090400a6',
     fontSize: 19,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 20,
-    fontFamily: "Roboto-Medium",
+    fontFamily: 'Roboto-Medium',
   },
 });

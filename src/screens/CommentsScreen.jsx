@@ -7,77 +7,76 @@ import {
   TouchableOpacity,
   View,
   Keyboard,
-} from "react-native";
-import { Comment } from "../components/Comment";
-import { useContext, useState } from "react";
-import { UserContext } from "../hooks/useUsersAuth";
-import { formatDateTime } from "../utils/formatDate";
-import { AntDesign } from "@expo/vector-icons";
+  RefreshControl,
+} from 'react-native';
+import { Comment } from '../components/Comment';
+import { useEffect, useState } from 'react';
+import { AntDesign } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import { useComments } from '../hooks/useComments';
+import { addComment, fetchComments } from '../redux/comments/operations';
+import { useAuth } from '../hooks/useAuth';
+import { updateTotalComments } from '../redux/posts/postsSlice';
 
 export const CommentsScreen = ({ route: { params } }) => {
-  const { post, currentUser } = params;
-  const { photo, comments, id } = post;
+  const { post } = params;
 
-  const [commentValue, setCommentValue] = useState("");
+  const [commentValue, setCommentValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
-  const [localComments, setLocalComments] = useState(comments);
 
-  const { users, setUsers } = useContext(UserContext);
+  const { user } = useAuth();
+  const { comments, status, error } = useComments();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchComments(post.id));
+  }, [dispatch]);
 
   const handleSendComment = () => {
-    if (commentValue.trim() === "") {
+    if (commentValue.trim() === '') {
+      Keyboard.dismiss();
       return;
     }
-
     const newComment = {
-      id: Date.now(),
-      date: formatDateTime(new Date()),
-      author: {
-        name: currentUser.login,
-        avatar: currentUser.avatar,
-      },
+      postId: post.id,
+      createdAt: Date.now(),
+      name: user.name,
+      avatar: user.avatar,
       comment: commentValue,
     };
 
-    const updatedLocalComments = [...localComments, newComment];
-    setLocalComments(updatedLocalComments);
+    dispatch(addComment(newComment));
+    dispatch(updateTotalComments({ postId: newComment.postId }));
 
-    const updatedComments = [...comments, newComment];
-    const updatedUsers = users.map((user) => ({
-      ...user,
-      posts: user.posts.map((post) => {
-        if (post.id === id) {
-          return { ...post, comments: updatedComments };
-        }
-        return post;
-      }),
-    }));
-    setUsers(updatedUsers);
-
-    setCommentValue("");
+    setCommentValue('');
     Keyboard.dismiss();
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={60}
       style={styles.containerAvoid}
     >
       <View style={styles.container}>
         <View style={styles.ImgContainer}>
-          <Image source={{ uri: photo }} style={styles.postImg} />
+          <Image source={{ uri: post.photo }} style={styles.postImg} />
         </View>
 
-        {comments.length > 0 && (
+        {status === 'resolved' && comments.length > 0 && (
           <FlatList
             showsVerticalScrollIndicator={false}
             style={styles.commentsList}
-            data={localComments}
-            renderItem={({ item, index }) => (
-              <Comment item={item} isEven={index % 2 === 0} />
+            data={comments}
+            renderItem={({ item }) => (
+              <Comment item={item} isEven={user.name === item.name} />
             )}
             keyExtractor={(item) => item.id}
+            refreshControl={
+              <RefreshControl
+                onRefresh={() => dispatch(fetchComments(post.id))}
+              />
+            }
           />
         )}
       </View>
@@ -101,55 +100,55 @@ export const CommentsScreen = ({ route: { params } }) => {
 const styles = StyleSheet.create({
   containerAvoid: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     paddingHorizontal: 16,
   },
   container: {
     flex: 1,
 
     paddingTop: 32,
-    backgroundColor: "#fff",
-    justifyContent: "space-between",
+    backgroundColor: '#fff',
+    justifyContent: 'space-between',
   },
   ImgContainer: {
     borderRadius: 8,
     height: 240,
-    backgroundColor: "#F6F6F6",
+    backgroundColor: '#F6F6F6',
     borderRadius: 8,
     borderWidth: 0.5,
-    borderColor: "#E8E8E8",
-    alignItems: "center",
-    justifyContent: "center",
+    borderColor: '#E8E8E8',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 8,
   },
   commentsList: {
     gap: 40,
   },
   commentInput: {
-    width: "100%",
+    width: '100%',
     paddingHorizontal: 16,
     paddingVertical: 5,
-    backgroundColor: "#f6f6f6",
+    backgroundColor: '#f6f6f6',
     borderRadius: 100,
     borderWidth: 0.5,
-    borderColor: "#e8e8e8",
-    borderStyle: "solid",
+    borderColor: '#e8e8e8',
+    borderStyle: 'solid',
     marginBottom: 16,
   },
   focusedInput: {
-    borderColor: "#FF6C00",
-    backgroundColor: "#fff",
+    borderColor: '#FF6C00',
+    backgroundColor: '#fff',
   },
   sendButton: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 24,
     height: 24,
-    backgroundColor: "#FF6C00",
-    position: "absolute",
+    backgroundColor: '#FF6C00',
+    position: 'absolute',
     right: 10,
     top: 7,
     borderRadius: 50,
   },
-  postImg: { width: "100%", height: "100%", borderRadius: 8 },
+  postImg: { width: '100%', height: '100%', borderRadius: 8 },
 });

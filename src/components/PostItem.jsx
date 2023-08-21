@@ -1,8 +1,17 @@
-import { Feather, SimpleLineIcons } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Feather, SimpleLineIcons } from '@expo/vector-icons';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export const PostItem = ({
-  item: { photo, name, location, likes, comments },
+  item: {
+    photo,
+    name,
+    location,
+    likes,
+    id,
+    totalComments,
+    isCommented,
+    isLiked,
+  },
   incrementLike,
   commentDetails,
   locationDetails,
@@ -15,13 +24,21 @@ export const PostItem = ({
         <View style={styles.stats}>
           <TouchableOpacity onPress={commentDetails}>
             <View style={styles.stat}>
-              <Feather name="message-circle" size={24} color="#FF6C00" />
-              <Text style={styles.statText}>{comments.length}</Text>
+              <Feather
+                name="message-circle"
+                size={24}
+                color={isCommented ? '#FF6C00' : '#535352d2'}
+              />
+              <Text style={styles.statText}>{totalComments}</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={incrementLike}>
+          <TouchableOpacity onPress={() => incrementLike(id, likes)}>
             <View style={styles.stat}>
-              <Feather name="thumbs-up" size={24} color="#FF6C00" />
+              <Feather
+                name="thumbs-up"
+                size={24}
+                color={isLiked ? '#FF6C00' : '#535352d2'}
+              />
               <Text style={styles.statText}>{likes}</Text>
             </View>
           </TouchableOpacity>
@@ -44,37 +61,37 @@ const styles = StyleSheet.create({
     marginVertical: 35,
   },
   itemImage: {
-    width: "100%",
+    width: '100%',
     height: 240,
     borderRadius: 8,
   },
   nameText: {
-    color: "#212121",
+    color: '#212121',
     fontSize: 16,
-    fontFamily: "Roboto-Medium",
+    fontFamily: 'Roboto-Medium',
   },
   statText: {
-    color: "#212121",
+    color: '#212121',
     fontSize: 16,
-    fontFamily: "Roboto-Regular",
+    fontFamily: 'Roboto-Regular',
   },
   locationText: {
-    color: "#212121",
+    color: '#212121',
     fontSize: 16,
-    fontFamily: "Roboto-Regular",
-    textDecorationLine: "underline",
+    fontFamily: 'Roboto-Regular',
+    textDecorationLine: 'underline',
   },
   underCardInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   stats: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 24,
-    alignItems: "center",
+    alignItems: 'center',
   },
   stat: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 5,
   },
 });

@@ -2,92 +2,116 @@ import {
   FlatList,
   ImageBackground,
   KeyboardAvoidingView,
+  RefreshControl,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import { ProfileAvatar } from "../components/ProfileAvatar";
+} from 'react-native';
+import { ProfileAvatar } from '../components/ProfileAvatar';
 
-import { useContext } from "react";
-import { UserContext } from "../hooks/useUsersAuth";
-import { PostItem } from "../components/PostItem";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { PostItem } from '../components/PostItem';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { usePosts } from '../hooks/usePosts';
+import { useAuth } from '../hooks/useAuth';
+import { useEffect } from 'react';
+import { fetchPosts } from '../redux/posts/operations';
+import { logout, updateUserDocDataInFirestore } from '../firebase/auth';
+import { removeUser, setUpUser } from '../redux/user/userSlice';
 
 export const ProfileScreen = () => {
-  const { userId, users, setUsers } = useContext(UserContext);
+  const { user, token, isLoggedIn, isRefreshing } = useAuth();
+  const { posts, status, error } = usePosts();
+  const dispatch = useDispatch();
 
-  const currentUser = users.find((user) => user.id === userId);
-  const { avatar } = currentUser;
+  useEffect(() => {
+    dispatch(fetchPosts(user));
+  }, [dispatch]);
 
   const navigation = useNavigation();
 
-  const handleAvatarChange = (userId, newAva) =>
-    setUsers((state) =>
-      state.map((user) => {
-        if (user.id === userId) user.avatar = newAva;
-        return user;
+  const handleAvatarChange = async (userId, newAva) => {
+    dispatch(
+      setUpUser({
+        user: {
+          avatar: newAva,
+        },
       })
     );
-
-  const incrementLike = (postId) => {
-    setUsers((state) =>
-      state.map((user) => {
-        if (user.id === userId) {
-          return {
-            ...user,
-            posts: user.posts.map((post) =>
-              post.id === postId ? { ...post, likes: post.likes + 1 } : post
-            ),
-          };
-        } else {
-          return user;
-        }
-      })
-    );
+    await updateUserDocDataInFirestore(userId, { avatar: newAva }, 'users');
   };
+
+  // const incrementLike = (postId) => {
+  //   setUsers((state) =>
+  //     state.map((user) => {
+  //       if (user.id === userId) {
+  //         return {
+  //           ...user,
+  //           posts: user.posts.map((post) =>
+  //             post.id === postId ? { ...post, likes: post.likes + 1 } : post
+  //           ),
+  //         };
+  //       } else {
+  //         return user;
+  //       }
+  //     })
+  //   );
+  // };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={-165}
       style={styles.container}
     >
       <ImageBackground
         style={styles.backgroundImage}
-        source={require("../assets/img/login-bg.jpg")}
+        source={require('../assets/img/login-bg.jpg')}
       >
         <View style={styles.profileContainer}>
           <TouchableOpacity
             style={styles.logoutIco}
-            onPress={() => navigation.navigate("Auth", { screen: "Login" })}
+            onPress={() => {
+              dispatch(removeUser());
+              logout();
+              navigation.navigate('Auth', { screen: 'Login' });
+            }}
           >
             <MaterialIcons name="logout" size={24} color="#BDBDBD" />
           </TouchableOpacity>
           <ProfileAvatar
-            currentAva={avatar}
+            currentAva={user?.avatar}
             handleAvatarChange={handleAvatarChange}
-            userId={userId}
+            userId={user?.id}
           />
-          {currentUser.posts.length > 0 && (
+          {status === 'resolved' && posts?.length > 0 && (
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={currentUser.posts}
+              data={posts}
               renderItem={({ item }) => (
                 <PostItem
                   item={item}
                   incrementLike={() => incrementLike(item.id)}
                   commentDetails={() => {
-                    navigation.navigate("Comments", {
+                    navigation.navigate('Comments', {
                       post: item,
-                      currentUser: currentUser,
+                      currentUser: user,
                     });
                   }}
-                  locationDetails={() => navigation.navigate("Map", item)}
+                  locationDetails={() => navigation.navigate('Map', item)}
                 />
               )}
               keyExtractor={(item) => item.id}
+              refreshControl={
+                <RefreshControl onRefresh={() => dispatch(fetchPosts())} />
+              }
             />
+          )}
+          {status === 'loading' && <Text>Loading...</Text>}
+          {status === 'rejected' && (
+            <Text>Opps and error occured: '{error}' 😒</Text>
           )}
         </View>
       </ImageBackground>
@@ -98,20 +122,20 @@ export const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
   backgroundImage: {
     paddingTop: 100,
     flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-end",
-    flexDirection: "row",
-    resizeMode: "cover",
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    resizeMode: 'cover',
   },
   profileContainer: {
-    backgroundColor: "#fff",
-    width: "100%",
-    minHeight: "80%",
+    backgroundColor: '#fff',
+    width: '100%',
+    minHeight: '80%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 90,
@@ -120,7 +144,7 @@ const styles = StyleSheet.create({
   },
 
   logoutIco: {
-    position: "absolute",
+    position: 'absolute',
     top: 20,
     right: 20,
   },

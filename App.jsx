@@ -1,22 +1,17 @@
-import "react-native-gesture-handler";
-import { StatusBar } from "expo-status-bar";
-import {
-  Keyboard,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
-import { useFonts } from "expo-font";
+import 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View } from 'react-native';
+import { useFonts } from 'expo-font';
 
-import { UserContext, useUserAuth } from "./src/hooks/useUsersAuth";
-import { MainNavigation } from "./src/routes/MainNavigation";
+import { MainNavigation } from './src/routes/MainNavigation';
+import { Provider } from 'react-redux';
+
+import store from './src/redux/store';
 
 export default function App() {
-  const { users, setUsers, userId, setUserId } = useUserAuth();
-
   const [fontsLoaded, error] = useFonts({
-    "Roboto-Regular": require("./src/assets/fonts/Roboto-Regular.ttf"),
-    "Roboto-Medium": require("./src/assets/fonts/Roboto-Medium.ttf"),
+    'Roboto-Regular': require('./src/assets/fonts/Roboto-Regular.ttf'),
+    'Roboto-Medium': require('./src/assets/fonts/Roboto-Medium.ttf'),
   });
 
   if (!fontsLoaded && !error) {
@@ -24,20 +19,19 @@ export default function App() {
   }
 
   return (
-    // <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <View style={styles.container}>
-      <UserContext.Provider value={{ users, setUsers, userId, setUserId }}>
+    <Provider store={store}>
+      <View style={styles.container}>
         <MainNavigation />
-      </UserContext.Provider>
-      <StatusBar style="auto" />
-    </View>
-    // </TouchableWithoutFeedback>
+
+        <StatusBar style="auto" />
+      </View>
+    </Provider>
   );
 }
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
 });

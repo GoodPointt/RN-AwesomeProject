@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { RegAvatar } from "./RegAvatar";
-import { ModalBox } from "./ModalBox";
+import { useState } from 'react';
+import { RegAvatar } from './RegAvatar';
+import { ModalBox } from './ModalBox';
 
 export const ProfileAvatar = ({ currentAva, handleAvatarChange, userId }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -9,7 +9,11 @@ export const ProfileAvatar = ({ currentAva, handleAvatarChange, userId }) => {
 
   const handleAvatarPress = () => {
     if (!avatar) setModalVisible(true);
-    if (avatar) setAvatar(null);
+    if (avatar) {
+      setAvatar(null);
+
+      handleAvatarChange(userId, null);
+    }
   };
 
   return (
@@ -18,10 +22,10 @@ export const ProfileAvatar = ({ currentAva, handleAvatarChange, userId }) => {
       <ModalBox
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-        placeholder={"Avatar URL"}
+        placeholder={'Avatar URL'}
         value={avatar}
         handleChange={setAvatar}
-        text={"Enter URL for your avatar"}
+        text={'Enter URL for your avatar'}
         onPress={() => handleAvatarChange(userId, avatar)}
       />
     </>
