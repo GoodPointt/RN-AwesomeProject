@@ -7,6 +7,7 @@ import { MainNavigation } from './src/routes/MainNavigation';
 import { Provider } from 'react-redux';
 
 import store from './src/redux/store';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export default function App() {
   const [fontsLoaded, error] = useFonts({
@@ -24,6 +25,7 @@ export default function App() {
         <MainNavigation />
 
         <StatusBar style="auto" />
+        <Toast />
       </View>
     </Provider>
   );

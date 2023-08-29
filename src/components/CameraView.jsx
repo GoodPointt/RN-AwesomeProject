@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-import { Camera } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useState, useEffect, useRef } from 'react';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Camera } from 'expo-camera';
+import * as MediaLibrary from 'expo-media-library';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export const CameraView = ({ setPhoto }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -15,10 +15,10 @@ export const CameraView = ({ setPhoto }) => {
         const { status } = await Camera.requestCameraPermissionsAsync();
         await MediaLibrary.requestPermissionsAsync();
 
-        if (status !== "granted")
-          alert("Permission to access camera was denied");
+        if (status !== 'granted')
+          alert('Permission to access camera was denied');
 
-        setHasPermission(status === "granted");
+        setHasPermission(status === 'granted');
       } catch (error) {
         alert(error.message);
       }
@@ -34,7 +34,7 @@ export const CameraView = ({ setPhoto }) => {
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} ref={setCameraRef} ratio="3:4">
+      <Camera style={styles.camera} type={type} ref={setCameraRef}>
         <View style={styles.photoView}>
           <TouchableOpacity
             style={styles.button}
@@ -70,44 +70,44 @@ export const CameraView = ({ setPhoto }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  camera: { flex: 1, aspectRatio: 3 / 4 },
+  camera: { flex: 1, width: '100%' },
   photoView: {
     flex: 1,
-    backgroundColor: "transparent",
-    justifyContent: "flex-end",
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
   },
 
   flipContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 5,
     right: 5,
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
   },
 
-  button: { flex: 0.23, alignSelf: "center" },
+  button: { flex: 0.23, alignSelf: 'center' },
 
   takePhotoOut: {
     borderWidth: 2,
-    borderColor: "white",
+    borderColor: 'white',
     height: 50,
     width: 50,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 50,
   },
 
   takePhotoInner: {
     borderWidth: 2,
-    borderColor: "#fff",
+    borderColor: '#fff',
     height: 40,
     width: 40,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 50,
   },
 });

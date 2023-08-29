@@ -1,5 +1,12 @@
-import { FontAwesome5, Ionicons } from '@expo/vector-icons';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import { PostInput } from './PostInput';
 import { LargeButton } from './LargeButton';
 import { useEffect, useState } from 'react';
@@ -9,6 +16,12 @@ import * as Location from 'expo-location';
 import { useDispatch } from 'react-redux';
 import { addPost } from '../redux/posts/operations';
 
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebase/config';
+import { uriToBlob } from '../utils/uriToBlob';
+import { getImageUri } from '../utils/getImageUri';
+// import { uploadImage } from '../utils/uploadImage';
+
 export const CreatePostForm = () => {
   const dispatch = useDispatch();
 
@@ -17,6 +30,8 @@ export const CreatePostForm = () => {
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [coord, setCoord] = useState(null);
+  const [isImageUploading, setIsImageUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const navigation = useNavigation();
 
@@ -49,24 +64,66 @@ export const CreatePostForm = () => {
     setName('');
     setIsCameraOn(false);
     setCoord(null);
+    setProgress(0);
+  };
+
+  const uploadImage = (uri) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const blob = await uriToBlob(uri);
+
+        const storageRef = ref(storage, `photos/${Date.now()}`);
+        const uploadTask = uploadBytesResumable(storageRef, blob);
+
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setProgress(progress.toFixed());
+          },
+          (error) => {
+            reject(error.message);
+          },
+          async () => {
+            try {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              setPhoto(downloadURL);
+              resolve(downloadURL);
+            } catch (error) {
+              reject(error.message);
+            }
+          }
+        );
+      } catch (error) {
+        reject(error.message);
+      }
+    });
   };
 
   const handePublishPost = async () => {
-    const newPost = {
-      createdAt: Date.now(),
-      photo,
-      name,
-      location: {
-        name: location,
-        coord,
-      },
-      likes: 0,
-      isLiked: false,
-      totalComments: 0,
-      isCommented: false,
-    };
-
-    dispatch(addPost(newPost));
+    setIsImageUploading(true);
+    await uploadImage(photo)
+      .then((downloadURL) => {
+        return (newPost = {
+          createdAt: Date.now(),
+          photo: downloadURL,
+          name,
+          location: {
+            name: location,
+            coord,
+          },
+          likes: 0,
+          isLiked: false,
+          totalComments: 0,
+          isCommented: false,
+        });
+      })
+      .then((newPost) => dispatch(addPost(newPost)))
+      .catch((error) => {
+        alert('Opps... uploading failed😒', error);
+      })
+      .finally(() => setIsImageUploading(false));
 
     clearPostForm();
 
@@ -80,7 +137,16 @@ export const CreatePostForm = () => {
           style={[styles.addImgContainer, isCameraOn && styles.extraStyles]}
         >
           {photo ? (
-            <Image source={{ uri: photo }} style={styles.previewImg} />
+            isImageUploading ? (
+              <>
+                <ActivityIndicator size={'medium'} color={'#FF6C00'} />
+                <Text style={styles.uploadingText}>
+                  Uploading image...{progress}%
+                </Text>
+              </>
+            ) : (
+              <Image source={{ uri: photo }} style={styles.previewImg} />
+            )
           ) : (
             !isCameraOn && (
               <TouchableOpacity onPress={() => setIsCameraOn(true)}>
@@ -92,7 +158,11 @@ export const CreatePostForm = () => {
           )}
           {isCameraOn && !photo && <CameraView setPhoto={setPhoto} />}
         </View>
-        <Text style={styles.text}>Upload photo</Text>
+
+        <TouchableOpacity onPress={() => getImageUri(setPhoto)}>
+          <Entypo name="image" size={50} color="black" />
+          <Text style={styles.text}>Upload photo</Text>
+        </TouchableOpacity>
         <View style={styles.inputsWrapper}>
           <PostInput
             placeholder={'Name...'}
@@ -162,4 +232,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   previewImg: { width: '100%', height: '100%' },
+  uploadingText: { color: '#fff', fontSize: 20 },
 });

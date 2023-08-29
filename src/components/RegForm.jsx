@@ -1,5 +1,5 @@
 import { StyleSheet, Text } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RegAvatar } from './RegAvatar';
 import { LargeButton } from './LargeButton';
 import { FormInput } from './FormInput';
@@ -10,8 +10,14 @@ import { useDispatch } from 'react-redux';
 import { setUpUser, udateUserAva } from '../redux/user/userSlice';
 import { useAuth } from '../hooks/useAuth';
 import { registerUser, writeDataToFirestore } from '../firebase/auth';
+import {
+  LOGIN_VALIDATION_SCHEMA_EMAIL,
+  LOGIN_VALIDATION_SCHEMA_PASSWORD,
+  REGISTER_VALIDATION_SCHEMA_LOGIN,
+} from '../utils/yupValidation';
+import { errorFormat } from '../utils/errorFormat';
 
-export const RegForm = ({ navigation }) => {
+export const RegForm = ({ navigation, setIstAuthLoading }) => {
   const dispatch = useDispatch();
   const { isLoggedIn } = useAuth();
 
@@ -21,6 +27,11 @@ export const RegForm = ({ navigation }) => {
   const [regEmailValue, setRegEmailValue] = useState('');
   const [regPasswordValue, setRegPasswordValue] = useState('');
   const [avatar, setAvatar] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({
+    email: '',
+    password: '',
+    login: '',
+  });
 
   useEffect(() => {
     isLoggedIn && navigation.navigate('Home');
@@ -33,18 +44,38 @@ export const RegForm = ({ navigation }) => {
     }
   };
 
-  const handleSubmit = async () => {
+  const validateField = async (fieldName, value, schema) => {
     try {
-      const { user } = await registerUser(regEmailValue, regPasswordValue);
+      setIsFocused(null);
+      await schema.validate(value);
 
+      setValidationErrors({
+        ...validationErrors,
+        [fieldName]: '',
+      });
+    } catch (validationError) {
+      setValidationErrors({
+        ...validationErrors,
+        [fieldName]: validationError.errors.find((error) =>
+          error.toLowerCase().includes(fieldName)
+        ),
+      });
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIstAuthLoading(true);
+    try {
+      const result = await registerUser(regEmailValue, regPasswordValue);
+      if (!result) return;
       const userData = {
         name: regLoginValue,
         email: regEmailValue,
-        uid: user.uid,
+        uid: result.user.uid,
         avatar,
       };
 
-      const patchId = await writeDataToFirestore(userData, user);
+      const patchId = await writeDataToFirestore(userData, result.user);
 
       dispatch(
         setUpUser({
@@ -52,11 +83,13 @@ export const RegForm = ({ navigation }) => {
             ...userData,
             ...patchId,
           },
-          token: user.stsTokenManager.accessToken,
+          token: result.user.stsTokenManager.accessToken,
         })
       );
     } catch (error) {
-      alert(error.message);
+      errorFormat(error.message);
+    } finally {
+      setIstAuthLoading(false);
     }
   };
 
@@ -81,7 +114,14 @@ export const RegForm = ({ navigation }) => {
         isFocused={isFocused === 'login'}
         handleChange={setRegLoginValue}
         handleFocus={() => setIsFocused('login')}
-        handleBlur={() => setIsFocused(null)}
+        handleBlur={() =>
+          validateField(
+            'login',
+            regLoginValue,
+            REGISTER_VALIDATION_SCHEMA_LOGIN
+          )
+        }
+        error={validationErrors.login}
       />
       <FormInput
         placeholder={'E-mail'}
@@ -91,7 +131,10 @@ export const RegForm = ({ navigation }) => {
         isFocused={isFocused === 'email'}
         handleChange={setRegEmailValue}
         handleFocus={() => setIsFocused('email')}
-        handleBlur={() => setIsFocused(null)}
+        handleBlur={() =>
+          validateField('email', regEmailValue, LOGIN_VALIDATION_SCHEMA_EMAIL)
+        }
+        error={validationErrors.email}
       />
       <FormInput
         placeholder={'Password'}
@@ -101,13 +144,27 @@ export const RegForm = ({ navigation }) => {
         isFocused={isFocused === 'password'}
         handleChange={setRegPasswordValue}
         handleFocus={() => setIsFocused('password')}
-        handleBlur={() => setIsFocused(null)}
+        handleBlur={() =>
+          validateField(
+            'password',
+            regPasswordValue,
+            LOGIN_VALIDATION_SCHEMA_PASSWORD
+          )
+        }
+        error={validationErrors.password}
       />
       <LargeButton
         onPress={() => handleSubmit()}
         text={'Register'}
         extraStyles={styles.loginRegisterBtnMargin}
-        isDisabled={!regLoginValue && !regEmailValue && !regPasswordValue}
+        isDisabled={
+          !regLoginValue ||
+          !regEmailValue ||
+          !regPasswordValue ||
+          validationErrors.email !== '' ||
+          validationErrors.password !== '' ||
+          validationErrors.login !== ''
+        }
       />
     </>
   );

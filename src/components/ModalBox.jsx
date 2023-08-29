@@ -1,6 +1,8 @@
-import { Modal, StyleSheet, Text, View } from "react-native";
-import { LargeButton } from "./LargeButton";
-import { FormInput } from "./FormInput";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { LargeButton } from './LargeButton';
+import { FormInput } from './FormInput';
+import { Entypo } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 export const ModalBox = ({
   isModalVisible,
@@ -11,6 +13,26 @@ export const ModalBox = ({
   text,
   onPress,
 }) => {
+  const handleImagePicker = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Storage permission denied');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [3, 4],
+      quality: 0.5,
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      const selectedAsset = result.assets[0];
+      handleChange(String(selectedAsset.uri));
+    }
+  };
+
   return (
     <Modal
       animationType="slide"
@@ -25,6 +47,11 @@ export const ModalBox = ({
           value={value}
           handleChange={handleChange}
         />
+
+        <TouchableOpacity onPress={handleImagePicker}>
+          <Entypo name="image" size={50} color="black" />
+          <Text style={styles.text}>Upload from gallery</Text>
+        </TouchableOpacity>
         <LargeButton
           onPress={() => {
             setModalVisible(false);
@@ -33,7 +60,7 @@ export const ModalBox = ({
               onPress && onPress();
             }
           }}
-          text={"Confirm"}
+          text={'Confirm'}
           isDisabled={false}
         />
       </View>
@@ -46,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
 
     borderRadius: 14,
-    backgroundColor: "#cacacadf",
+    backgroundColor: '#cacacadf',
     padding: 20,
   },
 });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
   ImageBackground,
   Keyboard,
@@ -6,54 +6,62 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
-} from "react-native";
-import { RegForm } from "../components/RegForm";
-import { TouchableBlueText } from "../components/TouchableBlueText";
-import { useNavigation } from "@react-navigation/native";
+} from 'react-native';
+import { RegForm } from '../components/RegForm';
+import { TouchableBlueText } from '../components/TouchableBlueText';
+import { useNavigation } from '@react-navigation/native';
+import { AuthLoader } from '../components/authLoader';
 
 export const RegistrationScreen = () => {
   const navigation = useNavigation();
+  const [isAuthLoading, setIstAuthLoading] = useState(false);
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={-165}
-        style={styles.container}
-      >
-        <ImageBackground
-          style={styles.backgroundImage}
-          source={require("../assets/img/login-bg.jpg")}
+    <>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={-165}
+          style={styles.container}
         >
-          <View style={styles.regContainer}>
-            <RegForm navigation={navigation} />
+          <ImageBackground
+            style={styles.backgroundImage}
+            source={require('../assets/img/login-bg.jpg')}
+          >
+            <View style={styles.regContainer}>
+              <RegForm
+                navigation={navigation}
+                setIstAuthLoading={setIstAuthLoading}
+              />
 
-            <TouchableBlueText
-              text={"Already have an account? Login"}
-              onPress={() => navigation.navigate("Auth", { screen: "Login" })}
-            />
-          </View>
-        </ImageBackground>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+              <TouchableBlueText
+                text={'Already have an account? Login'}
+                onPress={() => navigation.navigate('Auth', { screen: 'Login' })}
+              />
+            </View>
+          </ImageBackground>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+      {isAuthLoading ? <AuthLoader type={'register'} /> : null}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
   backgroundImage: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-end",
-    flexDirection: "row",
-    resizeMode: "cover",
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    resizeMode: 'cover',
   },
   regContainer: {
-    backgroundColor: "#fff",
-    width: "100%",
+    backgroundColor: '#fff',
+    width: '100%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 90,
