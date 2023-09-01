@@ -2,27 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { cameraPremissionsRequest } from '../utils/cameraPremissionsRequest';
 
-export const CameraView = ({ setPhoto }) => {
+export const CameraView = ({ setPhoto, setIsCameraOn }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { status } = await Camera.requestCameraPermissionsAsync();
-        await MediaLibrary.requestPermissionsAsync();
-
-        if (status !== 'granted')
-          alert('Permission to access camera was denied');
-
-        setHasPermission(status === 'granted');
-      } catch (error) {
-        alert(error.message);
-      }
-    })();
+    cameraPremissionsRequest(setHasPermission);
   }, []);
 
   if (hasPermission === null) {
@@ -53,6 +42,12 @@ export const CameraView = ({ setPhoto }) => {
         </View>
       </Camera>
       <TouchableOpacity
+        style={styles.closeCamera}
+        onPress={() => setIsCameraOn(false)}
+      >
+        <EvilIcons name="close" size={24} color="#fff" />
+      </TouchableOpacity>
+      <TouchableOpacity
         style={styles.flipContainer}
         onPress={() => {
           setType(
@@ -75,7 +70,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  camera: { flex: 1, width: '100%' },
+  camera: {
+    flex: 1,
+    width: '100%',
+  },
   photoView: {
     flex: 1,
     backgroundColor: 'transparent',
@@ -85,11 +83,11 @@ const styles = StyleSheet.create({
   flipContainer: {
     position: 'absolute',
     top: 5,
-    right: 5,
+    right: 10,
     alignSelf: 'flex-end',
   },
 
-  button: { flex: 0.23, alignSelf: 'center' },
+  button: { flex: 0.13, alignSelf: 'center' },
 
   takePhotoOut: {
     borderWidth: 2,
@@ -110,4 +108,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 50,
   },
+  closeCamera: { position: 'absolute', left: 10, top: 10 },
 });

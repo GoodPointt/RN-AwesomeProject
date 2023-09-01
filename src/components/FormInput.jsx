@@ -14,7 +14,7 @@ export const FormInput = ({
   handleBlur,
   error,
 }) => {
-  const [isTouchable, setIsTouchable] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
 
   return (
     <View>
@@ -32,14 +32,14 @@ export const FormInput = ({
         onChangeText={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        secureTextEntry={name === 'password' && isTouchable}
+        secureTextEntry={name === 'password' && isVisible}
       />
       {name === 'password' && value && (
         <TouchableBlueText
           style={styles.showBtn}
-          onPress={() => setIsTouchable(!isTouchable)}
+          onPress={() => setIsVisible(!isVisible)}
           text={
-            isTouchable ? (
+            !isVisible ? (
               <Ionicons name="ios-eye-outline" size={24} color="#000" />
             ) : (
               <Ionicons name="ios-eye-off-outline" size={24} color="#000" />

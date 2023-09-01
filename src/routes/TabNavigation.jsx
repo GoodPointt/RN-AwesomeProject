@@ -1,11 +1,10 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { PostsScreen } from "../screens/PostsScreen";
-import { CreatePostsScreen } from "../screens/CreatePostsScreen";
-import { ProfileScreen } from "../screens/ProfileScreen";
-import { AntDesign, Feather, SimpleLineIcons } from "@expo/vector-icons";
-import { StyleSheet, View } from "react-native";
-import { CustomHeader } from "../components/CustomHeader";
-import { CommentsScreen } from "../screens/CommentsScreen";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { PostsScreen } from '../screens/PostsScreen';
+import { CreatePostsScreen } from '../screens/CreatePostsScreen';
+import { ProfileScreen } from '../screens/ProfileScreen';
+import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
+import { StyleSheet, View } from 'react-native';
+import { CustomHeader } from '../components/CustomHeader';
 
 export const TabNavigation = () => {
   const Tabs = createBottomTabNavigator();
@@ -16,7 +15,7 @@ export const TabNavigation = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           let isActive;
-          if (route.name === "PostsScreen") {
+          if (route.name === 'PostsScreen') {
             isActive = focused;
             return (
               <View
@@ -28,12 +27,12 @@ export const TabNavigation = () => {
                 <SimpleLineIcons
                   name="grid"
                   size={24}
-                  color={isActive ? "#fff" : "#212121ba"}
+                  color={isActive ? '#fff' : '#212121ba'}
                 />
               </View>
             );
           }
-          if (route.name === "CreatePostsScreen") {
+          if (route.name === 'CreatePostsScreen') {
             isActive = focused;
             return (
               <View
@@ -45,12 +44,12 @@ export const TabNavigation = () => {
                 <AntDesign
                   name="plus"
                   size={24}
-                  color={isActive ? "#fff" : "#212121ba"}
+                  color={isActive ? '#fff' : '#212121ba'}
                 />
               </View>
             );
           }
-          if (route.name === "ProfileScreen") {
+          if (route.name === 'ProfileScreen') {
             isActive = focused;
 
             return (
@@ -63,7 +62,7 @@ export const TabNavigation = () => {
                 <Feather
                   name="user"
                   size={24}
-                  color={isActive ? "#fff" : "#212121ba"}
+                  color={isActive ? '#fff' : '#212121ba'}
                 />
               </View>
             );
@@ -76,12 +75,12 @@ export const TabNavigation = () => {
         name="PostsScreen"
         component={PostsScreen}
         options={({ navigation }) => ({
-          title: "PostsScreen",
+          title: 'PostsScreen',
           header: () => (
             <CustomHeader
-              title={"Posts"}
+              title={'Posts'}
               navigation={navigation}
-              isShown={"right"}
+              isShown={'right'}
             />
           ),
         })}
@@ -91,23 +90,24 @@ export const TabNavigation = () => {
         name="CreatePostsScreen"
         component={CreatePostsScreen}
         options={({ navigation }) => ({
-          title: "CreatePostsScreen",
+          title: 'CreatePostsScreen',
           header: () => (
             <CustomHeader
-              title={"Create post"}
+              title={'Create post'}
               navigation={navigation}
-              isShown={"left"}
+              isShown={'left'}
             />
           ),
-          tabBarStyle: { display: "none" },
+          tabBarStyle: { display: 'none' },
           unmountOnBlur: true,
         })}
       />
+
       <Tabs.Screen
         name="ProfileScreen"
         component={ProfileScreen}
         options={({ navigation }) => ({
-          title: "ProfileScreen",
+          title: 'ProfileScreen',
           header: () => null,
         })}
       />
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   activeIconItem: {
-    backgroundColor: "#FF6C00",
+    backgroundColor: '#FF6C00',
     paddingHorizontal: 20,
     borderRadius: 20,
   },

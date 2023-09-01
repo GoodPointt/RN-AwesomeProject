@@ -1,36 +1,67 @@
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Modal,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { LargeButton } from './LargeButton';
-import { FormInput } from './FormInput';
-import { Entypo } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
+import { useState } from 'react';
+import { CameraView } from './CameraView';
+import { uploadImage } from '../utils/uploadImage';
+import { useDispatch } from 'react-redux';
+import { setUpUser } from '../redux/user/userSlice';
+import { updateUserDocDataInFirestore } from '../firebase/auth';
+import { UploadProcess } from './UploadProcess';
+import GalleryUpload from './GalleryUpload';
+import { Ionicons } from '@expo/vector-icons';
 
 export const ModalBox = ({
   isModalVisible,
   setModalVisible,
-  value,
-  placeholder,
-  handleChange,
-  text,
-  onPress,
+  setAvatar,
+  profile,
 }) => {
-  const handleImagePicker = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Storage permission denied');
-      return;
+  const [photo, setPhoto] = useState('');
+  const [isCameraOn, setIsCameraOn] = useState(true);
+  const [progress, setProgress] = useState(0);
+
+  const dispatch = useDispatch();
+
+  const applyNewAvatar = async () => {
+    try {
+      if (profile) {
+        const url = await uploadImage('avatar', photo, setProgress, setAvatar);
+
+        dispatch(
+          setUpUser({
+            user: {
+              avatar: url,
+            },
+          })
+        );
+
+        await updateUserDocDataInFirestore(profile, { avatar: url }, 'users');
+
+        setAvatar(url);
+        setModalVisible(false);
+        setPhoto('');
+        setProgress(0);
+
+        return;
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Opps... uploading failed😒',
+        text2: error.message,
+      });
     }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [3, 4],
-      quality: 0.5,
-    });
-
-    if (!result.canceled && result.assets.length > 0) {
-      const selectedAsset = result.assets[0];
-      handleChange(String(selectedAsset.uri));
-    }
+    setAvatar(photo);
+    setModalVisible(false);
+    setPhoto('');
   };
 
   return (
@@ -41,26 +72,37 @@ export const ModalBox = ({
       onRequestClose={() => setModalVisible(false)}
     >
       <View style={styles.modalContainer}>
-        <Text style={styles.text}>{text}</Text>
-        <FormInput
-          placeholder={placeholder}
-          value={value}
-          handleChange={handleChange}
-        />
+        <View
+          style={[
+            styles.addImgContainer,
+            isCameraOn && !photo && styles.extraStyles,
+          ]}
+        >
+          {progress ? (
+            <View style={styles.progressWrap}>
+              <ActivityIndicator size={50} color={'#FF6C00'} />
+              <UploadProcess progress={progress} />
+            </View>
+          ) : photo ? (
+            <Image source={{ uri: photo }} style={styles.previewImg} />
+          ) : (
+            !isCameraOn && (
+              <TouchableOpacity onPress={() => setIsCameraOn(true)}>
+                <View style={styles.iconWrapper}>
+                  <Ionicons name="camera-sharp" size={24} color="#BDBDBD" />
+                </View>
+              </TouchableOpacity>
+            )
+          )}
+          {isCameraOn && !photo && (
+            <CameraView setPhoto={setPhoto} setIsCameraOn={setIsCameraOn} />
+          )}
+        </View>
+        <GalleryUpload setPhoto={setPhoto} />
 
-        <TouchableOpacity onPress={handleImagePicker}>
-          <Entypo name="image" size={50} color="black" />
-          <Text style={styles.text}>Upload from gallery</Text>
-        </TouchableOpacity>
         <LargeButton
-          onPress={() => {
-            setModalVisible(false);
-            handleChange = { handleChange };
-            {
-              onPress && onPress();
-            }
-          }}
-          text={'Confirm'}
+          onPress={applyNewAvatar}
+          text={photo ? 'Confirm' : 'Back'}
           isDisabled={false}
         />
       </View>
@@ -71,9 +113,40 @@ export const ModalBox = ({
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-
     borderRadius: 14,
     backgroundColor: '#cacacadf',
     padding: 20,
+    justifyContent: 'space-around',
   },
+  progressWrap: {
+    flex: 1,
+    backgroundColor: '#3232328e',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+  },
+  progressText: { color: '#fff', fontSize: 16 },
+  addImgContainer: {
+    alignSelf: 'center',
+    height: 150,
+    width: 150,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 8,
+
+    borderColor: '#E8E8E8',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  previewImg: { width: '100%', height: '100%', borderRadius: 8 },
+  iconWrapper: {
+    height: 60,
+    width: 60,
+    backgroundColor: '#ffffff',
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  extraStyles: { width: '95%', height: '60%' },
 });

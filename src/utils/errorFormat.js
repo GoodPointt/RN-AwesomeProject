@@ -5,6 +5,7 @@ export const errorFormat = (error) => {
   const errorMsg = errArr[1].split(')')[0];
   Toast.show({
     type: 'error',
-    text1: `⚠️Error: ${errorMsg}`,
+    text1: `Login or password wrong`,
+    text2: `⚠️Error: ${errorMsg}`,
   });
 };

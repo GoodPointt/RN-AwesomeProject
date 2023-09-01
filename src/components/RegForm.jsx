@@ -7,7 +7,7 @@ import { FormInput } from './FormInput';
 import { ModalBox } from './ModalBox';
 
 import { useDispatch } from 'react-redux';
-import { setUpUser, udateUserAva } from '../redux/user/userSlice';
+import { setUpUser } from '../redux/user/userSlice';
 import { useAuth } from '../hooks/useAuth';
 import { registerUser, writeDataToFirestore } from '../firebase/auth';
 import {
@@ -16,11 +16,13 @@ import {
   REGISTER_VALIDATION_SCHEMA_LOGIN,
 } from '../utils/yupValidation';
 import { errorFormat } from '../utils/errorFormat';
+import { uploadImage } from '../utils/uploadImage';
 
 export const RegForm = ({ navigation, setIstAuthLoading }) => {
   const dispatch = useDispatch();
   const { isLoggedIn } = useAuth();
 
+  const [progress, setProgress] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(null);
   const [regLoginValue, setRegLoginValue] = useState('');
@@ -68,11 +70,13 @@ export const RegForm = ({ navigation, setIstAuthLoading }) => {
     try {
       const result = await registerUser(regEmailValue, regPasswordValue);
       if (!result) return;
+      const url = await uploadImage('avatar', avatar, setProgress, setAvatar);
+
       const userData = {
         name: regLoginValue,
         email: regEmailValue,
         uid: result.user.uid,
-        avatar,
+        avatar: url,
       };
 
       const patchId = await writeDataToFirestore(userData, result.user);
@@ -96,14 +100,13 @@ export const RegForm = ({ navigation, setIstAuthLoading }) => {
   return (
     <>
       <RegAvatar avatar={avatar} handleAvatarPress={handleAvatarPress} />
-      <Text style={styles.title}>Registration</Text>
+      <Text style={styles.title}>Registration </Text>
+
       <ModalBox
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-        placeholder={'Avatar URL'}
-        value={avatar}
-        handleChange={setAvatar}
-        text={'Enter URL for your avatar'}
+        setAvatar={setAvatar}
+        profile={null}
       />
 
       <FormInput

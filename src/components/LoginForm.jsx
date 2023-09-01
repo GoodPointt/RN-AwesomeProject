@@ -9,15 +9,14 @@ import { FormInput } from './FormInput';
 import { useEffect, useState } from 'react';
 import { TouchableBlueText } from './TouchableBlueText';
 
-import { auth, db } from '../firebase/config';
+import { auth } from '../firebase/config';
 import { useDispatch } from 'react-redux';
 import { setUpUser } from '../redux/user/userSlice';
 import { useAuth } from '../hooks/useAuth';
-import { collection, getDocs } from 'firebase/firestore';
-import { logIn } from '../firebase/auth';
+import { getCurrentUserData, logIn } from '../firebase/auth';
 import { errorFormat } from '../utils/errorFormat';
 
-export const LoginForm = ({ navigation, setIstAuthLoading }) => {
+export const LoginForm = ({ navigation, setIsAuthLoading }) => {
   const [isFocused, setIsFocused] = useState(null);
   const [loginEmailValue, setLoginEmailValue] = useState('');
   const [loginPasswordValue, setLoginPasswordValue] = useState('');
@@ -27,25 +26,19 @@ export const LoginForm = ({ navigation, setIstAuthLoading }) => {
   });
 
   const dispatch = useDispatch();
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     isLoggedIn && navigation.navigate('Home');
   }, [isLoggedIn]);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    const authStateChanged = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setIstAuthLoading(true);
+        setIsAuthLoading(true);
         try {
-          const usersCollectionRef = collection(db, 'users');
-          const data = await getDocs(usersCollectionRef);
-          const filteredData = data.docs.map((doc) => ({
-            ...doc.data(),
-          }));
-          const currentUserData = filteredData.find(
-            (data) => user.uid === data.uid
-          );
+          const currentUserData = await getCurrentUserData(user);
+
           dispatch(
             setUpUser({
               user: currentUserData,
@@ -55,14 +48,14 @@ export const LoginForm = ({ navigation, setIstAuthLoading }) => {
         } catch (error) {
           errorFormat(error.message);
         } finally {
-          setIstAuthLoading(false);
+          setIsAuthLoading(false);
         }
       } else {
         navigation.navigate('Auth');
       }
     });
 
-    return () => unsubscribe();
+    return () => authStateChanged();
   }, []);
 
   const resetForm = () => {
@@ -71,21 +64,14 @@ export const LoginForm = ({ navigation, setIstAuthLoading }) => {
   };
 
   const handleLogin = async () => {
-    setIstAuthLoading(true);
+    setIsAuthLoading(true);
 
     try {
       const loginUser = await logIn(loginEmailValue, loginPasswordValue);
 
       if (!loginUser) return;
 
-      const usersCollectionRef = collection(db, 'users');
-      const data = await getDocs(usersCollectionRef);
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-      }));
-      const currentUserData = filteredData.find(
-        (data) => auth?.currentUser?.uid === data.uid
-      );
+      const currentUserData = await getCurrentUserData(loginUser);
 
       dispatch(
         setUpUser({
@@ -97,7 +83,7 @@ export const LoginForm = ({ navigation, setIstAuthLoading }) => {
     } catch (error) {
       errorFormat(error.message);
     } finally {
-      setIstAuthLoading(false);
+      setIsAuthLoading(false);
     }
   };
 

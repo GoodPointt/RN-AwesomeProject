@@ -1,5 +1,9 @@
 import { Feather, SimpleLineIcons } from '@expo/vector-icons';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { addLike } from '../redux/posts/postsSlice';
+import { updateUserDocDataInFirestore } from '../firebase/auth';
+import { useAuth } from '../hooks/useAuth';
 
 export const PostItem = ({
   item: {
@@ -12,10 +16,24 @@ export const PostItem = ({
     isCommented,
     isLiked,
   },
-  incrementLike,
   commentDetails,
   locationDetails,
 }) => {
+  const dispatch = useDispatch();
+  const { user } = useAuth();
+
+  const incrementLike = (postId, likesCount) => {
+    dispatch(addLike({ postId: postId }));
+
+    updateUserDocDataInFirestore(
+      postId,
+      {
+        isLiked: true,
+        likes: likesCount + 1,
+      },
+      `users/${user.id}/posts`
+    );
+  };
   return (
     <View style={styles.itemContainer}>
       <Image source={{ uri: photo }} style={styles.itemImage} />

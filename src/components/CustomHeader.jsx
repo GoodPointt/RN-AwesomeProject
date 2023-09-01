@@ -1,11 +1,9 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { removeUser } from '../redux/user/userSlice';
-import { logout } from '../firebase/auth';
+import LogoutButton from './LogoutButton';
 
 export const CustomHeader = ({ title, navigation, isShown }) => {
-  const dispatch = useDispatch();
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerLeft}>
@@ -19,17 +17,7 @@ export const CustomHeader = ({ title, navigation, isShown }) => {
         <Text style={styles.headerTitle}>{title}</Text>
       </View>
       <View style={styles.headerRight}>
-        {isShown === 'right' && (
-          <TouchableOpacity
-            onPress={() => {
-              dispatch(removeUser());
-              logout();
-              navigation.navigate('Auth', { screen: 'Login' });
-            }}
-          >
-            <MaterialIcons name="logout" size={24} color="#BDBDBD" />
-          </TouchableOpacity>
-        )}
+        {isShown === 'right' && <LogoutButton profile={false} />}
       </View>
     </View>
   );

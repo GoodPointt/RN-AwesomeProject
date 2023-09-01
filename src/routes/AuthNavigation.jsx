@@ -1,6 +1,6 @@
-import { createStackNavigator } from "@react-navigation/stack";
-import { LoginScreen } from "../screens/LoginScreen";
-import { RegistrationScreen } from "../screens/RegistrationScreen";
+import { createStackNavigator } from '@react-navigation/stack';
+import { LoginScreen } from '../screens/LoginScreen';
+import { RegistrationScreen } from '../screens/RegistrationScreen';
 
 const AuthStack = createStackNavigator();
 
@@ -10,12 +10,12 @@ export const AuthStackNavigator = () => {
       <AuthStack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerMode: "none" }}
+        options={{ headerMode: 'none' }}
       />
       <AuthStack.Screen
         name="Registration"
         component={RegistrationScreen}
-        options={{ headerMode: "none" }}
+        options={{ headerMode: 'none' }}
       />
     </AuthStack.Navigator>
   );

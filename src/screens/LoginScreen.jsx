@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
-  const [isAuthLoading, setIstAuthLoading] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
 
   return (
     <>
@@ -30,7 +30,7 @@ export const LoginScreen = () => {
             <View style={styles.loginFormContainer}>
               <LoginForm
                 navigation={navigation}
-                setIstAuthLoading={setIstAuthLoading}
+                setIsAuthLoading={setIsAuthLoading}
               />
             </View>
           </ImageBackground>

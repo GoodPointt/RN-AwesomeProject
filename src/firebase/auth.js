@@ -1,19 +1,25 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   updateProfile,
   signOut,
 } from 'firebase/auth';
 import { auth, db } from './config';
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
 import { errorFormat } from '../utils/errorFormat';
 
-const authStateChanged = async (onChange = () => {}) => {
-  onAuthStateChanged((user) => {
-    onChange(user);
-  });
+export const registerUser = async (email, password) => {
+  try {
+    return await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const logIn = async (email, password) => {
@@ -25,16 +31,13 @@ export const logIn = async (email, password) => {
   }
 };
 
-const updateUserProfile = async (update) => {
-  const user = auth.currentUser;
-
-  if (user) {
-    try {
-      await updateProfile(user, update);
-    } catch (error) {
-      errorFormat(error.message);
-    }
-  }
+export const getCurrentUserData = async (user) => {
+  const usersCollectionRef = collection(db, 'users');
+  const data = await getDocs(usersCollectionRef);
+  const filteredData = data.docs.map((doc) => ({
+    ...doc.data(),
+  }));
+  return filteredData.find((data) => user.uid === data.uid);
 };
 
 export const logout = async () => {
@@ -67,10 +70,14 @@ export const writeDataToFirestore = async (userData) => {
   }
 };
 
-export const registerUser = async (email, password) => {
-  try {
-    return await createUserWithEmailAndPassword(auth, email, password);
-  } catch (error) {
-    throw error;
+const updateUserProfile = async (update) => {
+  const user = auth.currentUser;
+
+  if (user) {
+    try {
+      await updateProfile(user, update);
+    } catch (error) {
+      errorFormat(error.message);
+    }
   }
 };

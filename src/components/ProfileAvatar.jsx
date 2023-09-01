@@ -1,18 +1,41 @@
 import { useState } from 'react';
 import { RegAvatar } from './RegAvatar';
 import { ModalBox } from './ModalBox';
+import { useDispatch } from 'react-redux';
+import { setUpUser } from '../redux/user/userSlice';
+import { updateUserDocDataInFirestore } from '../firebase/auth';
 
-export const ProfileAvatar = ({ currentAva, handleAvatarChange, userId }) => {
+export const ProfileAvatar = ({ currentAva, userId }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const [avatar, setAvatar] = useState(currentAva);
+  const dispatch = useDispatch();
 
   const handleAvatarPress = () => {
     if (!avatar) setModalVisible(true);
     if (avatar) {
       setAvatar(null);
 
-      handleAvatarChange(userId, null);
+      handleAvatarRemove(userId, null);
+    }
+  };
+
+  const handleAvatarRemove = async (userId, newAva) => {
+    try {
+      dispatch(
+        setUpUser({
+          user: {
+            avatar: newAva,
+          },
+        })
+      );
+
+      await updateUserDocDataInFirestore(userId, { avatar: newAva }, 'users');
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: `⚠️Error: ${error.message}`,
+      });
     }
   };
 
@@ -22,11 +45,8 @@ export const ProfileAvatar = ({ currentAva, handleAvatarChange, userId }) => {
       <ModalBox
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-        placeholder={'Avatar URL'}
-        value={avatar}
-        handleChange={setAvatar}
-        text={'Enter URL for your avatar'}
-        onPress={() => handleAvatarChange(userId, avatar)}
+        setAvatar={setAvatar}
+        profile={userId}
       />
     </>
   );

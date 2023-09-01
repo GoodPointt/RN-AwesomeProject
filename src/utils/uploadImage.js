@@ -1,11 +1,13 @@
-import { getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebase/config';
+import { uriToBlob } from './uriToBlob';
 
-export const uploadImage = (uri, setPhoto, setProgress, uriToBlob) => {
+export const uploadImage = (path, uri, setProgress, setPhoto) => {
   return new Promise(async (resolve, reject) => {
     try {
       const blob = await uriToBlob(uri);
 
-      const storageRef = ref(storage, `photos/${Date.now()}`);
+      const storageRef = ref(storage, `${path}/${Date.now()}`);
       const uploadTask = uploadBytesResumable(storageRef, blob);
 
       uploadTask.on(
@@ -16,7 +18,7 @@ export const uploadImage = (uri, setPhoto, setProgress, uriToBlob) => {
           setProgress(progress.toFixed());
         },
         (error) => {
-          reject(error.message);
+          reject(error);
         },
         async () => {
           try {
@@ -29,7 +31,7 @@ export const uploadImage = (uri, setPhoto, setProgress, uriToBlob) => {
         }
       );
     } catch (error) {
-      reject(error.message);
+      reject(error);
     }
   });
 };

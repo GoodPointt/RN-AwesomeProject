@@ -3,8 +3,8 @@ import {
   ScrollView,
   StyleSheet,
   View,
-} from "react-native";
-import { CreatePostForm } from "../components/CreatePostForm";
+} from 'react-native';
+import { CreatePostForm } from '../components/CreatePostForm';
 
 export const CreatePostsScreen = () => {
   return (
@@ -14,8 +14,8 @@ export const CreatePostsScreen = () => {
       bounces={false}
     >
       <KeyboardAvoidingView
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={-70}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={-200}
         style={styles.containerAvoid}
       >
         <View style={styles.container}>
@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    flexDirection: "row",
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });

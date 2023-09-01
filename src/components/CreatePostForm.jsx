@@ -1,8 +1,7 @@
-import { Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import {
   Image,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   ActivityIndicator,
@@ -12,19 +11,16 @@ import { LargeButton } from './LargeButton';
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { CameraView } from './CameraView';
-import * as Location from 'expo-location';
 import { useDispatch } from 'react-redux';
 import { addPost } from '../redux/posts/operations';
 
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { storage } from '../firebase/config';
-import { uriToBlob } from '../utils/uriToBlob';
-import { getImageUri } from '../utils/getImageUri';
-// import { uploadImage } from '../utils/uploadImage';
+import { UploadProcess } from './UploadProcess';
+import { locationPremissionsRequest } from '../utils/locationPremissionsRequest';
+import { uploadImage } from '../utils/uploadImage';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import GalleryUpload from './GalleryUpload';
 
 export const CreatePostForm = () => {
-  const dispatch = useDispatch();
-
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [photo, setPhoto] = useState('');
   const [name, setName] = useState('');
@@ -34,28 +30,10 @@ export const CreatePostForm = () => {
   const [progress, setProgress] = useState(0);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    (async () => {
-      try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Permission to access location was denied');
-        }
-        let location = await Location.getCurrentPositionAsync({});
-
-        const coords = {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        };
-
-        setCoord(coords);
-      } catch (error) {
-        alert(error.message);
-      }
-    })();
+    locationPremissionsRequest(setCoord);
   }, [isCameraOn]);
 
   const clearPostForm = () => {
@@ -67,43 +45,9 @@ export const CreatePostForm = () => {
     setProgress(0);
   };
 
-  const uploadImage = (uri) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const blob = await uriToBlob(uri);
-
-        const storageRef = ref(storage, `photos/${Date.now()}`);
-        const uploadTask = uploadBytesResumable(storageRef, blob);
-
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setProgress(progress.toFixed());
-          },
-          (error) => {
-            reject(error.message);
-          },
-          async () => {
-            try {
-              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              setPhoto(downloadURL);
-              resolve(downloadURL);
-            } catch (error) {
-              reject(error.message);
-            }
-          }
-        );
-      } catch (error) {
-        reject(error.message);
-      }
-    });
-  };
-
   const handePublishPost = async () => {
     setIsImageUploading(true);
-    await uploadImage(photo)
+    await uploadImage('photos', photo, setProgress, setPhoto)
       .then((downloadURL) => {
         return (newPost = {
           createdAt: Date.now(),
@@ -121,7 +65,11 @@ export const CreatePostForm = () => {
       })
       .then((newPost) => dispatch(addPost(newPost)))
       .catch((error) => {
-        alert('Opps... uploading failed😒', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Opps... uploading failed😒',
+          text2: error.message,
+        });
       })
       .finally(() => setIsImageUploading(false));
 
@@ -134,15 +82,16 @@ export const CreatePostForm = () => {
     <View style={styles.container}>
       <View style={styles.wrap}>
         <View
-          style={[styles.addImgContainer, isCameraOn && styles.extraStyles]}
+          style={[
+            styles.addImgContainer,
+            isCameraOn && !photo && styles.extraStyles,
+          ]}
         >
           {photo ? (
             isImageUploading ? (
               <>
                 <ActivityIndicator size={'medium'} color={'#FF6C00'} />
-                <Text style={styles.uploadingText}>
-                  Uploading image...{progress}%
-                </Text>
+                <UploadProcess progress={progress} />
               </>
             ) : (
               <Image source={{ uri: photo }} style={styles.previewImg} />
@@ -156,13 +105,12 @@ export const CreatePostForm = () => {
               </TouchableOpacity>
             )
           )}
-          {isCameraOn && !photo && <CameraView setPhoto={setPhoto} />}
+          {isCameraOn && !photo && (
+            <CameraView setPhoto={setPhoto} setIsCameraOn={setIsCameraOn} />
+          )}
         </View>
+        <GalleryUpload setPhoto={setPhoto} />
 
-        <TouchableOpacity onPress={() => getImageUri(setPhoto)}>
-          <Entypo name="image" size={50} color="black" />
-          <Text style={styles.text}>Upload photo</Text>
-        </TouchableOpacity>
         <View style={styles.inputsWrapper}>
           <PostInput
             placeholder={'Name...'}
@@ -231,6 +179,6 @@ const styles = StyleSheet.create({
   deleteImgWrapper: {
     alignSelf: 'center',
   },
-  previewImg: { width: '100%', height: '100%' },
-  uploadingText: { color: '#fff', fontSize: 20 },
+  previewImg: { width: '100%', height: '100%', borderRadius: 8 },
+  extraStyles: { width: '100%', height: '60%', borderRadius: 8 },
 });
