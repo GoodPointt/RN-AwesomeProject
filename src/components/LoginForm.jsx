@@ -32,31 +32,31 @@ export const LoginForm = ({ navigation, setIsAuthLoading }) => {
     isLoggedIn && navigation.navigate('Home');
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    const authStateChanged = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        setIsAuthLoading(true);
-        try {
-          const currentUserData = await getCurrentUserData(user);
+  // useEffect(() => {
+  //   const authStateChanged = auth.onAuthStateChanged(async (user) => {
+  //     if (user) {
+  //       setIsAuthLoading(true);
+  //       try {
+  //         const currentUserData = await getCurrentUserData(user);
 
-          dispatch(
-            setUpUser({
-              user: currentUserData,
-              token: user.accessToken,
-            })
-          );
-        } catch (error) {
-          errorFormat(error.message);
-        } finally {
-          setIsAuthLoading(false);
-        }
-      } else {
-        navigation.navigate('Auth');
-      }
-    });
+  //         dispatch(
+  //           setUpUser({
+  //             user: currentUserData,
+  //             token: user.accessToken,
+  //           })
+  //         );
+  //       } catch (error) {
+  //         errorFormat(error.message);
+  //       } finally {
+  //         setIsAuthLoading(false);
+  //       }
+  //     } else {
+  //       navigation.navigate('Auth');
+  //     }
+  //   });
 
-    return () => authStateChanged();
-  }, []);
+  //   return () => authStateChanged();
+  // }, []);
 
   const resetForm = () => {
     setLoginEmailValue('');

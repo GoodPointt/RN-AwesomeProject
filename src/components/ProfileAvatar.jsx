@@ -4,6 +4,7 @@ import { ModalBox } from './ModalBox';
 import { useDispatch } from 'react-redux';
 import { setUpUser } from '../redux/user/userSlice';
 import { updateUserDocDataInFirestore } from '../firebase/auth';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export const ProfileAvatar = ({ currentAva, userId }) => {
   const [isModalVisible, setModalVisible] = useState(false);

@@ -5,6 +5,7 @@ import { removeUser } from '../redux/user/userSlice';
 import { logout } from '../firebase/auth';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { clearPosts } from '../redux/posts/postsSlice';
 
 const LogoutButton = ({ profile }) => {
   const dispatch = useDispatch();
@@ -15,7 +16,9 @@ const LogoutButton = ({ profile }) => {
       style={profile ? styles.logoutIco : null}
       onPress={() => {
         dispatch(removeUser());
+        dispatch(clearPosts());
         logout();
+
         navigation.navigate('Auth', { screen: 'Login' });
       }}
     >

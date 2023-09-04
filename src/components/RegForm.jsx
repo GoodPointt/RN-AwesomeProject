@@ -69,8 +69,13 @@ export const RegForm = ({ navigation, setIstAuthLoading }) => {
     setIstAuthLoading(true);
     try {
       const result = await registerUser(regEmailValue, regPasswordValue);
+      console.log(result);
       if (!result) return;
-      const url = await uploadImage('avatar', avatar, setProgress, setAvatar);
+      let url;
+      avatar
+        ? (url = await uploadImage('avatar', avatar, setProgress, setAvatar))
+        : (url =
+            'https://firebasestorage.googleapis.com/v0/b/awesome-project-cb684.appspot.com/o/avatar%2Favatr_placeholder.png?alt=media&token=d0ac0383-bc41-44f9-bef7-60516d870e44');
 
       const userData = {
         name: regLoginValue,
@@ -91,6 +96,7 @@ export const RegForm = ({ navigation, setIstAuthLoading }) => {
         })
       );
     } catch (error) {
+      console.log(error.message);
       errorFormat(error.message);
     } finally {
       setIstAuthLoading(false);

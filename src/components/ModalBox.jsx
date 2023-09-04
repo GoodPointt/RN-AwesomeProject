@@ -15,7 +15,8 @@ import { setUpUser } from '../redux/user/userSlice';
 import { updateUserDocDataInFirestore } from '../firebase/auth';
 import { UploadProcess } from './UploadProcess';
 import GalleryUpload from './GalleryUpload';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export const ModalBox = ({
   isModalVisible,
@@ -26,12 +27,14 @@ export const ModalBox = ({
   const [photo, setPhoto] = useState('');
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [isUploading, setisUploading] = useState(false);
 
   const dispatch = useDispatch();
 
   const applyNewAvatar = async () => {
     try {
-      if (profile) {
+      if (profile && photo) {
+        setisUploading(true);
         const url = await uploadImage('avatar', photo, setProgress, setAvatar);
 
         dispatch(
@@ -48,7 +51,7 @@ export const ModalBox = ({
         setModalVisible(false);
         setPhoto('');
         setProgress(0);
-
+        setisUploading(false);
         return;
       }
     } catch (error) {
@@ -84,7 +87,12 @@ export const ModalBox = ({
               <UploadProcess progress={progress} />
             </View>
           ) : photo ? (
-            <Image source={{ uri: photo }} style={styles.previewImg} />
+            <>
+              <Image source={{ uri: photo }} style={styles.previewImg} />
+              <TouchableOpacity onPress={() => setPhoto('')}>
+                <FontAwesome5 name="trash-alt" size={24} color="#535353" />
+              </TouchableOpacity>
+            </>
           ) : (
             !isCameraOn && (
               <TouchableOpacity onPress={() => setIsCameraOn(true)}>
@@ -103,7 +111,7 @@ export const ModalBox = ({
         <LargeButton
           onPress={applyNewAvatar}
           text={photo ? 'Confirm' : 'Back'}
-          isDisabled={false}
+          isDisabled={isUploading}
         />
       </View>
     </Modal>
@@ -131,7 +139,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 150,
     width: 150,
-    backgroundColor: '#F6F6F6',
+    // backgroundColor: '#F6F6F6',
     borderRadius: 8,
 
     borderColor: '#E8E8E8',
@@ -139,7 +147,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 8,
   },
-  previewImg: { width: '100%', height: '100%', borderRadius: 8 },
+  previewImg: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+    marginBottom: 10,
+  },
   iconWrapper: {
     height: 60,
     width: 60,
@@ -148,5 +161,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  extraStyles: { width: '95%', height: '60%' },
+  extraStyles: { width: '100%', height: '30%' },
 });

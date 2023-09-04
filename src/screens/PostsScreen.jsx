@@ -14,18 +14,19 @@ export const PostsScreen = () => {
 
   useEffect(() => {
     dispatch(fetchPosts());
-  }, [dispatch]);
+  }, [dispatch, isLoggedIn]);
 
   return (
-    isLoggedIn && (
+    isLoggedIn &&
+    user && (
       <View style={styles.container}>
-        {status === 'resolved' && posts?.length > 0 ? (
+        {status === 'resolved' && posts.length > 0 ? (
           <PostsList posts={posts} user={user} />
         ) : (
           <SmallUserBox
-            avatar={user?.avatar}
-            name={user?.name}
-            email={user?.email}
+            avatar={user.avatar}
+            name={user.name}
+            email={user.email}
           />
         )}
         {status === 'loading' && (

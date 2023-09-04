@@ -34,24 +34,28 @@ export const ProfileScreen = () => {
         style={styles.backgroundImage}
         source={require('../assets/img/login-bg.jpg')}
       >
-        <View style={styles.profileContainer}>
-          <LogoutButton profile={true} />
-          <ProfileAvatar currentAva={user?.avatar} userId={user?.id} />
-
-          {status === 'resolved' && posts?.length > 0 && (
-            <PostsList posts={posts} profile={null} />
-          )}
-          {status === 'loading' && (
-            <ActivityIndicator
-              size={120}
-              color={'#FF6C00'}
-              style={{ flex: 1 }}
-            />
-          )}
-          {status === 'rejected' && (
-            <Text>Opps and error occured: '{error}' 😒</Text>
-          )}
-        </View>
+        {user && (
+          <View style={styles.profileContainer}>
+            <LogoutButton profile={true} />
+            <ProfileAvatar currentAva={user.avatar} userId={user.id} />
+            <Text style={styles.text}>{user.name}</Text>
+            {status === 'resolved' && posts?.length > 0 && (
+              <PostsList posts={posts} profile={null} />
+            )}
+            {status === 'loading' && (
+              <ActivityIndicator
+                size={120}
+                color={'#FF6C00'}
+                style={{ flex: 1 }}
+              />
+            )}
+            {status === 'rejected' && (
+              <Text style={styles.text}>
+                Opps an error occured: '{error}' 😒
+              </Text>
+            )}
+          </View>
+        )}
       </ImageBackground>
     </KeyboardAvoidingView>
   );
@@ -76,14 +80,15 @@ const styles = StyleSheet.create({
     minHeight: '80%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingTop: 90,
+    paddingTop: 70,
     paddingBottom: 45,
     paddingHorizontal: 16,
   },
-
-  // logoutIco: {
-  //   position: 'absolute',
-  //   top: 20,
-  //   right: 20,
-  // },
+  text: {
+    textAlign: 'center',
+    color: '#212121',
+    fontSize: 30,
+    fontFamily: 'Roboto-Medium',
+    letterSpacing: 0.3,
+  },
 });

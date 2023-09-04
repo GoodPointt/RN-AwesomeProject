@@ -128,7 +128,7 @@ export const CreatePostForm = () => {
           />
         </View>
         <LargeButton
-          isDisabled={!photo || !location || !name}
+          isDisabled={!photo || !location || !name || isImageUploading}
           text={'Publish post'}
           extraStyles={{ backgroundColor: '#F6F6F6' }}
           onPress={() => handePublishPost()}
@@ -180,5 +180,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   previewImg: { width: '100%', height: '100%', borderRadius: 8 },
-  extraStyles: { width: '100%', height: '60%', borderRadius: 8 },
+  // extraStyles: { width: '100%', height: '60%', borderRadius: 8 },
 });

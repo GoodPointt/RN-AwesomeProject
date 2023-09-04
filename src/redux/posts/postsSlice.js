@@ -32,6 +32,9 @@ const postsSlice = createSlice({
         }
       }
     },
+    clearPosts: (state, action) => {
+      state.posts = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -64,5 +67,5 @@ const postsSlice = createSlice({
   },
 });
 
-export const { updateTotalComments, addLike } = postsSlice.actions;
+export const { updateTotalComments, addLike, clearPosts } = postsSlice.actions;
 export default postsSlice.reducer;

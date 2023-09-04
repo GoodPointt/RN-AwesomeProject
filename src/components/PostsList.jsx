@@ -25,13 +25,13 @@ const PostsList = ({ posts, user }) => {
           locationDetails={() => navigation.navigate('Map', item)}
         />
       )}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.id.toString()}
       ListHeaderComponent={
         user ? (
           <SmallUserBox
-            avatar={user?.avatar}
-            name={user?.name}
-            email={user?.email}
+            avatar={user.avatar}
+            name={user.name}
+            email={user.email}
           />
         ) : null
       }

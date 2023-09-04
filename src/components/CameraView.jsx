@@ -41,12 +41,12 @@ export const CameraView = ({ setPhoto, setIsCameraOn }) => {
           </TouchableOpacity>
         </View>
       </Camera>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.closeCamera}
         onPress={() => setIsCameraOn(false)}
       >
         <EvilIcons name="close" size={24} color="#fff" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         style={styles.flipContainer}
         onPress={() => {
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
 
-  button: { flex: 0.13, alignSelf: 'center' },
+  button: { flex: 0.25, alignSelf: 'center' },
 
   takePhotoOut: {
     borderWidth: 2,

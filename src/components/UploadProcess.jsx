@@ -6,5 +6,5 @@ export const UploadProcess = ({ progress }) => {
 };
 
 const styles = StyleSheet.create({
-  uploadingText: { color: '#fff', fontSize: 18 },
+  uploadingText: { color: '#000', fontSize: 18 },
 });
