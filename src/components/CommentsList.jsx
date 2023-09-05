@@ -14,7 +14,10 @@ const CommentsList = ({ comments, user, post }) => {
       style={styles.commentsList}
       data={comments}
       renderItem={({ item }) => (
-        <Comment item={item} isEven={user.name === item.name} />
+        <Comment
+          item={item}
+          authUserAuthor={user.name === item.name ? user.avatar : false}
+        />
       )}
       keyExtractor={(item) => item.id}
       refreshControl={

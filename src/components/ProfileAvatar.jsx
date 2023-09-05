@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setUpUser } from '../redux/user/userSlice';
 import { updateUserDocDataInFirestore } from '../firebase/auth';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import vars from '../utils/vars';
 
 export const ProfileAvatar = ({ currentAva, userId }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -13,11 +14,11 @@ export const ProfileAvatar = ({ currentAva, userId }) => {
   const dispatch = useDispatch();
 
   const handleAvatarPress = () => {
-    if (!avatar) setModalVisible(true);
-    if (avatar) {
-      setAvatar(null);
+    if (avatar === vars.DEFAULT_AVATAR) setModalVisible(true);
+    if (avatar !== vars.DEFAULT_AVATAR) {
+      setAvatar(vars.DEFAULT_AVATAR);
 
-      handleAvatarRemove(userId, null);
+      handleAvatarRemove(userId, vars.DEFAULT_AVATAR);
     }
   };
 

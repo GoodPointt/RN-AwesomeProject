@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { PostItem } from './PostItem';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { fetchPosts } from '../redux/posts/operations';
 import { useDispatch } from 'react-redux';
 import { SmallUserBox } from './SmallUserBox';
@@ -9,9 +9,12 @@ import { SmallUserBox } from './SmallUserBox';
 const PostsList = ({ posts, user }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const ref = useRef(null);
+  useScrollToTop(ref);
 
   return (
     <FlatList
+      ref={ref}
       showsVerticalScrollIndicator={false}
       data={posts}
       renderItem={({ item }) => (

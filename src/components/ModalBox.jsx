@@ -17,6 +17,7 @@ import { UploadProcess } from './UploadProcess';
 import GalleryUpload from './GalleryUpload';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import vars from '../utils/vars';
 
 export const ModalBox = ({
   isModalVisible,
@@ -62,7 +63,7 @@ export const ModalBox = ({
       });
     }
 
-    setAvatar(photo);
+    !photo ? setAvatar(vars.DEFAULT_AVATAR) : setAvatar(photo);
     setModalVisible(false);
     setPhoto('');
   };
@@ -84,7 +85,7 @@ export const ModalBox = ({
           {progress ? (
             <View style={styles.progressWrap}>
               <ActivityIndicator size={50} color={'#FF6C00'} />
-              <UploadProcess progress={progress} />
+              <UploadProcess progress={progress} textColor={'#fff'} />
             </View>
           ) : photo ? (
             <>
@@ -122,9 +123,9 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     borderRadius: 14,
-    backgroundColor: '#cacacadf',
+    backgroundColor: '#adacacdf',
     padding: 20,
-    justifyContent: 'space-around',
+    gap: 60,
   },
   progressWrap: {
     flex: 1,
@@ -139,7 +140,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 150,
     width: 150,
-    // backgroundColor: '#F6F6F6',
     borderRadius: 8,
 
     borderColor: '#E8E8E8',

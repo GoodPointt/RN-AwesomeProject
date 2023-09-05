@@ -9,7 +9,7 @@ const GalleryUpload = ({ setPhoto }) => {
       onPress={() => getImageUri(setPhoto)}
       style={styles.uploadWrap}
     >
-      <Entypo name="image" size={50} color="#535353" />
+      <Entypo name="image" size={50} color="#333333" />
       <Text style={styles.text}>Upload from gallery</Text>
     </TouchableOpacity>
   );
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    color: '#9a9a9a',
+    color: '#333333',
   },
 });
 

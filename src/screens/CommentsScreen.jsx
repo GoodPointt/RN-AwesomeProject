@@ -12,6 +12,7 @@ import { fetchComments } from '../redux/comments/operations';
 import { useAuth } from '../hooks/useAuth';
 import CommentsList from '../components/CommentsList';
 import CommentInput from '../components/CommentInput';
+import vars from '../utils/vars';
 
 export const CommentsScreen = ({ route: { params } }) => {
   const { post } = params;
@@ -35,15 +36,17 @@ export const CommentsScreen = ({ route: { params } }) => {
         <View style={styles.ImgContainer}>
           <Image source={{ uri: post?.photo }} style={styles.postImg} />
         </View>
-        {status === 'loading' && (
+        {status === vars.LOADING && (
           <ActivityIndicator size={100} color={'#FF6C00'} style={{ flex: 1 }} />
         )}
 
-        {status === 'resolved' && comments.length > 0 && (
+        {status === vars.RESOLVED && comments.length > 0 && (
           <CommentsList comments={comments} user={user} post={post} />
         )}
 
-        {status === 'error' && <Text>Opps! an error occured: {error}😒</Text>}
+        {status === vars.REJECTED && (
+          <Text>Opps! an error occured: {error}😒</Text>
+        )}
       </View>
       <CommentInput post={post} />
     </KeyboardAvoidingView>

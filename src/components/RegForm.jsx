@@ -17,6 +17,7 @@ import {
 } from '../utils/yupValidation';
 import { errorFormat } from '../utils/errorFormat';
 import { uploadImage } from '../utils/uploadImage';
+import vars from '../utils/vars';
 
 export const RegForm = ({ navigation, setIstAuthLoading }) => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ export const RegForm = ({ navigation, setIstAuthLoading }) => {
   const [regLoginValue, setRegLoginValue] = useState('');
   const [regEmailValue, setRegEmailValue] = useState('');
   const [regPasswordValue, setRegPasswordValue] = useState('');
-  const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState(vars.DEFAULT_AVATAR);
   const [validationErrors, setValidationErrors] = useState({
     email: '',
     password: '',
@@ -40,9 +41,9 @@ export const RegForm = ({ navigation, setIstAuthLoading }) => {
   }, [isLoggedIn]);
 
   const handleAvatarPress = () => {
-    if (!avatar) setModalVisible(true);
-    if (avatar) {
-      setAvatar(null);
+    if (avatar === vars.DEFAULT_AVATAR) setModalVisible(true);
+    if (avatar !== vars.DEFAULT_AVATAR) {
+      setAvatar(vars.DEFAULT_AVATAR);
     }
   };
 
@@ -69,13 +70,11 @@ export const RegForm = ({ navigation, setIstAuthLoading }) => {
     setIstAuthLoading(true);
     try {
       const result = await registerUser(regEmailValue, regPasswordValue);
-      console.log(result);
       if (!result) return;
       let url;
-      avatar
+      avatar !== vars.DEFAULT_AVATAR
         ? (url = await uploadImage('avatar', avatar, setProgress, setAvatar))
-        : (url =
-            'https://firebasestorage.googleapis.com/v0/b/awesome-project-cb684.appspot.com/o/avatar%2Favatr_placeholder.png?alt=media&token=d0ac0383-bc41-44f9-bef7-60516d870e44');
+        : (url = vars.DEFAULT_AVATAR);
 
       const userData = {
         name: regLoginValue,
@@ -96,7 +95,6 @@ export const RegForm = ({ navigation, setIstAuthLoading }) => {
         })
       );
     } catch (error) {
-      console.log(error.message);
       errorFormat(error.message);
     } finally {
       setIstAuthLoading(false);
