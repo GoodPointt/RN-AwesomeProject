@@ -38,6 +38,8 @@ export const MainNavigation = () => {
         } finally {
           setIsAuthChecked(true);
         }
+      } else {
+        setIsAuthChecked(true);
       }
     });
 
@@ -47,42 +49,47 @@ export const MainNavigation = () => {
   return isAuthChecked ? (
     <NavigationContainer>
       <MainStack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Auth'}>
-        <MainStack.Screen
-          name="Auth"
-          component={AuthStackNavigator}
-          options={{ headerMode: 'none' }}
-        />
-        <MainStack.Screen
-          name="Home"
-          component={TabNavigation}
-          options={{ headerMode: 'none' }}
-        />
-        <MainStack.Screen
-          name="Comments"
-          component={CommentsScreen}
-          options={({ navigation }) => ({
-            header: () => (
-              <CustomHeader
-                title={'Comments'}
-                navigation={navigation}
-                isShown={'left'}
-              />
-            ),
-          })}
-        />
-        <MainStack.Screen
-          name="Map"
-          component={MapScreen}
-          options={({ navigation }) => ({
-            header: () => (
-              <CustomHeader
-                title={'Location'}
-                navigation={navigation}
-                isShown={'left'}
-              />
-            ),
-          })}
-        />
+        {!isLoggedIn ? (
+          <MainStack.Screen
+            name="Auth"
+            component={AuthStackNavigator}
+            options={{ headerMode: 'none' }}
+          />
+        ) : (
+          <>
+            <MainStack.Screen
+              name="Home"
+              component={TabNavigation}
+              options={{ headerMode: 'none' }}
+            />
+            <MainStack.Screen
+              name="Comments"
+              component={CommentsScreen}
+              options={({ navigation }) => ({
+                header: () => (
+                  <CustomHeader
+                    title={'Comments'}
+                    navigation={navigation}
+                    isShown={'left'}
+                  />
+                ),
+              })}
+            />
+            <MainStack.Screen
+              name="Map"
+              component={MapScreen}
+              options={({ navigation }) => ({
+                header: () => (
+                  <CustomHeader
+                    title={'Location'}
+                    navigation={navigation}
+                    isShown={'left'}
+                  />
+                ),
+              })}
+            />
+          </>
+        )}
       </MainStack.Navigator>
     </NavigationContainer>
   ) : (

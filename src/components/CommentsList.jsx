@@ -3,7 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { Comment } from './Comment';
 import { useDispatch } from 'react-redux';
 import { RefreshControl } from 'react-native-gesture-handler';
-import { fetchComments } from '../redux/comments/operations';
+import { fetchComments } from '../redux/posts/operations';
 
 const CommentsList = ({ comments, user, post }) => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const CommentsList = ({ comments, user, post }) => {
       renderItem={({ item }) => (
         <Comment
           item={item}
-          authUserAuthor={user.name === item.name ? user.avatar : false}
+          authUserAuthor={user.name === item.owner.name ? user.avatar : false}
         />
       )}
       keyExtractor={(item) => item.id}

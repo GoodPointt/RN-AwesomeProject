@@ -19,6 +19,7 @@ import { locationPremissionsRequest } from '../utils/locationPremissionsRequest'
 import { uploadImage } from '../utils/uploadImage';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import GalleryUpload from './GalleryUpload';
+import { ImageBackground } from 'react-native';
 
 export const CreatePostForm = () => {
   const [isCameraOn, setIsCameraOn] = useState(true);
@@ -57,10 +58,10 @@ export const CreatePostForm = () => {
             name: location,
             coord,
           },
-          likes: 0,
-          isLiked: false,
-          totalComments: 0,
+          likes: [],
+          comments: [],
           isCommented: false,
+          isLiked: false,
         });
       })
       .then((newPost) => dispatch(addPost(newPost)))
@@ -94,7 +95,12 @@ export const CreatePostForm = () => {
                 <UploadProcess progress={progress} />
               </>
             ) : (
-              <Image source={{ uri: photo }} style={styles.previewImg} />
+              <ImageBackground
+                style={{ height: 240, width: '100%' }}
+                source={require('../assets/img/loading.gif')}
+              >
+                <Image source={{ uri: photo }} style={styles.previewImg} />
+              </ImageBackground>
             )
           ) : (
             !isCameraOn && (
@@ -132,6 +138,9 @@ export const CreatePostForm = () => {
           text={'Publish post'}
           extraStyles={{ backgroundColor: '#F6F6F6' }}
           onPress={() => handePublishPost()}
+          disabledText={
+            isImageUploading ? 'Uploading...' : 'Fill in all fields to continue'
+          }
         />
       </View>
       <View style={styles.deleteImgWrapper}>

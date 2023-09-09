@@ -7,12 +7,14 @@ export const Comment = ({ item, authUserAuthor }) => {
       <View style={styles.commentAuthorBox}>
         <Image
           style={styles.authorAvaImg}
-          source={{ uri: authUserAuthor ? authUserAuthor : item.avatar }}
+          source={{
+            uri: authUserAuthor ? authUserAuthor : item.owner?.avatar,
+          }}
         />
       </View>
 
       <View style={styles.commentContainer}>
-        <Text style={styles.authorName}>{item.name}</Text>
+        <Text style={styles.authorName}>{item.owner.name}</Text>
         <Text style={styles.commentText}>{item.comment}</Text>
         <Text
           style={[styles.commentDate, !authUserAuthor && styles.evenDateText]}

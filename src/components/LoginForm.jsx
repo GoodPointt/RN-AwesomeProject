@@ -6,17 +6,15 @@ import {
 import { StyleSheet, Text } from 'react-native';
 import { LargeButton } from './LargeButton';
 import { FormInput } from './FormInput';
-import { useEffect, useState } from 'react';
-import { TouchableBlueText } from './TouchableBlueText';
 
-import { auth } from '../firebase/config';
 import { useDispatch } from 'react-redux';
 import { setUpUser } from '../redux/user/userSlice';
-import { useAuth } from '../hooks/useAuth';
 import { getCurrentUserData, logIn } from '../firebase/auth';
 import { errorFormat } from '../utils/errorFormat';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-export const LoginForm = ({ navigation, setIsAuthLoading }) => {
+export const LoginForm = ({ setIsAuthLoading, navigation }) => {
   const [isFocused, setIsFocused] = useState(null);
   const [loginEmailValue, setLoginEmailValue] = useState('');
   const [loginPasswordValue, setLoginPasswordValue] = useState('');
@@ -25,42 +23,21 @@ export const LoginForm = ({ navigation, setIsAuthLoading }) => {
     password: '',
   });
 
-  const dispatch = useDispatch();
-  const { isLoggedIn } = useAuth();
-
   useEffect(() => {
-    isLoggedIn && navigation.navigate('Home');
-  }, [isLoggedIn]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      resetForm();
+    });
 
-  // useEffect(() => {
-  //   const authStateChanged = auth.onAuthStateChanged(async (user) => {
-  //     if (user) {
-  //       setIsAuthLoading(true);
-  //       try {
-  //         const currentUserData = await getCurrentUserData(user);
+    return unsubscribe;
+  }, [navigation]);
 
-  //         dispatch(
-  //           setUpUser({
-  //             user: currentUserData,
-  //             token: user.accessToken,
-  //           })
-  //         );
-  //       } catch (error) {
-  //         errorFormat(error.message);
-  //       } finally {
-  //         setIsAuthLoading(false);
-  //       }
-  //     } else {
-  //       navigation.navigate('Auth');
-  //     }
-  //   });
-
-  //   return () => authStateChanged();
-  // }, []);
+  const dispatch = useDispatch();
 
   const resetForm = () => {
     setLoginEmailValue('');
     setLoginPasswordValue('');
+    setValidationErrors({ email: '', password: '' });
+    setIsFocused(null);
   };
 
   const handleLogin = async () => {
@@ -149,13 +126,6 @@ export const LoginForm = ({ navigation, setIsAuthLoading }) => {
           validationErrors.email !== '' ||
           validationErrors.password !== ''
         }
-      />
-      <TouchableBlueText
-        text={'Do not have account? Register...'}
-        onPress={() => {
-          navigation.navigate('Auth', { screen: 'Registration' });
-          resetForm();
-        }}
       />
     </>
   );

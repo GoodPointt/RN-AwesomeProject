@@ -10,8 +10,8 @@ import {
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../hooks/useAuth';
 import { AntDesign } from '@expo/vector-icons';
-import { addComment } from '../redux/comments/operations';
-import { updateTotalComments } from '../redux/posts/postsSlice';
+import { addComment } from '../redux/posts/operations';
+import { nanoid } from '@reduxjs/toolkit';
 
 const CommentInput = ({ post }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -27,15 +27,14 @@ const CommentInput = ({ post }) => {
       return;
     }
     const newComment = {
+      id: nanoid(),
       postId: post.id,
       createdAt: Date.now(),
-      name: user.name,
-      avatar: user.avatar,
       comment: commentValue,
+      owner: { id: user.id },
     };
 
     dispatch(addComment(newComment));
-    dispatch(updateTotalComments({ postId: newComment.postId }));
 
     setCommentValue('');
     Keyboard.dismiss();

@@ -4,25 +4,29 @@ import { SmallUserBox } from '../components/SmallUserBox';
 import { useAuth } from '../hooks/useAuth';
 import { useDispatch } from 'react-redux';
 import { usePosts } from '../hooks/usePosts';
-import { fetchPosts } from '../redux/posts/operations';
+import { fetchAllPosts } from '../redux/posts/operations';
 import PostsList from '../components/PostsList';
 import vars from '../utils/vars';
 
 export const PostsScreen = () => {
   const { user, isLoggedIn } = useAuth();
-  const { posts, status, error } = usePosts();
+  const { allPosts, status, error } = usePosts();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchPosts());
+    dispatch(fetchAllPosts());
   }, [dispatch, isLoggedIn]);
 
   return (
     isLoggedIn &&
     user && (
       <View style={styles.container}>
-        {status === vars.RESOLVED && posts.length > 0 ? (
-          <PostsList posts={posts} user={user} />
+        {status === vars.RESOLVED && allPosts.length > 0 ? (
+          <PostsList
+            posts={allPosts}
+            user={user}
+            fetchOnRefresh={() => dispatch(fetchAllPosts())}
+          />
         ) : (
           <SmallUserBox
             avatar={user.avatar}

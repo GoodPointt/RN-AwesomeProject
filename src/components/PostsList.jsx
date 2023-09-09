@@ -2,13 +2,10 @@ import React, { useRef } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { PostItem } from './PostItem';
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
-import { fetchPosts } from '../redux/posts/operations';
-import { useDispatch } from 'react-redux';
 import { SmallUserBox } from './SmallUserBox';
 
-const PostsList = ({ posts, user }) => {
+const PostsList = ({ posts, user, fetchOnRefresh }) => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const ref = useRef(null);
   useScrollToTop(ref);
 
@@ -39,7 +36,7 @@ const PostsList = ({ posts, user }) => {
         ) : null
       }
       refreshControl={
-        <RefreshControl onRefresh={() => dispatch(fetchPosts())} />
+        <RefreshControl onRefresh={fetchOnRefresh} colors={['#FF6C00']} />
       }
     />
   );

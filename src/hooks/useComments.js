@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
-export const useComments = () => {
-  const { comments, status, error } = useSelector((state) => state.comments);
-  return {
-    comments,
-    status,
-    error,
-  };
-};
+// export const useComments = () => {
+//   const { comments, status, error } = useSelector((state) => state.comments);
+//   return {
+//     comments,
+//     status,
+//     error,
+//   };
+// };

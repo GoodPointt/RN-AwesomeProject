@@ -19,7 +19,7 @@ const LogoutButton = ({ profile }) => {
         dispatch(clearPosts());
         logout();
 
-        navigation.navigate('Auth', { screen: 'Login' });
+        // navigation.navigate('Auth', { screen: 'Login' });
       }}
     >
       <MaterialIcons name="logout" size={24} color="#BDBDBD" />

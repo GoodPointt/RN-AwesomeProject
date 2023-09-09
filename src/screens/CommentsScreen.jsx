@@ -3,27 +3,27 @@ import {
   Image,
   KeyboardAvoidingView,
   StyleSheet,
+  Text,
   View,
 } from 'react-native';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useComments } from '../hooks/useComments';
-import { fetchComments } from '../redux/comments/operations';
+import { fetchComments, fetchUserPosts } from '../redux/posts/operations';
 import { useAuth } from '../hooks/useAuth';
 import CommentsList from '../components/CommentsList';
 import CommentInput from '../components/CommentInput';
 import vars from '../utils/vars';
+import { usePosts } from '../hooks/usePosts';
 
 export const CommentsScreen = ({ route: { params } }) => {
   const { post } = params;
 
   const { user } = useAuth();
-  const { comments, status, error } = useComments();
-
+  const { status, comments } = usePosts();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchComments(post?.id));
+    dispatch(fetchComments(post.id));
   }, [dispatch]);
 
   return (

@@ -19,9 +19,8 @@ import { errorFormat } from '../utils/errorFormat';
 import { uploadImage } from '../utils/uploadImage';
 import vars from '../utils/vars';
 
-export const RegForm = ({ navigation, setIstAuthLoading }) => {
+export const RegForm = ({ setIstAuthLoading }) => {
   const dispatch = useDispatch();
-  const { isLoggedIn } = useAuth();
 
   const [progress, setProgress] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -35,10 +34,6 @@ export const RegForm = ({ navigation, setIstAuthLoading }) => {
     password: '',
     login: '',
   });
-
-  useEffect(() => {
-    isLoggedIn && navigation.navigate('Home');
-  }, [isLoggedIn]);
 
   const handleAvatarPress = () => {
     if (avatar === vars.DEFAULT_AVATAR) setModalVisible(true);

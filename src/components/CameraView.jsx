@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { cameraPremissionsRequest } from '../utils/cameraPremissionsRequest';
 
 export const CameraView = ({ setPhoto, setIsCameraOn }) => {
@@ -29,7 +29,9 @@ export const CameraView = ({ setPhoto, setIsCameraOn }) => {
             style={styles.button}
             onPress={async () => {
               if (cameraRef) {
-                const { uri } = await cameraRef.takePictureAsync();
+                const { uri } = await cameraRef.takePictureAsync({
+                  quality: 0.3,
+                });
                 await MediaLibrary.createAssetAsync(uri);
                 setPhoto(uri);
               }
@@ -41,12 +43,7 @@ export const CameraView = ({ setPhoto, setIsCameraOn }) => {
           </TouchableOpacity>
         </View>
       </Camera>
-      {/* <TouchableOpacity
-        style={styles.closeCamera}
-        onPress={() => setIsCameraOn(false)}
-      >
-        <EvilIcons name="close" size={24} color="#fff" />
-      </TouchableOpacity> */}
+
       <TouchableOpacity
         style={styles.flipContainer}
         onPress={() => {

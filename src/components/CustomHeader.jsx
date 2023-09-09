@@ -1,6 +1,5 @@
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import LogoutButton from './LogoutButton';
 
 export const CustomHeader = ({ title, navigation, isShown }) => {

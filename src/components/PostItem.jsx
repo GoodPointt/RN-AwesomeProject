@@ -1,43 +1,50 @@
 import { Feather, SimpleLineIcons } from '@expo/vector-icons';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
-import { addLike } from '../redux/posts/postsSlice';
-import { updateUserDocDataInFirestore } from '../firebase/auth';
-import { useAuth } from '../hooks/useAuth';
+import { SmallUserBox } from './SmallUserBox';
+import { formatDateTime } from '../utils/formatDate';
+import { likeHandle } from '../redux/posts/operations';
+import { useState } from 'react';
+import { useRoute } from '@react-navigation/native';
+import { memo } from 'react';
 
-export const PostItem = ({
-  item: {
-    photo,
-    name,
-    location,
-    likes,
-    id,
-    totalComments,
-    isCommented,
-    isLiked,
-  },
-  commentDetails,
-  locationDetails,
-}) => {
+export const PostItem = memo(({ item, commentDetails, locationDetails }) => {
+  const [isLiking, setIsLiking] = useState(false);
+  const route = useRoute();
   const dispatch = useDispatch();
-  const { user } = useAuth();
 
-  const incrementLike = (postId, likesCount) => {
-    dispatch(addLike({ postId: postId }));
-
-    updateUserDocDataInFirestore(
-      postId,
-      {
-        isLiked: true,
-        likes: likesCount + 1,
-      },
-      `users/${user.id}/posts`
-    );
+  const incrementLike = async (postId) => {
+    setIsLiking(true);
+    await dispatch(likeHandle(postId));
+    setIsLiking(false);
   };
+
   return (
     <View style={styles.itemContainer}>
-      <Image source={{ uri: photo }} style={styles.itemImage} />
-      <Text style={styles.nameText}>{name}</Text>
+      {route.name === 'PostsScreen' ? (
+        <SmallUserBox
+          avatar={item.owner.avatar}
+          name={item.owner.name}
+          createdAt={item.createdAt}
+        />
+      ) : (
+        <Text style={styles.dateText}>{formatDateTime(item.createdAt)}</Text>
+      )}
+      <ImageBackground
+        source={require('../assets/img/images-blur-paceholder.jpg')}
+      >
+        <Image source={{ uri: item.photo }} style={styles.itemImage} />
+      </ImageBackground>
+
+      <Text style={styles.nameText}>{item.name}</Text>
       <View style={styles.underCardInfo}>
         <View style={styles.stats}>
           <TouchableOpacity onPress={commentDetails}>
@@ -45,34 +52,51 @@ export const PostItem = ({
               <Feather
                 name="message-circle"
                 size={24}
-                color={isCommented ? '#FF6C00' : '#535352d2'}
+                color={item.isCommented ? '#FF6C00' : '#535352d2'}
               />
-              <Text style={styles.statText}>{totalComments}</Text>
+              <Text style={styles.statText}>{item.comments.length}</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => incrementLike(id, likes)}>
-            <View style={styles.stat}>
-              <Feather
-                name="thumbs-up"
-                size={24}
-                color={isLiked ? '#FF6C00' : '#535352d2'}
-              />
-              <Text style={styles.statText}>{likes}</Text>
-            </View>
-          </TouchableOpacity>
+          {isLiking ? (
+            <ActivityIndicator size={25} color={'#FF6C00'} />
+          ) : (
+            <TouchableOpacity onPress={() => incrementLike(item.id)}>
+              <View style={styles.stat}>
+                <Feather
+                  name="thumbs-up"
+                  size={24}
+                  color={item.isLiked ? '#FF6C00' : '#535352d2'}
+                />
+                <Text style={styles.statText}>{item.likes.length}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
         <TouchableOpacity onPress={locationDetails}>
           <View style={styles.stat}>
             <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />
-            <Text style={styles.locationText}>{location.name}</Text>
+            <Text style={styles.locationText}>{item.location.name}</Text>
           </View>
         </TouchableOpacity>
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
+  underCardInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  stats: {
+    flexDirection: 'row',
+    gap: 24,
+    alignItems: 'center',
+  },
+  stat: {
+    flexDirection: 'row',
+    gap: 5,
+  },
   itemContainer: {
     height: 300,
     borderRadius: 8,
@@ -99,17 +123,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     textDecorationLine: 'underline',
   },
-  underCardInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  stats: {
-    flexDirection: 'row',
-    gap: 24,
-    alignItems: 'center',
-  },
-  stat: {
-    flexDirection: 'row',
-    gap: 5,
-  },
+
+  dateText: { color: '#ababab' },
 });

@@ -11,18 +11,18 @@ import { useDispatch } from 'react-redux';
 import { usePosts } from '../hooks/usePosts';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
-import { fetchPosts } from '../redux/posts/operations';
+import { fetchUserPosts } from '../redux/posts/operations';
 import PostsList from '../components/PostsList';
 import LogoutButton from '../components/LogoutButton';
 
 export const ProfileScreen = () => {
   const { user } = useAuth();
-  const { posts, status, error } = usePosts();
+  const { allPosts, userPosts, status, error } = usePosts();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchPosts(user));
-  }, [dispatch]);
+    dispatch(fetchUserPosts(user));
+  }, [dispatch, allPosts.length]);
 
   return (
     <KeyboardAvoidingView
@@ -39,8 +39,12 @@ export const ProfileScreen = () => {
             <LogoutButton profile={true} />
             <ProfileAvatar currentAva={user.avatar} userId={user.id} />
             <Text style={styles.text}>{user.name}</Text>
-            {status === 'resolved' && posts?.length > 0 && (
-              <PostsList posts={posts} profile={null} />
+            {status === 'resolved' && userPosts?.length > 0 && (
+              <PostsList
+                posts={userPosts}
+                user={null}
+                fetchOnRefresh={() => dispatch(fetchUserPosts())}
+              />
             )}
             {status === 'loading' && (
               <ActivityIndicator

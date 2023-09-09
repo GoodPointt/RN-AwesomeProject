@@ -1,77 +1,90 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  addDoc,
-  collection,
-  getDocs,
-  orderBy,
-  query,
-} from 'firebase/firestore';
-import { db } from '../../firebase/config';
-import { updateUserDocDataInFirestore } from '../../firebase/auth';
-import { updateTotalComments } from '../posts/postsSlice';
+// import { createAsyncThunk } from '@reduxjs/toolkit';
+// import {
+//   addDoc,
+//   collection,
+//   doc,
+//   getDoc,
+//   getDocs,
+//   orderBy,
+//   query,
+// } from 'firebase/firestore';
+// import { db } from '../../firebase/config';
+// import { updateUserDocDataInFirestore } from '../../firebase/auth';
 
-export const fetchComments = createAsyncThunk(
-  'comments/fetchComments',
-  async (postId, { rejectWithValue, getState }) => {
-    try {
-      const { user } = getState().user;
-      const commentsCollectionRef = collection(
-        db,
-        `users/${user.id}/posts/${postId}/comments`
-      );
+// export const fetchComments = createAsyncThunk(
+//   'comments/fetchComments',
+//   async (postId, { rejectWithValue, getState }) => {
+//     try {
+//       const { user } = getState().user;
 
-      const response = await getDocs(
-        query(commentsCollectionRef, orderBy('createdAt'))
-      );
+//       const commentsCollectionRef = collection(db, `posts/${postId}/comments`);
+//       const unfilteredCommetsData = await getDocs(
+//         query(commentsCollectionRef, orderBy('createdAt', 'desc'))
+//       );
 
-      const commentsData = response.docs.map((doc) => ({
-        ...doc.data(),
-      }));
+//       const commentsData = unfilteredCommetsData.docs.map((doc) => ({
+//         ...doc.data(),
+//       }));
 
-      return commentsData;
-    } catch (error) {
-      return rejectWithValue(error.response?.data);
-    }
-  }
-);
+//       const updatedCommentsData = await Promise.all(
+//         commentsData.map(async (comment) => {
+//           const docRef = await getDoc(doc(db, `users/${comment.owner.id}`));
+//           const { avatar, name } = docRef.data();
+//           const updatedComment = {
+//             ...comment,
+//             owner: { id: comment.owner.id, avatar, name },
+//           };
+//           return updatedComment;
+//         })
+//       );
 
-export const addComment = createAsyncThunk(
-  'comments/addComment',
-  async (newComment, { rejectWithValue, getState }) => {
-    try {
-      const {
-        user: { user },
-        comments: { comments },
-      } = getState();
+//       return updatedCommentsData;
+//     } catch (error) {
+//       return rejectWithValue(error.response?.data);
+//     }
+//   }
+// );
 
-      const docRef = await addDoc(
-        collection(db, `users/${user.id}/posts/${newComment.postId}/comments`),
-        newComment
-      );
+// export const addComment = createAsyncThunk(
+//   'comments/addComment',
+//   async (newComment, { rejectWithValue, getState }) => {
+//     try {
+//       const {
+//         user: { user },
+//         comments: { comments },
+//         posts: { allPosts },
+//       } = getState();
 
-      updateUserDocDataInFirestore(
-        docRef.id,
-        {
-          id: docRef.id,
-        },
-        `users/${user.id}/posts/${newComment.postId}/comments`
-      );
+//       const docRef = await addDoc(
+//         collection(db, `posts/${newComment.postId}/comments`),
+//         newComment
+//       );
 
-      updateUserDocDataInFirestore(
-        newComment.postId,
-        {
-          totalComments: comments.length + 1,
-          isCommented: true,
-        },
-        `users/${user.id}/posts`
-      );
+//       updateUserDocDataInFirestore(
+//         docRef.id,
+//         {
+//           owner: { id: user.id },
+//           id: docRef.id,
+//         },
+//         `posts/${newComment.postId}/comments`
+//       );
 
-      return {
-        ...newComment,
-        id: docRef.id,
-      };
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+//       // updateUserDocDataInFirestore(
+//       //   newComment.postId,
+//       //   {
+//       //     // comments: [],
+//       //     isCommented: true,
+//       //   },
+//       //   `posts`
+//       // );
+
+//       return {
+//         ...newComment,
+//         id: docRef.id,
+//         isCommented: true,
+//       };
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );

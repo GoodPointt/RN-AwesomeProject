@@ -6,10 +6,8 @@ export const uploadImage = (path, uri, setProgress, setPhoto) => {
   return new Promise(async (resolve, reject) => {
     try {
       const blob = await uriToBlob(uri);
-
       const storageRef = ref(storage, `${path}/${Date.now()}`);
       const uploadTask = uploadBytesResumable(storageRef, blob);
-
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -31,6 +29,7 @@ export const uploadImage = (path, uri, setProgress, setPhoto) => {
         }
       );
     } catch (error) {
+      console.log(error);
       reject(error);
     }
   });
