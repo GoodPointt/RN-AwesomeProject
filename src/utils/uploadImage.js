@@ -1,11 +1,19 @@
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebase/config';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import { uriToBlob } from './uriToBlob';
 
 export const uploadImage = (path, uri, setProgress, setPhoto) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const blob = await uriToBlob(uri);
+      const manipulatedImage = await manipulateAsync(uri, [], {
+        compress: 0.3,
+        format: SaveFormat.JPEG,
+      });
+
+      const blob = await uriToBlob(manipulatedImage.uri);
+      if (blob.size > 1000000) throw { message: 'file is too large' };
+
       const storageRef = ref(storage, `${path}/${Date.now()}`);
       const uploadTask = uploadBytesResumable(storageRef, blob);
       uploadTask.on(

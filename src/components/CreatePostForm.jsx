@@ -96,7 +96,7 @@ export const CreatePostForm = () => {
               </>
             ) : (
               <ImageBackground
-                style={{ height: 240, width: '100%' }}
+                style={{ height: 240, width: '100%', overflow: 'hidden' }}
                 source={require('../assets/img/loading.gif')}
               >
                 <Image source={{ uri: photo }} style={styles.previewImg} />
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'space-between' },
   extraStyles: { backgroundColor: '#000' },
   addImgContainer: {
+    overflow: 'hidden',
     height: 240,
     backgroundColor: '#F6F6F6',
     borderRadius: 8,

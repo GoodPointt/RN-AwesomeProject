@@ -40,6 +40,7 @@ export const PostItem = memo(({ item, commentDetails, locationDetails }) => {
       )}
       <ImageBackground
         source={require('../assets/img/images-blur-paceholder.jpg')}
+        style={styles.placeholderImage}
       >
         <Image source={{ uri: item.photo }} style={styles.itemImage} />
       </ImageBackground>
@@ -106,6 +107,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 240,
     borderRadius: 8,
+  },
+  placeholderImage: {
+    width: '100%',
+    height: 240,
+    borderRadius: 8,
+    overflow: 'hidden',
   },
   nameText: {
     color: '#212121',
