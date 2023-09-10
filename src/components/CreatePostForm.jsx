@@ -160,16 +160,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   wrap: { flexGrow: 1 },
-
-  iconWrapper: {
-    height: 60,
-    width: 60,
-    backgroundColor: '#ffffff',
-    borderRadius: 50,
-
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   text: {
     color: '#BDBDBD',
     fontSize: 16,
