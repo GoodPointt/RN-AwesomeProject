@@ -96,23 +96,16 @@ export const CreatePostForm = () => {
               </>
             ) : (
               <ImageBackground
-                style={{ height: 240, width: '100%', overflow: 'hidden' }}
+                style={styles.previewImgPlaceholder}
                 source={require('../assets/img/loading.gif')}
               >
                 <Image source={{ uri: photo }} style={styles.previewImg} />
               </ImageBackground>
             )
           ) : (
-            !isCameraOn && (
-              <TouchableOpacity onPress={() => setIsCameraOn(true)}>
-                <View style={styles.iconWrapper}>
-                  <Ionicons name="camera-sharp" size={24} color="#BDBDBD" />
-                </View>
-              </TouchableOpacity>
+            !photo && (
+              <CameraView setPhoto={setPhoto} setIsCameraOn={setIsCameraOn} />
             )
-          )}
-          {isCameraOn && !photo && (
-            <CameraView setPhoto={setPhoto} setIsCameraOn={setIsCameraOn} />
           )}
         </View>
         <GalleryUpload setPhoto={setPhoto} />
@@ -190,5 +183,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   previewImg: { width: '100%', height: '100%', borderRadius: 8 },
-  // extraStyles: { width: '100%', height: '60%', borderRadius: 8 },
+  previewImgPlaceholder: { height: 240, width: '100%', overflow: 'hidden' },
 });
