@@ -1,14 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  ImageBackground,
+} from 'react-native';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { cameraPremissionsRequest } from '../utils/cameraPremissionsRequest';
 
-export const CameraView = ({ setPhoto, setIsCameraOn }) => {
+export const CameraView = ({ setPhoto }) => {
+  const [isPhotoLoading, setIsPhotoLoading] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+
+  const makePhoto = async () => {
+    if (cameraRef) {
+      setIsPhotoLoading(true);
+      try {
+        const { uri } = await cameraRef.takePictureAsync({
+          quality: 0.3,
+        });
+        await MediaLibrary.createAssetAsync(uri);
+
+        setPhoto(uri);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsPhotoLoading(false);
+      }
+    }
+  };
 
   useEffect(() => {
     cameraPremissionsRequest(setHasPermission);
@@ -25,18 +51,21 @@ export const CameraView = ({ setPhoto, setIsCameraOn }) => {
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref={setCameraRef}>
         <View style={styles.photoView}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={async () => {
-              if (cameraRef) {
-                const { uri } = await cameraRef.takePictureAsync({
-                  quality: 0.3,
-                });
-                await MediaLibrary.createAssetAsync(uri);
-                setPhoto(uri);
-              }
-            }}
-          >
+          {isPhotoLoading && (
+            <ImageBackground
+              style={[
+                {
+                  position: 'absolute',
+                  alignSelf: 'center',
+                  width: '100%',
+                  height: 240,
+                  zIndex: 9,
+                },
+              ]}
+              source={require('../assets/img/loading.gif')}
+            ></ImageBackground>
+          )}
+          <TouchableOpacity style={styles.button} onPress={makePhoto}>
             <View style={styles.takePhotoOut}>
               <View style={styles.takePhotoInner}></View>
             </View>
@@ -106,4 +135,5 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   closeCamera: { position: 'absolute', left: 10, top: 10 },
+  photoLoader: { height: 240, width: '100%', overflow: 'hidden' },
 });

@@ -46,8 +46,6 @@ export const LoginForm = ({ setIsAuthLoading, navigation }) => {
     try {
       const loginUser = await logIn(loginEmailValue, loginPasswordValue);
 
-      if (!loginUser) return;
-
       const currentUserData = await getCurrentUserData(loginUser);
 
       dispatch(
@@ -58,7 +56,7 @@ export const LoginForm = ({ setIsAuthLoading, navigation }) => {
       );
       resetForm();
     } catch (error) {
-      errorFormat(error.message);
+      errorFormat(error.message, 'Email or password wrong');
     } finally {
       setIsAuthLoading(false);
     }

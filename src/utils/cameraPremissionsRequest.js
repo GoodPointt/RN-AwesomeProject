@@ -1,5 +1,6 @@
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
+import Toast from 'react-native-toast-message';
 
 export const cameraPremissionsRequest = async (setHasPermission) => {
   try {

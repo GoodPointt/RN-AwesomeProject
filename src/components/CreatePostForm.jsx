@@ -19,7 +19,6 @@ import { locationPremissionsRequest } from '../utils/locationPremissionsRequest'
 import { uploadImage } from '../utils/uploadImage';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import GalleryUpload from './GalleryUpload';
-import { ImageBackground } from 'react-native';
 
 export const CreatePostForm = () => {
   const [isCameraOn, setIsCameraOn] = useState(true);
@@ -95,17 +94,10 @@ export const CreatePostForm = () => {
                 <UploadProcess progress={progress} />
               </>
             ) : (
-              <ImageBackground
-                style={styles.previewImgPlaceholder}
-                source={require('../assets/img/loading.gif')}
-              >
-                <Image source={{ uri: photo }} style={styles.previewImg} />
-              </ImageBackground>
+              <Image source={{ uri: photo }} style={styles.previewImg} />
             )
           ) : (
-            !photo && (
-              <CameraView setPhoto={setPhoto} setIsCameraOn={setIsCameraOn} />
-            )
+            !photo && <CameraView setPhoto={setPhoto} />
           )}
         </View>
         <GalleryUpload setPhoto={setPhoto} />

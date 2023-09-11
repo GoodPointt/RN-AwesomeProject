@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import Toast from 'react-native-toast-message';
 
 export const locationPremissionsRequest = async (setCoord) => {
   try {

@@ -16,8 +16,8 @@ import { updateUserDocDataInFirestore } from '../firebase/auth';
 import { UploadProcess } from './UploadProcess';
 import GalleryUpload from './GalleryUpload';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import vars from '../utils/vars';
+import Toast from 'react-native-toast-message';
 
 export const ModalBox = ({
   isModalVisible,

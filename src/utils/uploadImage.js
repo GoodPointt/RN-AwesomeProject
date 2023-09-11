@@ -37,7 +37,6 @@ export const uploadImage = (path, uri, setProgress, setPhoto) => {
         }
       );
     } catch (error) {
-      console.log(error);
       reject(error);
     }
   });
