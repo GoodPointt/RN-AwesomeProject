@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 export const MapScreen = ({ route: { params } }) => {
   const {
@@ -11,6 +11,7 @@ export const MapScreen = ({ route: { params } }) => {
     <View style={styles.container}>
       {coord ? (
         <MapView
+          provider={PROVIDER_GOOGLE}
           style={styles.mapStyle}
           region={coord}
           mapType="standard"

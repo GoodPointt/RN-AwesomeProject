@@ -21,7 +21,12 @@
         "backgroundColor": "#ffffff"
       },
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.goodpointt.AwesomeProject"
+      "package": "com.goodpointt.AwesomeProject",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAFwQQAG75p2wMyx9sH5U6U71hjVqgeyU0"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
