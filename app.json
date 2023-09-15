@@ -13,12 +13,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyCtURKs4hrO77-G6KIUvPBC2B9zY1S2D6A"
-        }
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {

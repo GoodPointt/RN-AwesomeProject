@@ -5,7 +5,7 @@
 ![React Native project](./assets/qr.jpg)
 
  <div align=center>🤖 Open this link on your Android devices (or scan the QR code) to install the app</div>
-<a href='https://expo.dev/accounts/goodpointt/projects/AwesomeProject/builds/421d5780-59e1-4eac-bab2-29687143419a'>Download ⬇️</a>
+<a href='https://expo.dev/accounts/goodpointt/projects/AwesomeProject/builds/bdc03993-0eea-42d7-8e30-ca504f503de1'>Download ⬇️</a>
 
 ###
 
