@@ -9,10 +9,12 @@ export const SmallUserBox = ({
 }) => {
   return (
     <View style={[styles.userBox, createdAt ? styles.createdAtBox : null]}>
-      <Image
-        style={[styles.avatarImg, createdAt ? styles.createdAtImg : null]}
-        source={{ uri: avatar }}
-      />
+      {avatar && (
+        <Image
+          style={[styles.avatarImg, createdAt ? styles.createdAtImg : null]}
+          source={{ uri: avatar }}
+        />
+      )}
 
       <View>
         <Text style={styles.name}>{name}</Text>

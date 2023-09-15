@@ -10,11 +10,9 @@ import {
 import { RegForm } from '../components/RegForm';
 import { TouchableBlueText } from '../components/TouchableBlueText';
 import { useNavigation } from '@react-navigation/native';
-import { AuthLoader } from '../components/authLoader';
 
 export const RegistrationScreen = () => {
   const navigation = useNavigation();
-  const [isAuthLoading, setIstAuthLoading] = useState(false);
 
   return (
     <>
@@ -29,10 +27,7 @@ export const RegistrationScreen = () => {
             source={require('../assets/img/login-bg.jpg')}
           >
             <View style={styles.regContainer}>
-              <RegForm
-                navigation={navigation}
-                setIstAuthLoading={setIstAuthLoading}
-              />
+              <RegForm navigation={navigation} />
 
               <TouchableBlueText
                 text={'Already have an account? Login'}
@@ -42,7 +37,6 @@ export const RegistrationScreen = () => {
           </ImageBackground>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-      {isAuthLoading ? <AuthLoader type={'register'} /> : null}
     </>
   );
 };

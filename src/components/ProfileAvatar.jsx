@@ -2,10 +2,8 @@ import { useState } from 'react';
 import { RegAvatar } from './RegAvatar';
 import { ModalBox } from './ModalBox';
 import { useDispatch } from 'react-redux';
-import { setUpUser } from '../redux/user/userSlice';
-import { updateUserDocDataInFirestore } from '../firebase/auth';
-import vars from '../utils/vars';
-import Toast from 'react-native-toast-message';
+import { DEFAULT_AVATAR } from '../utils/vars';
+import { avatarRemove } from '../redux/user/operations';
 
 export const ProfileAvatar = ({ currentAva, userId }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -13,31 +11,12 @@ export const ProfileAvatar = ({ currentAva, userId }) => {
   const [avatar, setAvatar] = useState(currentAva);
   const dispatch = useDispatch();
 
-  const handleAvatarPress = () => {
-    if (avatar === vars.DEFAULT_AVATAR) setModalVisible(true);
-    if (avatar !== vars.DEFAULT_AVATAR) {
-      setAvatar(vars.DEFAULT_AVATAR);
-
-      handleAvatarRemove(userId, vars.DEFAULT_AVATAR);
-    }
-  };
-
-  const handleAvatarRemove = async (userId, newAva) => {
-    try {
-      dispatch(
-        setUpUser({
-          user: {
-            avatar: newAva,
-          },
-        })
-      );
-
-      await updateUserDocDataInFirestore(userId, { avatar: newAva }, 'users');
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: `⚠️Error: ${error.message}`,
-      });
+  const handleAvatarPress = async () => {
+    if (avatar === DEFAULT_AVATAR) setModalVisible(true);
+    if (avatar !== DEFAULT_AVATAR) {
+      setAvatar(DEFAULT_AVATAR);
+      const newAva = DEFAULT_AVATAR;
+      await dispatch(avatarRemove({ userId, newAva }));
     }
   };
 

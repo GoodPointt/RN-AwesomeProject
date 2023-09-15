@@ -36,7 +36,10 @@ const PostsList = ({ posts, user, fetchOnRefresh }) => {
         ) : null
       }
       refreshControl={
-        <RefreshControl onRefresh={fetchOnRefresh} colors={['#FF6C00']} />
+        <RefreshControl
+          onRefresh={fetchOnRefresh}
+          colors={['#FF6C00', '#000']}
+        />
       }
     />
   );

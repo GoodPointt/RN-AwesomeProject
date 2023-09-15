@@ -8,13 +8,14 @@ import { LargeButton } from './LargeButton';
 import { FormInput } from './FormInput';
 
 import { useDispatch } from 'react-redux';
-import { setUpUser } from '../redux/user/userSlice';
-import { getCurrentUserData, logIn } from '../firebase/auth';
-import { errorFormat } from '../utils/errorFormat';
+
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { loginUser } from '../redux/user/operations';
+import { useAuth } from '../hooks/useAuth';
+import { LOADING } from '../utils/vars';
 
-export const LoginForm = ({ setIsAuthLoading, navigation }) => {
+export const LoginForm = ({ navigation }) => {
   const [isFocused, setIsFocused] = useState(null);
   const [loginEmailValue, setLoginEmailValue] = useState('');
   const [loginPasswordValue, setLoginPasswordValue] = useState('');
@@ -22,6 +23,8 @@ export const LoginForm = ({ setIsAuthLoading, navigation }) => {
     email: '',
     password: '',
   });
+
+  const { error, status } = useAuth();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -41,25 +44,9 @@ export const LoginForm = ({ setIsAuthLoading, navigation }) => {
   };
 
   const handleLogin = async () => {
-    setIsAuthLoading(true);
+    await dispatch(loginUser({ loginEmailValue, loginPasswordValue }));
 
-    try {
-      const loginUser = await logIn(loginEmailValue, loginPasswordValue);
-
-      const currentUserData = await getCurrentUserData(loginUser);
-
-      dispatch(
-        setUpUser({
-          user: currentUserData,
-          token: loginUser.user.accessToken,
-        })
-      );
-      resetForm();
-    } catch (error) {
-      errorFormat(error.message, 'Email or password wrong');
-    } finally {
-      setIsAuthLoading(false);
-    }
+    if (error === null) resetForm();
   };
 
   const validateField = async (fieldName, value, schema) => {
@@ -122,8 +109,10 @@ export const LoginForm = ({ setIsAuthLoading, navigation }) => {
           !loginEmailValue ||
           !loginPasswordValue ||
           validationErrors.email !== '' ||
-          validationErrors.password !== ''
+          validationErrors.password !== '' ||
+          status === LOADING
         }
+        isLoading={status === LOADING}
       />
     </>
   );

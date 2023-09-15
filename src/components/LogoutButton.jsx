@@ -4,12 +4,10 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { removeUser } from '../redux/user/userSlice';
 import { logout } from '../firebase/auth';
 import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import { clearPosts } from '../redux/posts/postsSlice';
 
 const LogoutButton = ({ profile }) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   return (
     <TouchableOpacity
@@ -18,8 +16,6 @@ const LogoutButton = ({ profile }) => {
         dispatch(removeUser());
         dispatch(clearPosts());
         logout();
-
-        // navigation.navigate('Auth', { screen: 'Login' });
       }}
     >
       <MaterialIcons name="logout" size={24} color="#BDBDBD" />

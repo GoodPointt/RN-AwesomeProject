@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
 export const useAuth = () => {
-  const { token, user, isLoggedIn, isRefreshing } = useSelector(
+  const { token, user, isLoggedIn, isRefreshing, status, error } = useSelector(
     (state) => state.user
   );
   return {
@@ -9,5 +9,7 @@ export const useAuth = () => {
     user,
     isLoggedIn,
     isRefreshing,
+    status,
+    error,
   };
 };

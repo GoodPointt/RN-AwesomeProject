@@ -1,11 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import * as Progress from 'react-native-progress';
 
 export const UploadProcess = ({ progress, textColor }) => {
   return (
-    <Text style={[styles.uploadingText, { color: textColor }]}>
-      Uploading {progress}%
-    </Text>
+    <>
+      <Text style={[styles.uploadingText, { color: textColor }]}>
+        Uploading {progress}%
+      </Text>
+
+      <Progress.Bar progress={progress} width={200} color="#fd5f04" />
+    </>
   );
 };
 

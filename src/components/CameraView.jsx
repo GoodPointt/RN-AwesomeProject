@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  ActivityIndicator,
   ImageBackground,
 } from 'react-native';
 import { Camera } from 'expo-camera';
@@ -15,14 +14,14 @@ import { cameraPremissionsRequest } from '../utils/cameraPremissionsRequest';
 export const CameraView = ({ setPhoto }) => {
   const [isPhotoLoading, setIsPhotoLoading] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
-  const [cameraRef, setCameraRef] = useState(null);
+  const cameraRef = useRef(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   const makePhoto = async () => {
-    if (cameraRef) {
+    if (cameraRef.current) {
       setIsPhotoLoading(true);
       try {
-        const { uri } = await cameraRef.takePictureAsync({
+        const { uri } = await cameraRef.current.takePictureAsync({
           quality: 0.3,
         });
         await MediaLibrary.createAssetAsync(uri);
@@ -49,7 +48,7 @@ export const CameraView = ({ setPhoto }) => {
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} ref={setCameraRef}>
+      <Camera style={styles.camera} type={type} ref={cameraRef}>
         <View style={styles.photoView}>
           {isPhotoLoading && (
             <ImageBackground

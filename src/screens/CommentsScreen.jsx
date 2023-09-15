@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchComments, fetchUserPosts } from '../redux/posts/operations';
+import { fetchComments } from '../redux/posts/operations';
 import { useAuth } from '../hooks/useAuth';
 import CommentsList from '../components/CommentsList';
 import CommentInput from '../components/CommentInput';
-import vars from '../utils/vars';
+import { RESOLVED, REJECTED, LOADING } from '../utils/vars';
 import { usePosts } from '../hooks/usePosts';
 
 export const CommentsScreen = ({ route: { params } }) => {
@@ -36,17 +36,15 @@ export const CommentsScreen = ({ route: { params } }) => {
         <View style={styles.ImgContainer}>
           <Image source={{ uri: post?.photo }} style={styles.postImg} />
         </View>
-        {status === vars.LOADING && (
+        {status === LOADING && (
           <ActivityIndicator size={100} color={'#FF6C00'} style={{ flex: 1 }} />
         )}
 
-        {status === vars.RESOLVED && comments.length > 0 && (
+        {status === RESOLVED && comments.length > 0 && (
           <CommentsList comments={comments} user={user} post={post} />
         )}
 
-        {status === vars.REJECTED && (
-          <Text>Opps! an error occured: {error}😒</Text>
-        )}
+        {status === REJECTED && <Text>Opps! an error occured: {error}😒</Text>}
       </View>
       <CommentInput post={post} />
     </KeyboardAvoidingView>

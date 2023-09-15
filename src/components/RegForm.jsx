@@ -1,5 +1,5 @@
 import { StyleSheet, Text } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RegAvatar } from './RegAvatar';
 import { LargeButton } from './LargeButton';
 import { FormInput } from './FormInput';
@@ -7,19 +7,17 @@ import { FormInput } from './FormInput';
 import { ModalBox } from './ModalBox';
 
 import { useDispatch } from 'react-redux';
-import { setUpUser } from '../redux/user/userSlice';
 import { useAuth } from '../hooks/useAuth';
-import { registerUser, writeDataToFirestore } from '../firebase/auth';
 import {
   LOGIN_VALIDATION_SCHEMA_EMAIL,
   LOGIN_VALIDATION_SCHEMA_PASSWORD,
   REGISTER_VALIDATION_SCHEMA_LOGIN,
 } from '../utils/yupValidation';
 import { errorFormat } from '../utils/errorFormat';
-import { uploadImage } from '../utils/uploadImage';
-import vars from '../utils/vars';
+import { DEFAULT_AVATAR, LOADING } from '../utils/vars';
+import { signUpNewUser } from '../redux/user/operations';
 
-export const RegForm = ({ setIstAuthLoading }) => {
+export const RegForm = () => {
   const dispatch = useDispatch();
 
   const [progress, setProgress] = useState(0);
@@ -28,17 +26,19 @@ export const RegForm = ({ setIstAuthLoading }) => {
   const [regLoginValue, setRegLoginValue] = useState('');
   const [regEmailValue, setRegEmailValue] = useState('');
   const [regPasswordValue, setRegPasswordValue] = useState('');
-  const [avatar, setAvatar] = useState(vars.DEFAULT_AVATAR);
+  const [avatar, setAvatar] = useState(DEFAULT_AVATAR);
   const [validationErrors, setValidationErrors] = useState({
     email: '',
     password: '',
     login: '',
   });
 
+  const { error, status } = useAuth();
+
   const handleAvatarPress = () => {
-    if (avatar === vars.DEFAULT_AVATAR) setModalVisible(true);
-    if (avatar !== vars.DEFAULT_AVATAR) {
-      setAvatar(vars.DEFAULT_AVATAR);
+    if (avatar === DEFAULT_AVATAR) setModalVisible(true);
+    if (avatar !== DEFAULT_AVATAR) {
+      setAvatar(DEFAULT_AVATAR);
     }
   };
 
@@ -62,37 +62,20 @@ export const RegForm = ({ setIstAuthLoading }) => {
   };
 
   const handleSubmit = async () => {
-    setIstAuthLoading(true);
     try {
-      const result = await registerUser(regEmailValue, regPasswordValue);
-      if (!result) return;
-      let url;
-      avatar !== vars.DEFAULT_AVATAR
-        ? (url = await uploadImage('avatar', avatar, setProgress, setAvatar))
-        : (url = vars.DEFAULT_AVATAR);
-
-      const userData = {
-        name: regLoginValue,
-        email: regEmailValue,
-        uid: result.user.uid,
-        avatar: url,
-      };
-
-      const patchId = await writeDataToFirestore(userData, result.user);
-
-      dispatch(
-        setUpUser({
-          user: {
-            ...userData,
-            ...patchId,
-          },
-          token: result.user.stsTokenManager.accessToken,
+      await dispatch(
+        signUpNewUser({
+          regLoginValue,
+          regEmailValue,
+          regPasswordValue,
+          avatar,
+          setAvatar,
+          setProgress,
         })
       );
-    } catch (error) {
-      errorFormat(error.message);
-    } finally {
-      setIstAuthLoading(false);
+    } catch (e) {
+      console.log(e);
+      if (error) errorFormat(error);
     }
   };
 
@@ -165,8 +148,10 @@ export const RegForm = ({ setIstAuthLoading }) => {
           !regPasswordValue ||
           validationErrors.email !== '' ||
           validationErrors.password !== '' ||
-          validationErrors.login !== ''
+          validationErrors.login !== '' ||
+          status === LOADING
         }
+        isLoading={status === LOADING}
       />
     </>
   );

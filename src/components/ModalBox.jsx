@@ -9,15 +9,13 @@ import {
 import { LargeButton } from './LargeButton';
 import { useState } from 'react';
 import { CameraView } from './CameraView';
-import { uploadImage } from '../utils/uploadImage';
 import { useDispatch } from 'react-redux';
-import { setUpUser } from '../redux/user/userSlice';
-import { updateUserDocDataInFirestore } from '../firebase/auth';
 import { UploadProcess } from './UploadProcess';
 import GalleryUpload from './GalleryUpload';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
-import vars from '../utils/vars';
+import { DEFAULT_AVATAR } from '../utils/vars';
 import Toast from 'react-native-toast-message';
+import { avatarUpdate } from '../redux/user/operations';
 
 export const ModalBox = ({
   isModalVisible,
@@ -36,23 +34,16 @@ export const ModalBox = ({
     try {
       if (profile && photo) {
         setisUploading(true);
-        const url = await uploadImage('avatar', photo, setProgress, setAvatar);
 
-        dispatch(
-          setUpUser({
-            user: {
-              avatar: url,
-            },
-          })
+        await dispatch(
+          avatarUpdate({ photo, profile, setProgress, setAvatar })
         );
 
-        await updateUserDocDataInFirestore(profile, { avatar: url }, 'users');
-
-        setAvatar(url);
         setModalVisible(false);
         setPhoto('');
         setProgress(0);
         setisUploading(false);
+
         return;
       }
     } catch (error) {
@@ -62,10 +53,9 @@ export const ModalBox = ({
         text2: error.message,
       });
     }
-
-    !photo ? setAvatar(vars.DEFAULT_AVATAR) : setAvatar(photo);
-    setModalVisible(false);
+    !photo ? setAvatar(DEFAULT_AVATAR) : setAvatar(photo);
     setPhoto('');
+    setModalVisible(false);
   };
 
   return (

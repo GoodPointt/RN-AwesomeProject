@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { usePosts } from '../hooks/usePosts';
 import { fetchAllPosts } from '../redux/posts/operations';
 import PostsList from '../components/PostsList';
-import vars from '../utils/vars';
+import { RESOLVED, REJECTED, LOADING } from '../utils/vars';
 
 export const PostsScreen = () => {
   const { user, isLoggedIn } = useAuth();
@@ -21,7 +21,7 @@ export const PostsScreen = () => {
     isLoggedIn &&
     user && (
       <View style={styles.container}>
-        {status === vars.RESOLVED && allPosts.length > 0 ? (
+        {status === RESOLVED && allPosts.length > 0 ? (
           <PostsList
             posts={allPosts}
             user={user}
@@ -34,10 +34,10 @@ export const PostsScreen = () => {
             email={user.email}
           />
         )}
-        {status === vars.LOADING && (
+        {status === LOADING && (
           <ActivityIndicator size={120} color={'#FF6C00'} style={{ flex: 1 }} />
         )}
-        {status === vars.REJECTED && (
+        {status === REJECTED && (
           <Text>Opps an error occured: '{error}' 😒</Text>
         )}
       </View>

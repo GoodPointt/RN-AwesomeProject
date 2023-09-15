@@ -7,6 +7,7 @@ import {
   fetchUserPosts,
   likeHandle,
 } from './operations';
+import { RESOLVED, REJECTED, LOADING } from '../../utils/vars';
 
 const initialState = {
   allPosts: [],
@@ -29,53 +30,53 @@ const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllPosts.pending, (state) => {
-        state.status = 'loading';
+        state.status = LOADING;
         state.error = null;
       })
       .addCase(fetchAllPosts.fulfilled, (state, action) => {
-        state.status = 'resolved';
+        state.status = RESOLVED;
         state.error = null;
         state.allPosts = action.payload;
       })
       .addCase(fetchAllPosts.rejected, (state, action) => {
-        state.status = 'rejected';
+        state.status = REJECTED;
         state.error = action.payload;
       })
 
       .addCase(fetchUserPosts.pending, (state) => {
-        state.status = 'loading';
+        state.status = LOADING;
         state.error = null;
       })
       .addCase(fetchUserPosts.fulfilled, (state, action) => {
-        state.status = 'resolved';
+        state.status = RESOLVED;
         state.error = null;
         state.userPosts = action.payload;
       })
       .addCase(fetchUserPosts.rejected, (state, action) => {
-        state.status = 'rejected';
+        state.status = REJECTED;
         state.error = action.payload;
       })
 
       .addCase(addPost.pending, (state) => {
-        state.status = 'loading';
+        state.status = LOADING;
         state.error = null;
       })
       .addCase(addPost.fulfilled, (state, action) => {
-        state.status = 'resolved';
+        state.status = RESOLVED;
         state.error = null;
         state.allPosts = [action.payload, ...state.allPosts];
       })
       .addCase(addPost.rejected, (state, action) => {
-        state.status = 'rejected';
+        state.status = REJECTED;
         state.error = action.payload;
       })
 
       .addCase(likeHandle.pending, (state) => {
-        state.likeStatus = 'loading';
+        state.likeStatus = LOADING;
         state.error = null;
       })
       .addCase(likeHandle.fulfilled, (state, action) => {
-        state.likeStatus = 'resolved';
+        state.likeStatus = RESOLVED;
         state.error = null;
 
         state.allPosts = state.allPosts.map((post) => {
@@ -99,20 +100,20 @@ const postsSlice = createSlice({
         });
       })
       .addCase(likeHandle.rejected, (state, action) => {
-        state.likeStatus = 'rejected';
+        state.likeStatus = REJECTED;
         state.error = action.payload;
       })
 
       .addCase(addComment.rejected, (state, action) => {
-        state.likeStatus = 'rejected';
+        state.likeStatus = REJECTED;
         state.error = action.payload;
       })
       .addCase(addComment.pending, (state) => {
-        state.likeStatus = 'loading';
+        state.likeStatus = LOADING;
         state.error = null;
       })
       .addCase(addComment.fulfilled, (state, action) => {
-        state.likeStatus = 'resolved';
+        state.likeStatus = RESOLVED;
         state.error = null;
         state.comments = [action.payload.newComment, ...state.comments];
         state.allPosts = state.allPosts.map((post) => {
@@ -127,16 +128,16 @@ const postsSlice = createSlice({
       })
 
       .addCase(fetchComments.pending, (state) => {
-        state.status = 'loading';
+        state.status = LOADING;
         state.error = null;
       })
       .addCase(fetchComments.fulfilled, (state, action) => {
-        state.status = 'resolved';
+        state.status = RESOLVED;
         state.error = null;
         state.comments = action.payload.comments;
       })
       .addCase(fetchComments.rejected, (state, action) => {
-        state.status = 'rejected';
+        state.status = REJECTED;
         state.error = action.payload;
       });
   },

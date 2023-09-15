@@ -1,6 +1,6 @@
 import { TouchableOpacity, View, Image, StyleSheet } from 'react-native';
 import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
-import vars from '../utils/vars';
+import { DEFAULT_AVATAR } from '../utils/vars';
 
 export const RegAvatar = ({ avatar, handleAvatarPress }) => {
   return (
@@ -8,7 +8,7 @@ export const RegAvatar = ({ avatar, handleAvatarPress }) => {
       <View style={styles.avatarBox}>
         {avatar && <Image style={styles.avatarImg} source={{ uri: avatar }} />}
         <View style={styles.avatarIconBox}>
-          {avatar !== vars.DEFAULT_AVATAR ? (
+          {avatar !== DEFAULT_AVATAR ? (
             <SimpleLineIcons name="close" size={24} color="#bababa" />
           ) : (
             <AntDesign name="pluscircleo" size={24} color="#ff6a00a6" />

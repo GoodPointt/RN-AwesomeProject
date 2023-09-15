@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { fetchUserPosts } from '../redux/posts/operations';
 import PostsList from '../components/PostsList';
 import LogoutButton from '../components/LogoutButton';
+import { RESOLVED, REJECTED, LOADING } from '../utils/vars';
 
 export const ProfileScreen = () => {
   const { user } = useAuth();
@@ -39,21 +40,21 @@ export const ProfileScreen = () => {
             <LogoutButton profile={true} />
             <ProfileAvatar currentAva={user.avatar} userId={user.id} />
             <Text style={styles.text}>{user.name}</Text>
-            {status === 'resolved' && userPosts?.length > 0 && (
+            {status === RESOLVED && userPosts?.length > 0 && (
               <PostsList
                 posts={userPosts}
                 user={null}
                 fetchOnRefresh={() => dispatch(fetchUserPosts())}
               />
             )}
-            {status === 'loading' && (
+            {status === LOADING && (
               <ActivityIndicator
                 size={120}
                 color={'#FF6C00'}
                 style={{ flex: 1 }}
               />
             )}
-            {status === 'rejected' && (
+            {status === REJECTED && (
               <Text style={styles.text}>
                 Opps an error occured: '{error}' 😒
               </Text>

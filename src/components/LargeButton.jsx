@@ -1,4 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 export const LargeButton = ({
   onPress,
@@ -6,6 +11,7 @@ export const LargeButton = ({
   disabledText = 'Fill in all fields to continue',
   extraStyles,
   isDisabled,
+  isLoading,
 }) => {
   return (
     <TouchableOpacity
@@ -23,8 +29,12 @@ export const LargeButton = ({
           { color: isDisabled ? '#BDBDBD' : '#ffffff' },
         ]}
       >
-        {isDisabled ? disabledText : text}
+        {isDisabled && !isLoading ? disabledText : isLoading ? null : text}
       </Text>
+
+      {isLoading ? (
+        <ActivityIndicator size={33} color={'#FF6C00'} style={styles.loading} />
+      ) : null}
     </TouchableOpacity>
   );
 };
@@ -43,4 +53,5 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
   },
+  loading: { position: 'absolute', alignSelf: 'center', top: '50%' },
 });

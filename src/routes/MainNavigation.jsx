@@ -8,13 +8,11 @@ import { CustomHeader } from '../components/CustomHeader';
 import { MapScreen } from '../screens/MapScreen';
 import { useEffect } from 'react';
 import { auth } from '../firebase/config';
-import { getCurrentUserData } from '../firebase/auth';
 import { useDispatch } from 'react-redux';
-import { errorFormat } from '../utils/errorFormat';
-import { setUpUser } from '../redux/user/userSlice';
 import { useAuth } from '../hooks/useAuth';
 import { useState } from 'react';
 import { AuthLoader } from '../components/authLoader';
+import { getCurrentUser } from '../redux/user/operations';
 
 export const MainNavigation = () => {
   const MainStack = createStackNavigator();
@@ -25,19 +23,7 @@ export const MainNavigation = () => {
   useEffect(() => {
     const authStateChanged = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        try {
-          const currentUserData = await getCurrentUserData(user);
-          dispatch(
-            setUpUser({
-              user: currentUserData,
-              token: user.accessToken,
-            })
-          );
-        } catch (error) {
-          errorFormat(error.message);
-        } finally {
-          setIsAuthChecked(true);
-        }
+        await dispatch(getCurrentUser({ user, setIsAuthChecked }));
       } else {
         setIsAuthChecked(true);
       }

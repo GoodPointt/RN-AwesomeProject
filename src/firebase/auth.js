@@ -54,6 +54,7 @@ export const updateUserDocDataInFirestore = async (docRefId, patch, path) => {
 
     await updateDoc(ref, patch);
   } catch (error) {
+    console.log(error);
     errorFormat(error.message);
   }
 };
@@ -62,7 +63,7 @@ export const writeDataToFirestore = async (userData) => {
   try {
     const docRef = await addDoc(collection(db, 'users'), userData);
 
-    updateUserDocDataInFirestore(docRef.id, { id: docRef.id }, 'users');
+    await updateUserDocDataInFirestore(docRef.id, { id: docRef.id }, 'users');
 
     return { id: docRef.id };
   } catch (error) {
