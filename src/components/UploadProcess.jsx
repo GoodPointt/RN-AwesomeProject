@@ -9,11 +9,11 @@ export const UploadProcess = ({ progress, textColor }) => {
         Uploading {progress}%
       </Text>
 
-      <Progress.Bar progress={progress} width={200} color="#fd5f04" />
+      <Progress.Bar progress={+progress} width={150} color="#fd5f04" />
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  uploadingText: { color: '#000', fontSize: 18 },
+  uploadingText: { color: '#000', fontSize: 18, marginBottom: 20 },
 });

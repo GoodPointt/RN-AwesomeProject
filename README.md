@@ -1,5 +1,7 @@
 # <div align=center>React Native project
 
+![React Native project](./assets/example.jpg)
+
 ![React Native project](./assets/qr.jpg)
 
  <div align=center>🤖 Open this link on your Android devices (or scan the QR code) to install the app</div>
